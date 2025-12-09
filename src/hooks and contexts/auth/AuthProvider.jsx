@@ -7,8 +7,11 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
+  updateProfile,
 } from "firebase/auth";
 import auth from "../../../firebase.init";
+
+import axiosInstance from "../axios/AxiosInstance";
 
 const provider = new GoogleAuthProvider();
 export const AuthProvider = ({ children }) => {
@@ -39,6 +42,16 @@ export const AuthProvider = ({ children }) => {
     return res;
   };
 
+  //   update profile
+
+  const handleProfileUpdate = async (name, url) => {
+    const res = await updateProfile(auth.currentUser, {
+      displayName: name,
+      photoURL: url,
+    });
+    return res;
+  };
+
   // login user
   const signInUser = async (email, password) => {
     const res = await signInWithEmailAndPassword(auth, email, password);
@@ -49,6 +62,17 @@ export const AuthProvider = ({ children }) => {
 
   const googleSignIn = async () => {
     const res = await signInWithPopup(auth, provider);
+
+    const googleUser = res.user;
+    const userData = {
+      userName: googleUser.displayName,
+      userEmail: googleUser.email,
+      photoUrl: googleUser.photoURL,
+      role: "user",
+    };
+
+    const postRes = await axiosInstance.post("/users", userData);
+    console.log(postRes.data);
     return res;
   };
 
@@ -66,6 +90,7 @@ export const AuthProvider = ({ children }) => {
     signInUser,
     googleSignIn,
     logout,
+    handleProfileUpdate,
   };
   return (
     <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>

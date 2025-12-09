@@ -8,20 +8,16 @@ import {
   HiSparkles,
 } from "react-icons/hi";
 import { useAuth } from "../../hooks and contexts/auth/useAuth";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function LocalNavbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const navigate = useNavigate();
+  const { user, authLoading, logout } = useAuth();
 
   const info = useAuth();
   console.log(info?.user);
-
-  // Mock user data
-  const user = {
-    name: "John Doe",
-    email: "john@example.com",
-    photo: "https://i.pravatar.cc/150?img=12",
-  };
 
   const navLinks = [
     { name: "Home", href: "/" },
@@ -29,6 +25,13 @@ export default function LocalNavbar() {
     { name: "About", href: "/about" },
     { name: "Contact", href: "/contact" },
   ];
+
+  if (authLoading)
+    return (
+      <span className="skeleton skeleton-text">
+        Authentication in process...
+      </span>
+    );
 
   return (
     <nav className="bg-white font-crimson shadow-sm border-b border-neutral sticky top-0 z-50">
@@ -87,7 +90,7 @@ export default function LocalNavbar() {
             </div>
 
             {/* Auth Section */}
-            {isLoggedIn ? (
+            {user ? (
               <div className="dropdown dropdown-end">
                 <button
                   tabIndex={0}
@@ -106,13 +109,13 @@ export default function LocalNavbar() {
                   {/* User Info */}
                   <div className="flex items-center gap-3 pb-3 border-b border-neutral">
                     <img
-                      src={user.photo}
-                      alt={user.name}
+                      src={user.photoURL}
+                      alt={user.displayName}
                       className="w-12 h-12 rounded-full object-cover ring-2 ring-accent"
                     />
                     <div className="flex-1 min-w-0">
                       <p className="font-semibold text-gray-800 truncate">
-                        {user.name}
+                        {user.displayName}
                       </p>
                       <p className="text-xs text-gray-500 truncate">
                         {user.email}
@@ -140,7 +143,11 @@ export default function LocalNavbar() {
 
                   {/* Logout */}
                   <button
-                    onClick={() => setIsLoggedIn(false)}
+                    onClick={() => {
+                      logout();
+                      console.log("user logged out!");
+                      navigate("/");
+                    }}
                     className="flex items-center gap-2 w-full px-3 py-2 mt-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-all border-t border-neutral pt-3"
                   >
                     <HiLogout className="w-4 h-4" />
@@ -150,18 +157,19 @@ export default function LocalNavbar() {
               </div>
             ) : (
               <div className="flex items-center gap-3">
-                <button
-                  onClick={() => setIsLoggedIn(true)}
+                <Link
+                  to="/login"
                   className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-primary transition-colors"
                 >
                   Login
-                </button>
-                <button
-                  onClick={() => setIsLoggedIn(true)}
+                </Link>
+                <Link
+                  to="/registration"
+                  //   onClick={() => setIsLoggedIn(true)}
                   className="px-5 py-2 text-sm font-medium text-white bg-primary hover:bg-primary/90 rounded-lg transition-all shadow-sm hover:shadow-md"
                 >
                   Register
-                </button>
+                </Link>
               </div>
             )}
           </div>
@@ -192,17 +200,17 @@ export default function LocalNavbar() {
             ))}
 
             {/* Mobile Auth */}
-            {isLoggedIn ? (
+            {user ? (
               <div className="pt-3 border-t border-neutral space-y-2">
                 <div className="flex items-center gap-3 px-4 py-2">
                   <img
-                    src={user.photo}
-                    alt={user.name}
+                    src={user.photoURL}
+                    alt={user.displayName}
                     className="w-10 h-10 rounded-full object-cover ring-2 ring-accent"
                   />
                   <div className="flex-1 min-w-0">
                     <p className="font-semibold text-gray-800 truncate">
-                      {user.name}
+                      {user.displayName}
                     </p>
                     <p className="text-xs text-gray-500 truncate">
                       {user.email}
@@ -224,7 +232,11 @@ export default function LocalNavbar() {
                   Be a Decorator
                 </a>
                 <button
-                  onClick={() => setIsLoggedIn(false)}
+                  onClick={() => {
+                    logout();
+                    console.log("user logged out!");
+                    navigate("/");
+                  }}
                   className="flex items-center gap-2 w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-all"
                 >
                   <HiLogout className="w-4 h-4" />
@@ -233,18 +245,19 @@ export default function LocalNavbar() {
               </div>
             ) : (
               <div className="flex flex-col gap-2 pt-3 border-t border-neutral">
-                <button
-                  onClick={() => setIsLoggedIn(true)}
+                <Link
+                  to="/login"
                   className="w-full px-4 py-2 text-sm font-medium text-gray-700 hover:bg-secondary rounded-lg transition-all"
                 >
                   Login
-                </button>
-                <button
-                  onClick={() => setIsLoggedIn(true)}
+                </Link>
+                <Link
+                  to="registration"
+                  //   onClick={() => setIsLoggedIn(true)}
                   className="w-full px-4 py-2 text-sm font-medium text-white bg-primary hover:bg-primary/90 rounded-lg transition-all shadow-sm"
                 >
                   Register
-                </button>
+                </Link>
               </div>
             )}
           </div>
