@@ -54,13 +54,6 @@ export default function Registration() {
     try {
       const createRes = await createUser(data.email, data.password);
       console.log("user account created: ", createRes);
-      const googleUser = createRes.user;
-      const userData = {
-        userName: googleUser.displayName,
-        userEmail: googleUser.email,
-        photoUrl: googleUser.photoURL,
-        role: "user",
-      };
 
       const uploadRes = await axios.post(
         `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
@@ -71,6 +64,13 @@ export default function Registration() {
 
       await handleProfileUpdate(data.name, url);
       console.log("profile updated with photo url");
+
+      const userData = {
+        userName: data.name,
+        userEmail: data.email,
+        photoUrl: url,
+        role: "user",
+      };
 
       const postRes = await axiosInstance.post("/users", userData);
       console.log(postRes.data);
