@@ -7,10 +7,14 @@ import {
   HiLogout,
   HiSparkles,
 } from "react-icons/hi";
+import { useAuth } from "../../hooks and contexts/auth/useAuth";
 
 export default function LocalNavbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const info = useAuth();
+  console.log(info?.user);
 
   // Mock user data
   const user = {
