@@ -1,2 +1,59 @@
+@import url("https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..900&display=swap");
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
 @import "tailwindcss";
-@plugin "daisyui";
+@plugin "daisyui" {
+  themes: default --light;
+}
+
+/* @theme {
+  --color-primary: #e07b39;
+  --color-secondary: #dce4c9;
+  --color-neutral: #f5f5dc;
+  --color-accent: #b6a28e;
+} */
+
+@theme {
+  /* Primary Colors */
+  --color-primary: #2f5f5d;
+  --color-primary-hover: #254d4b;
+  --color-primary-light: #3d7370;
+
+  /* Secondary Colors */
+  --color-secondary: #f8f5f0;
+  --color-secondary-dark: #f0ebe3;
+
+  /* Accent Colors */
+  --color-accent: #c9a961;
+  --color-accent-hover: #b8964d;
+  --color-accent-light: #d4b676;
+
+  /* Neutral Colors */
+  --color-neutral: #e5ddd5;
+  --color-neutral-dark: #d4c9be;
+
+  /* Text Colors */
+  --color-text-primary: #1a1a1a;
+  --color-text-secondary: #4a4a4a;
+  --color-text-muted: #6b6b6b;
+
+  /* Background */
+  --color-bg-main: #ffffff;
+  --color-bg-alt: #f8f5f0;
+}
+
+/* .font-crimson {
+  font-family: "Crimson Pro", serif;
+  font-optical-sizing: auto;
+
+  font-style: normal;
+} */
+
+body {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+
+  font-style: normal;
+}
+
