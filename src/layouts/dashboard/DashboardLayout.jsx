@@ -20,21 +20,15 @@ import {
   HiArrowsExpand,
 } from "react-icons/hi";
 import { Outlet } from "react-router-dom";
+import { useAuth } from "../../hooks and contexts/auth/useAuth";
 
 export default function DashboardLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isDesktopSidebarOpen, setIsDesktopSidebarOpen] = useState(true);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
-  // Mock user data
-  const user = {
-    name: "John Doe",
-    email: "john@example.com",
-    photo: "https://i.pravatar.cc/150?img=12",
-    role: "Admin", // Admin, User, Decorator
-  };
+  const { user, authLoading } = useAuth();
 
-  // Toggle fullscreen
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen();
@@ -107,7 +101,6 @@ export default function DashboardLayout() {
     common: [{ icon: HiCog, label: "Settings", path: "/dashboard/settings" }],
   };
 
-  // Combine all menu items (unconditionally for now)
   const allMenuItems = [
     { category: "User Menu", items: menuItems.user },
     { category: "Admin Menu", items: menuItems.admin },
@@ -182,13 +175,13 @@ export default function DashboardLayout() {
               <div className="flex items-center gap-3 pl-4 border-l border-neutral">
                 <div className="hidden md:block text-right">
                   <p className="text-sm font-semibold text-gray-800">
-                    {user.name}
+                    {user.displayName}
                   </p>
-                  <p className="text-xs text-gray-500">{user.role}</p>
+                  <p className="text-xs text-gray-500">admin</p>
                 </div>
                 <img
-                  src={user.photo}
-                  alt={user.name}
+                  src={user.photoURL}
+                  alt={user.displayName}
                   className="w-10 h-10 rounded-full object-cover ring-2 ring-accent"
                 />
               </div>
@@ -200,20 +193,20 @@ export default function DashboardLayout() {
       <div className="flex">
         {/* Sidebar - Desktop */}
         <aside
-          className={`hidden lg:block bg-white border-r border-neutral min-h-[calc(100vh-4rem)] sticky top-16 transition-all duration-300 ${
-            isDesktopSidebarOpen ? "w-64" : "w-0 overflow-hidden"
+          className={`hidden lg:block bg-white border-r border-neutral min-h-[calc(100vh-4rem)] sticky top-16 transition-all duration-300  ${
+            isDesktopSidebarOpen ? "w-64 mr-5" : "w-0 overflow-hidden"
           }`}
         >
           <div className="p-4 w-64">
             <nav className="space-y-6">
-              {allMenuItems.map((section, idx) => (
-                <div key={idx}>
+              {allMenuItems.map((section, Index) => (
+                <div key={Index}>
                   <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3 px-3">
                     {section.category}
                   </h3>
                   <ul className="space-y-1">
-                    {section.items.map((item, itemIdx) => (
-                      <li key={itemIdx}>
+                    {section.items.map((item, itemIndex) => (
+                      <li key={itemIndex}>
                         <a
                           href={item.path}
                           className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-secondary hover:text-primary rounded-lg transition-all group"
@@ -256,7 +249,7 @@ export default function DashboardLayout() {
             {/* Mobile Sidebar Header */}
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-2">
-                <div className="w-9 h-9 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center">
+                <div className="w-9 h-9 bg-linear-to-br from-primary to-accent rounded-lg flex items-center justify-center">
                   <HiSparkles className="w-5 h-5 text-white" />
                 </div>
                 <span className="text-xl font-semibold text-primary">
@@ -291,14 +284,14 @@ export default function DashboardLayout() {
 
             {/* Mobile Menu */}
             <nav className="space-y-6 max-h-[calc(100vh-250px)] overflow-y-auto">
-              {allMenuItems.map((section, idx) => (
-                <div key={idx}>
+              {allMenuItems.map((section, Index) => (
+                <div key={Index}>
                   <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3 px-3">
                     {section.category}
                   </h3>
                   <ul className="space-y-1">
-                    {section.items.map((item, itemIdx) => (
-                      <li key={itemIdx}>
+                    {section.items.map((item, itemIndex) => (
+                      <li key={itemIndex}>
                         <a
                           href={item.path}
                           onClick={() => setIsSidebarOpen(false)}
@@ -324,7 +317,7 @@ export default function DashboardLayout() {
           </div>
         </aside>
 
-        {/* Main Content Area */}
+        {/* Main Content   */}
         <Outlet></Outlet>
       </div>
     </div>

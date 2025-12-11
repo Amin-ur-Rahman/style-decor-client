@@ -1,7 +1,6 @@
-// File: AddNewService.jsx (Consistent with RHF Usage)
 import axios from "axios";
 import React from "react";
-import { useForm } from "react-hook-form"; // Import useForm
+import { useForm } from "react-hook-form";
 import {
   HiCollection,
   HiSave,
@@ -10,9 +9,6 @@ import {
   HiScale,
   HiPencil,
   HiSparkles,
-  HiPhotograph,
-  HiMail,
-  HiClock,
 } from "react-icons/hi";
 import useAxiosInstance from "../../hooks and contexts/axios/useAxiosInstance";
 import { useAuth } from "../../hooks and contexts/auth/useAuth";
@@ -35,7 +31,6 @@ export default function AddNewService() {
 
   const axiosInstance = useAxiosInstance();
 
-  // --- React Hook Form Setup ---
   const { register, handleSubmit, reset } = useForm();
   const cloudName = import.meta.env.VITE_cloudinary_cloud;
   const preset = import.meta.env.VITE_preset;
@@ -83,250 +78,270 @@ export default function AddNewService() {
   };
 
   return (
-    <div className="p-4 bg-linear-to-br from-gray-200 via-emerald-100 to-gray-200 sm:p-6 lg:p-8 w-full">
-      {/* Page Header */}
-      <header className="mb-8  border-b border-neutral-dark pb-4">
-        <h2 className="text-3xl font-semibold text-text-primary flex items-center gap-3">
-          <HiCollection className="w-8 h-8 text-primary" />
-          Create New Service Package
-        </h2>
-        <p className="text-text-muted mt-1">
-          Enter the details required to offer a new decoration service to your
-          clients.
-        </p>
-      </header>
+    <div className="min-h-screen p-4 sm:p-6 lg:p-8 w-full bg-secondary">
+      {/* gradient multiple bg-------------- */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none opacity-20">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-accent rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-primary rounded-full blur-3xl"></div>
+        <div className="absolute top-1/2 right-1/3 w-80 h-80 bg-neutral rounded-full blur-3xl"></div>
+      </div>
 
-      {/* Main form container */}
-      <div className="max-w-4xl mx-auto bg-[#FFFFF0] p-6 rounded-xl shadow-lg border border-neutral">
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          {/* SECTION 1  */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            {/*  Service name */}
-            <div className="md:col-span-4">
-              <label
-                htmlFor="serviceName"
-                className="block text-sm font-medium text-text-secondary mb-1"
-              >
-                Service Name
-              </label>
-              <div className="relative">
-                <HiSparkles className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-neutral-dark" />
-                <input
-                  id="serviceName"
-                  type="text"
-                  placeholder="e.g., Premium Wedding Stage Decor"
-                  {...register("serviceName", { required: true })}
-                  className="w-full pl-10 pr-4 py-2.5 bg-bg-main border border-neutral-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all duration-150 text-sm"
-                />
-              </div>
-            </div>
+      <div className="relative z-10">
+        {/* ---------------logo  ------------------- */}
+        <div className="mb-8">
+          <Link to="/" className="inline-block">
+            <h1 className="text-3xl font-bold tracking-tight text-primary">
+              style<span className="text-accent">Decor</span>
+            </h1>
+          </Link>
+        </div>
 
-            {/*---------------------cost---------------- */}
-            <div className="md:col-span-2">
-              <label
-                htmlFor="cost"
-                className="block text-sm font-medium text-text-secondary mb-1"
-              >
-                Cost (BDT)
-              </label>
-              <div className="relative">
-                <HiCurrencyDollar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-neutral-dark" />
-                <input
-                  id="cost"
-                  type="number"
-                  placeholder="50000"
-                  {...register("cost", { required: true, valueAsNumber: true })}
-                  className="w-full pl-10 pr-4 py-2.5 bg-bg-main border border-neutral-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all duration-150 text-sm"
-                />
-              </div>
-            </div>
+        {/* ---------------heading-------------- */}
+        <header className="mb-10 text-center max-w-3xl mx-auto">
+          <div className="inline-flex items-center justify-center gap-3 mb-3 p-4 rounded-2xl bg-primary shadow-lg">
+            <HiCollection className="w-10 h-10 text-accent" />
+          </div>
+          <h2 className="text-4xl font-bold mb-3 text-text-primary">
+            Create New Service Package
+          </h2>
+          <p className="text-lg text-text-muted">
+            Enter the details required to offer a new decoration service to your
+            clients.
+          </p>
+        </header>
 
-            {/* ----------------------rate type -----------------*/}
-
-            <div className="md:col-span-2">
-              <label
-                htmlFor="rateType"
-                className="block text-sm font-medium text-text-secondary mb-1"
-              >
-                Rate type
-              </label>
-              <div className="relative">
-                <HiCurrencyDollar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-neutral-dark pointer-events-none" />
-                <select
-                  id="rateType"
-                  {...register("rateType", { required: true })}
-                  className="w-full pl-10 pr-4 py-2.5 bg-bg-main border border-neutral-dark rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all duration-150 text-sm"
+        {/* ---------main container------------------- */}
+        <div className="max-w-4xl mx-auto bg-bg-main p-8 rounded-2xl shadow-2xl border border-neutral">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+            {/* SECTION 1  */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              <div className="md:col-span-4">
+                <label
+                  htmlFor="serviceName"
+                  className="block text-sm font-semibold mb-2 text-text-secondary"
                 >
-                  <option value="" selected disabled>
-                    Select Model
-                  </option>
-                  <option value="rate-per-unit">Rate Per Unit</option>
-                  <option value="flat-rate">Flat Rate</option>
-                </select>
-                <span className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none text-neutral-dark">
-                  ▼
-                </span>
+                  Service Name
+                </label>
+                <div className="relative">
+                  <HiSparkles className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-accent" />
+                  <input
+                    id="serviceName"
+                    type="text"
+                    placeholder="e.g., Premium Wedding Stage Decor"
+                    {...register("serviceName", { required: true })}
+                    className="w-full pl-12 pr-4 py-3.5 bg-bg-main border-2 border-neutral-dark rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 text-sm hover:border-primary-light"
+                  />
+                </div>
               </div>
-            </div>
 
-            {/* --------------------unit-------------------- */}
-            <div className="md:col-span-2">
-              <label
-                htmlFor="unit"
-                className="block text-sm font-medium text-text-secondary mb-1"
-              >
-                Unit
-              </label>
-              <div className="relative">
-                <HiScale className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-neutral-dark pointer-events-none" />
-                <select
-                  id="unit"
-                  {...register("unit", { required: true })}
-                  className="w-full pl-10 pr-4 py-2.5 bg-bg-main border border-neutral-dark rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all duration-150 text-sm"
+              {/*---------------------cost---------------- */}
+              <div className="md:col-span-2">
+                <label
+                  htmlFor="cost"
+                  className="block text-sm font-semibold mb-2 text-text-secondary"
                 >
-                  <option value="" selected disabled>
-                    Select Unit
-                  </option>
-                  {unitOptions.map((option) => (
-                    <option
-                      key={option}
-                      value={option.toLowerCase().replace(/[\/\s]/g, "-")}
-                    >
-                      {option}
+                  Cost (BDT)
+                </label>
+                <div className="relative">
+                  <HiCurrencyDollar className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-accent" />
+                  <input
+                    id="cost"
+                    type="number"
+                    placeholder="50000"
+                    {...register("cost", {
+                      required: true,
+                      valueAsNumber: true,
+                    })}
+                    className="w-full pl-12 pr-4 py-3.5 bg-bg-main border-2 border-neutral-dark rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 text-sm hover:border-primary-light"
+                  />
+                </div>
+              </div>
+
+              {/* ----------------------rate type -----------------*/}
+              <div className="md:col-span-2">
+                <label
+                  htmlFor="rateType"
+                  className="block text-sm font-semibold mb-2 text-text-secondary"
+                >
+                  Rate type
+                </label>
+                <div className="relative">
+                  <HiCurrencyDollar className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-primary pointer-events-none" />
+                  <select
+                    id="rateType"
+                    {...register("rateType", { required: true })}
+                    className="w-full pl-12 pr-4 py-3.5 bg-bg-main border-2 border-neutral-dark rounded-xl appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 text-sm hover:border-primary-light"
+                  >
+                    <option value="" selected disabled>
+                      Select Model
                     </option>
-                  ))}
-                </select>
-                <span className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none text-neutral-dark">
-                  ▼
-                </span>
+                    <option value="rate-per-unit">Rate Per Unit</option>
+                    <option value="flat-rate">Flat Rate</option>
+                  </select>
+                  <span className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none text-text-muted">
+                    ▼
+                  </span>
+                </div>
               </div>
-            </div>
 
-            {/* ---------------------category------------------------- */}
-            <div className="md:col-span-4">
-              <label
-                htmlFor="category"
-                className="block text-sm font-medium text-text-secondary mb-1"
-              >
-                Service Category
-              </label>
-              <div className="relative">
-                <HiTag className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-neutral-dark pointer-events-none" />
-                <select
-                  id="category"
-                  {...register("category", { required: true })}
-                  className="w-full pl-10 pr-4 py-2.5 bg-bg-main border border-neutral-dark rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all duration-150 text-sm"
+              {/* --------------------unit-------------------- */}
+              <div className="md:col-span-2">
+                <label
+                  htmlFor="unit"
+                  className="block text-sm font-semibold mb-2 text-text-secondary"
                 >
-                  <option value="" selected disabled>
-                    Select Category
-                  </option>
-                  {serviceCategories.map((option) => (
-                    <option
-                      key={option}
-                      value={option.toLowerCase().replace(/ /g, "-")}
-                    >
-                      {option}
+                  Unit
+                </label>
+                <div className="relative">
+                  <HiScale className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-primary pointer-events-none" />
+                  <select
+                    id="unit"
+                    {...register("unit", { required: true })}
+                    className="w-full pl-12 pr-4 py-3.5 bg-bg-main border-2 border-neutral-dark rounded-xl appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 text-sm hover:border-primary-light"
+                  >
+                    <option value="" selected disabled>
+                      Select Unit
                     </option>
-                  ))}
-                </select>
-                <span className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none text-neutral-dark">
-                  ▼
-                </span>
+                    {unitOptions.map((option) => (
+                      <option
+                        key={option}
+                        value={option.toLowerCase().replace(/[\/\s]/g, "-")}
+                      >
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+                  <span className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none text-text-muted">
+                    ▼
+                  </span>
+                </div>
+              </div>
+
+              {/* ---------------------category------------------------- */}
+              <div className="md:col-span-4">
+                <label
+                  htmlFor="category"
+                  className="block text-sm font-semibold mb-2 text-text-secondary"
+                >
+                  Service Category
+                </label>
+                <div className="relative">
+                  <HiTag className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-accent pointer-events-none" />
+                  <select
+                    id="category"
+                    {...register("category", { required: true })}
+                    className="w-full pl-12 pr-4 py-3.5 bg-bg-main border-2 border-neutral-dark rounded-xl appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 text-sm hover:border-primary-light"
+                  >
+                    <option value="" selected disabled>
+                      Select Category
+                    </option>
+                    {serviceCategories.map((option) => (
+                      <option
+                        key={option}
+                        value={option.toLowerCase().replace(/ /g, "-")}
+                      >
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+                  <span className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none text-text-muted">
+                    ▼
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* SECTION 2 */}
-          <div className="border-t border-neutral pt-6 space-y-6">
-            {/*------------------short description ---------------------*/}
-            <div>
-              <label
-                htmlFor="shortDescription"
-                className="block text-sm font-medium text-text-secondary mb-1"
+            {/* SECTION 2 */}
+            <div className="pt-8 space-y-6 border-t-2 border-neutral">
+              {/*------------------short description ---------------------*/}
+              <div>
+                <label
+                  htmlFor="shortDescription"
+                  className="block text-sm font-semibold mb-2 text-text-secondary"
+                >
+                  Short Description (For Service Cards)
+                </label>
+                <div className="relative">
+                  <HiPencil className="absolute left-4 top-4 w-5 h-5 text-primary" />
+                  <textarea
+                    id="shortDescription"
+                    rows="3"
+                    placeholder="A brief, engaging summary (max 250 characters) for the Home/Services page cards."
+                    {...register("shortDescription", {
+                      required: true,
+                      maxLength: 250,
+                    })}
+                    className="w-full pl-12 pr-4 py-3.5 bg-bg-main border-2 border-neutral-dark rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 text-sm resize-none hover:border-primary-light"
+                  />
+                </div>
+              </div>
+
+              {/* ------------------long description ----------------------*/}
+              <div>
+                <label
+                  htmlFor="description"
+                  className="block text-sm font-semibold mb-2 text-text-secondary"
+                >
+                  Detailed Description (For Details Page)
+                </label>
+                <div className="relative">
+                  <HiPencil className="absolute left-4 top-4 w-5 h-5 text-primary" />
+                  <textarea
+                    id="description"
+                    rows="5"
+                    placeholder="Describe the inclusions, materials, and scope of this package..."
+                    {...register("description", { required: true })}
+                    className="w-full pl-12 pr-4 py-3.5 bg-bg-main border-2 border-neutral-dark rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 text-sm resize-none hover:border-primary-light"
+                  />
+                </div>
+              </div>
+
+              {/*-----------------------------Image URL -----------------------*/}
+              <div className="w-full">
+                <label
+                  htmlFor="photoURL"
+                  className="block text-sm font-semibold mb-2 text-text-secondary"
+                >
+                  Photo (Optional)
+                </label>
+                <div className="relative">
+                  <input
+                    id="photoURL"
+                    {...register("photo")}
+                    type="file"
+                    className="block w-full text-sm text-text-secondary file:mr-4 file:py-3 file:px-6
+                   file:rounded-xl file:border-2 file:border-neutral file:text-sm file:font-medium
+                   file:bg-secondary file:text-primary
+                   hover:file:bg-accent hover:file:text-white hover:file:border-accent
+                   focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer
+                   transition-all duration-300"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="pt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-t-2 border-neutral">
+              {/* ----------------submit--------------- */}
+              <button
+                type="submit"
+                className="w-full sm:w-auto flex items-center justify-center gap-3 px-10 py-4 text-base font-semibold rounded-xl shadow-lg text-white bg-primary hover:bg-primary-hover focus:outline-none focus:ring-4 focus:ring-accent-light transition-all duration-300 transform hover:scale-105"
               >
-                Short Description (For Service Cards)
-              </label>
-              <div className="relative">
-                <HiPencil className="absolute left-3 top-3 w-5 h-5 text-neutral-dark" />
-                <textarea
-                  id="shortDescription"
-                  rows="3"
-                  placeholder="A brief, engaging summary (max 250 characters) for the Home/Services page cards."
-                  {...register("shortDescription", {
-                    required: true,
-                    maxLength: 250,
-                  })}
-                  className="w-full pl-10 pr-4 py-2.5 bg-bg-main border border-neutral-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all duration-150 text-sm resize-none"
-                />
-              </div>
+                <HiSave className="w-6 h-6" />
+                Save New Service
+              </button>
             </div>
 
-            {/* ------------------long description ----------------------*/}
-            <div>
-              <label
-                htmlFor="description"
-                className="block text-sm font-medium text-text-secondary mb-1"
+            <div className="pt-4">
+              <Link
+                className="flex items-center justify-start gap-2 px-3 text-text-muted hover:text-accent font-medium transition-colors duration-200"
+                to="/dashboard"
               >
-                Detailed Description (For Details Page)
-              </label>
-              <div className="relative">
-                <HiPencil className="absolute left-3 top-3 w-5 h-5 text-neutral-dark" />
-                <textarea
-                  id="description"
-                  rows="5"
-                  placeholder="Describe the inclusions, materials, and scope of this package..."
-                  {...register("description", { required: true })}
-                  className="w-full pl-10 pr-4 py-2.5 bg-bg-main border border-neutral-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all duration-150 text-sm resize-none"
-                />
-              </div>
+                <BiLeftArrowCircle size={24}></BiLeftArrowCircle> Back to
+                dashboard
+              </Link>
             </div>
-
-            {/*-----------------------------Image URL -----------------------*/}
-            <div className="w-full">
-              <label
-                htmlFor="photoURL"
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
-                Photo (Optional)
-              </label>
-              <div className="relative">
-                <input
-                  id="photoURL"
-                  {...register("photo")}
-                  type="file"
-                  className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4
-                 file:rounded-lg file:border file:border-neutral file:text-sm
-                 file:bg-white file:text-gray-700
-                 hover:file:bg-primary hover:file:text-white
-                 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary
-                 transition-all duration-300"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="border-t border-neutral pt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            {/* -----------------action field---------------- */}
-
-            {/* Submit Button */}
-            <button
-              type="submit"
-              className="w-full sm:w-auto flex items-center gap-2 px-8 py-3 text-base font-medium rounded-lg shadow-md text-white bg-primary hover:bg-primary-hover focus:outline-none focus:ring-4 focus:ring-accent-light transition-all duration-200"
-            >
-              <HiSave className="w-5 h-5" />
-              Save New Service
-            </button>
-          </div>
-          <div className="">
-            <Link
-              className="flex items-center justify-start gap-2 px-3 hover:text-accent-hover"
-              to="/dashboard"
-            >
-              <BiLeftArrowCircle size={22}></BiLeftArrowCircle> back to
-              dashboard
-            </Link>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   );

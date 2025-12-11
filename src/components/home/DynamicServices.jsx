@@ -4,12 +4,13 @@ import { useQuery } from "@tanstack/react-query";
 import { LoadingBubbles } from "../../LoadingAnimations";
 import NoData from "../NoData";
 import { HiArrowRight } from "react-icons/hi";
+import { Link } from "react-router-dom";
 
 const DynamicServices = () => {
   const axiosInstance = useAxiosInstance();
 
   const {
-    data: services,
+    data: allServices,
     isLoading,
     isError,
   } = useQuery({
@@ -20,9 +21,10 @@ const DynamicServices = () => {
     },
   });
 
-  console.log(services);
-
   if (isLoading) return <LoadingBubbles></LoadingBubbles>;
+
+  const services = allServices?.slice(0, 6);
+  console.log(services);
   if (!services || isError) return <NoData></NoData>;
 
   return (
@@ -56,27 +58,42 @@ const DynamicServices = () => {
                     <h3 className="text-white text-xl font-semibold mb-3">
                       {service.serviceName}
                     </h3>
-                    <a
-                      href={`/services/${service._id}`}
+                    <Link
+                      to={`/services/${service._id}`}
                       className="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary/90 text-white text-sm font-medium rounded-lg transition-all"
                     >
                       View Details
                       <HiArrowRight className="w-4 h-4" />
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>
 
-              <div className="p-4">
+              <div className="p-4 flex justify-between">
                 <p className="text-sm text-gray-500">
                   Added by:{" "}
                   <span className="text-gray-700 font-medium">
                     {service.createdByName}
                   </span>
                 </p>
+                <p className="text-sm text-gray-500">
+                  Category:{" "}
+                  <span className="text-gray-700 font-medium">
+                    {service.category}
+                  </span>
+                </p>
               </div>
             </div>
           ))}
+        </div>
+        <div className="flex items-center justify-center my-5 lg:my-10">
+          <Link
+            to="/all-services"
+            className="inline-flex items-center gap-2 px-8 py-3 bg-primary hover:bg-primary/90 text-white text-sm font-medium rounded-lg transition-all hover:scale-105"
+          >
+            Browse All Our Services
+            <HiArrowRight className="w-4 h-4" />
+          </Link>
         </div>
       </section>
     </div>
