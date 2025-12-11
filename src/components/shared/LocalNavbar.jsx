@@ -26,16 +26,16 @@ export default function LocalNavbar() {
     { name: "Contact", href: "/contact" },
   ];
 
-  if (authLoading)
-    return (
-      <span className="skeleton skeleton-text">
-        Authentication in process...
-      </span>
-    );
+  // if (authLoading)
+  //   return (
+  //     <span className="skeleton skeleton-text">
+  //       Authentication in process...
+  //     </span>
+  //   );
 
   return (
     <nav className="bg-white font-crimson shadow-sm border-b border-neutral sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[90dvw] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center gap-4">
             {/* Mobile Menu Button */}
@@ -87,18 +87,31 @@ export default function LocalNavbar() {
                   {link.name}
                 </a>
               ))}
+              {user && (
+                <Link
+                  className="bg-linear-to-br from-accent-light to-gray-200 py-1 px-2 rounded-lg hover:scale-105 transition-all ease-in duration-200"
+                  to="/dashboard"
+                >
+                  Dashboard
+                </Link>
+              )}
             </div>
 
             {/* Auth Section */}
-            {user ? (
+            {authLoading ? (
+              <div>
+                {" "}
+                <span className="loading loading-ring loading-xl  text-yellow-500 [--loading-border:10px]"></span>
+              </div>
+            ) : user ? (
               <div className="dropdown dropdown-end">
                 <button
                   tabIndex={0}
                   className="flex items-center gap-2 p-1.5 hover:bg-secondary rounded-lg transition-all"
                 >
                   <img
-                    src={user.photo}
-                    alt={user.name}
+                    src={user.photoURL}
+                    alt={user.displayName}
                     className="w-9 h-9 rounded-full object-cover ring-2 ring-accent"
                   />
                 </button>
