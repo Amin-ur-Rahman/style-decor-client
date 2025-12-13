@@ -70,6 +70,7 @@ export default function Registration() {
         userEmail: data.email,
         photoUrl: url,
         role: "user",
+        status: "active",
       };
 
       const postRes = await axiosInstance.post("/users", userData);

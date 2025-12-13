@@ -3,10 +3,13 @@ import HomeLayout from "./layouts/homeLayout/HomeLayout";
 import Registration from "./pages/auth/Registration";
 import Login from "./pages/auth/Login";
 import DashboardLayout from "./layouts/dashboard/DashboardLayout";
-import AddNewService from "./pages/service&role/AddNewService";
+import AddNewService from "./pages/service&role/service/AddNewService";
 import Home from "./pages/Home/Home";
 import PrivateRoute from "./protectedRoutes/PrivateRoute";
 import ManageServices from "./pages/dahsboardPages/ManageServices";
+import ServiceDetails from "./pages/Home/ServiceDetails";
+import BookService from "./pages/service&role/service/BookService";
+import MyBookings from "./layouts/dashboard/user/MyBookings";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +19,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Home></Home>,
+      },
+      {
+        path: "service-details/:id",
+        element: <ServiceDetails></ServiceDetails>,
       },
     ],
   },
@@ -39,11 +46,20 @@ const router = createBrowserRouter([
         path: "admin/services",
         element: <ManageServices></ManageServices>,
       },
+      // normal users routes
+      {
+        path: "my-bookings",
+        element: <MyBookings></MyBookings>,
+      },
     ],
   },
   {
     path: "/add-new-service",
     element: <AddNewService></AddNewService>,
+  },
+  {
+    path: "/book-service/:serviceId",
+    element: <BookService></BookService>,
   },
 ]);
 export default router;

@@ -10,8 +10,8 @@ import {
   HiPencil,
   HiSparkles,
 } from "react-icons/hi";
-import useAxiosInstance from "../../hooks and contexts/axios/useAxiosInstance";
-import { useAuth } from "../../hooks and contexts/auth/useAuth";
+import useAxiosInstance from "../../../hooks and contexts/axios/useAxiosInstance";
+import { useAuth } from "../../../hooks and contexts/auth/useAuth";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
 import { BiLeftArrowCircle } from "react-icons/bi";

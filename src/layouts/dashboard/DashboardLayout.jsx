@@ -44,7 +44,11 @@ export default function DashboardLayout() {
     user: [
       { icon: HiHome, label: "Dashboard", path: "/dashboard" },
       { icon: HiUser, label: "My Profile", path: "/dashboard/profile" },
-      { icon: HiCalendar, label: "My Bookings", path: "/dashboard/bookings" },
+      {
+        icon: HiCalendar,
+        label: "My Bookings",
+        path: "/dashboard/my-bookings",
+      },
       {
         icon: HiCreditCard,
         label: "Payment History",

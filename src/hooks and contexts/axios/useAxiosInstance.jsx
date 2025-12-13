@@ -3,13 +3,15 @@ import { useAuth } from "../auth/useAuth";
 import axiosInstance from "./AxiosInstance";
 
 const useAxiosInstance = () => {
-  const { user } = useAuth();
+  const { user, authLoading } = useAuth();
 
   useEffect(() => {
     const interceptor = axiosInstance.interceptors.request.use(
       (config) => {
+        if (authLoading) return;
         if (user && user.accessToken) {
           config.headers.Authorization = `Bearer ${user.accessToken}`;
+          // console.log("access token", user.accessToken);
         }
         return config;
       },

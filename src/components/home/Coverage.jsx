@@ -38,7 +38,7 @@ const Coverage = () => {
   };
 
   if (isLoading) return <LoadingBubbles></LoadingBubbles>;
-  return serviceCenters.length === 0 ? (
+  return serviceCenters?.length === 0 ? (
     <NoData></NoData>
   ) : (
     <div className="max-w-[90dvw] mx-auto">

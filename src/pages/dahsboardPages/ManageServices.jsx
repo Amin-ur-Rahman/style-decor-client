@@ -136,9 +136,9 @@ const ManageServices = () => {
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center justify-center gap-2">
-                      {/* View Button */}
-                      <button
-                        onClick={() => handleView(service._id)}
+                      {/* ------------details button-------- */}
+                      <Link
+                        to={`/service-details/${service._id}`}
                         className="group relative p-2 text-gray-600 hover:text-primary hover:bg-primary/10 rounded-lg transition-all"
                         title="View Details"
                       >
@@ -146,7 +146,7 @@ const ManageServices = () => {
                         <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
                           View
                         </span>
-                      </button>
+                      </Link>
 
                       {/* ----------------edit button------------- */}
                       <button
