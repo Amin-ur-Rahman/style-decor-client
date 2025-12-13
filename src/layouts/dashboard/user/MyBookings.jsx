@@ -24,6 +24,14 @@ const MyBookings = () => {
     },
   });
 
+  const handlePayment = async (booking) => {
+    const res = await axiosInstance.post("/create-checkout-session", booking);
+    console.log(res.data);
+
+    window.location.assign(res.data.url);
+    return res.data;
+  };
+
   // Status badge styles
   const getStatusBadge = (status) => {
     const styles = {
@@ -58,8 +66,8 @@ const MyBookings = () => {
 
       {/* ---------the table------------ */}
       <div className="bg-white rounded-lg border border-neutral shadow-sm overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full">
+        <div className="overflow-x-auto max-w-full">
+          <table className="w-full min-w-max">
             <thead className="bg-secondary">
               <tr>
                 <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
@@ -187,9 +195,7 @@ const MyBookings = () => {
                   <td className="px-6 py-4">
                     {booking.paymentStatus === "unpaid" ? (
                       <button
-                        onClick={() =>
-                          console.log("Pay for booking:", booking._id)
-                        }
+                        onClick={() => handlePayment(booking)}
                         className="px-4 py-2 bg-primary hover:bg-primary/90 text-white text-xs font-semibold rounded-lg transition-all"
                       >
                         Pay Now
