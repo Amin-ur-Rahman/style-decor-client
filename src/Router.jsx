@@ -11,6 +11,7 @@ import ServiceDetails from "./pages/Home/ServiceDetails";
 import BookService from "./pages/service&role/service/BookService";
 import MyBookings from "./pages/dahsboardPages/MyBookings";
 import OnPaymentSuccess from "./pages/dahsboardPages/OnPaymentSuccess";
+import PaymentHistory from "./pages/dahsboardPages/PaymentHistory";
 
 const router = createBrowserRouter([
   {
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
       {
         path: "on-payment-success",
         element: <OnPaymentSuccess></OnPaymentSuccess>,
+      },
+      {
+        path: "payment-history",
+        element: <PaymentHistory></PaymentHistory>,
       },
     ],
   },

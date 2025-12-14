@@ -52,7 +52,7 @@ export default function DashboardLayout() {
       {
         icon: HiCreditCard,
         label: "Payment History",
-        path: "/dashboard/payments",
+        path: "/dashboard/payment-history",
       },
     ],
     admin: [

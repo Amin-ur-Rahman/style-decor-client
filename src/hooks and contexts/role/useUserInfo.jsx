@@ -15,7 +15,7 @@ const useUserInfo = () => {
     queryKey: ["user-info"],
     enabled: !!user && !authLoading,
     queryFn: async () => {
-      const res = await axiosInstance.get("/me");
+      const res = await axiosInstance.get(`/me?userEmail=${user.email}`);
       return res.data;
     },
   });
