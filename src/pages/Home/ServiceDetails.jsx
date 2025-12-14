@@ -1,12 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import {
-  HiArrowLeft,
-  HiCalendar,
-  HiCash,
-  HiUser,
-  HiTag,
-  HiClock,
-} from "react-icons/hi";
+import { HiArrowLeft, HiCalendar } from "react-icons/hi";
 import useAxiosInstance from "../../hooks and contexts/axios/useAxiosInstance";
 import { LoadingBubbles } from "../../LoadingAnimations";
 import { Link, useParams } from "react-router-dom";
@@ -31,184 +24,169 @@ const ServiceDetails = () => {
     },
   });
 
-  if (isLoading || infoLoading) return <LoadingBubbles></LoadingBubbles>;
+  if (isLoading || infoLoading) return <LoadingBubbles />;
   if (isError) {
     console.log("error from query:", error);
-    return <NoData></NoData>;
+    return <NoData />;
   }
-
-  console.log("user data from db", userData);
 
   const isAdmin = userData?.role === "admin";
 
   return !service ? (
-    <NoData></NoData>
+    <NoData />
   ) : (
-    <div className="min-h-screen bg-secondary">
-      <div className="w-[90dvw] mx-auto pt-6">
+    <div className="min-h-screen bg-gray-50">
+      <div className="w-[92dvw] mx-auto pt-8 max-w-6xl">
         <button
           onClick={() => window.history.back()}
-          className="flex items-center gap-2 text-gray-600 hover:text-primary transition-colors mb-6"
+          className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors mb-6"
         >
           <HiArrowLeft className="w-5 h-5" />
-          <span className="font-medium">Back</span>
+          <span className="text-sm font-medium">Back</span>
         </button>
-      </div>
 
-      <div className="w-[90dvw] mx-auto pb-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* -----------left side: image----------- */}
-          <div className="relative">
-            <div className="sticky top-6">
-              <div className="relative rounded-2xl overflow-hidden shadow-lg bg-white">
-                <img
-                  src={service.photo}
-                  alt={service.serviceName}
-                  className="w-full h-[400px] lg:h-[500px] object-cover"
-                />
-
-                <div className="absolute top-4 right-4">
-                  <span className="px-4 py-2 bg-white/90 backdrop-blur-sm text-primary font-semibold rounded-full text-sm shadow-md capitalize">
-                    {service.category}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* -------------service text block---------- */}
-          <div className="space-y-6">
-            <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3">
-                {service.serviceName}
-              </h1>
-              <p className="text-lg text-gray-600">
-                {service.shortDescription}
-              </p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="md:col-span-2 space-y-4">
+            <div className="rounded-lg overflow-hidden shadow-sm bg-white">
+              <img
+                src={service.photo}
+                alt={service.serviceName}
+                className="w-full h-[420px] md:h-[480px] object-cover"
+              />
             </div>
 
-            {/* -------------price card--------- */}
-            <div className="bg-white rounded-xl p-6 shadow-sm border border-neutral">
+            <div className="bg-white rounded-lg p-6 shadow-sm">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-500 mb-1">Starting from</p>
-                  <p className="text-4xl font-bold text-primary">
-                    ${service.cost}
+                  <span className="text-xs text-gray-500 uppercase tracking-wide">
+                    {service.category}
+                  </span>
+                  <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 mt-2">
+                    {service.serviceName}
+                  </h1>
+                  <p className="text-gray-600 mt-2">
+                    {service.shortDescription}
                   </p>
-                  <p className="text-sm text-gray-600 mt-1 capitalize">
-                    {service.unit} • {service?.rateType?.replace("-", " ")}
-                  </p>
                 </div>
-                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
-                  <HiCash className="w-8 h-8 text-primary" />
-                </div>
-              </div>
-            </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {/* ------------service creator------------- */}
-              <div className="bg-white rounded-xl p-5 shadow-sm border border-neutral">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-accent/10 rounded-full flex items-center justify-center">
-                    <HiUser className="w-5 h-5 text-accent" />
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-500">Added by</p>
-                    <p className="text-sm font-semibold text-gray-800">
-                      {service.createdByName}
-                    </p>
-                  </div>
+                <div className="hidden sm:flex flex-col items-end text-right">
+                  <span className="text-sm text-gray-500">Added by</span>
+                  <span className="font-semibold text-gray-900">
+                    {service.createdByName}
+                  </span>
+                  <span className="text-xs text-gray-400 mt-1">
+                    {new Date(service.createdAt).toLocaleDateString("en-US", {
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </span>
                 </div>
               </div>
 
-              {/* -------------date added----------- */}
-              <div className="bg-white rounded-xl p-5 shadow-sm border border-neutral">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                    <HiClock className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-500">Added on</p>
-                    <p className="text-sm font-semibold text-gray-800">
-                      {new Date(service.createdAt).toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "short",
-                        day: "numeric",
-                      })}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* ------------description-------------- */}
-            <div className="bg-white rounded-xl p-6 shadow-sm border border-neutral">
-              <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                <HiTag className="w-5 h-5 text-primary" />
-                Service Details
-              </h2>
-              <p className="text-gray-700 leading-relaxed">
-                {service.description}
-              </p>
-            </div>
-
-            {/* ----------------features block-------------- */}
-            <div className="bg-white rounded-xl p-6 shadow-sm border border-neutral">
-              <h2 className="text-xl font-semibold text-gray-800 mb-4">
-                What's Included
-              </h2>
-              <ul className="space-y-3">
-                <li className="flex items-start gap-3">
-                  <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <span className="text-green-600 text-sm">✓</span>
-                  </div>
-                  <span className="text-gray-700">
-                    Professional consultation and planning
-                  </span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <span className="text-green-600 text-sm">✓</span>
-                  </div>
-                  <span className="text-gray-700">
-                    Premium quality materials and decorations
-                  </span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <span className="text-green-600 text-sm">✓</span>
-                  </div>
-                  <span className="text-gray-700">
-                    On-site setup and coordination
-                  </span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <span className="text-green-600 text-sm">✓</span>
-                  </div>
-                  <span className="text-gray-700">
-                    Post-event cleanup and removal
-                  </span>
-                </li>
-              </ul>
-            </div>
-
-            {/* book service or consultation */}
-            {!isAdmin && (
-              <div className="sticky bottom-6 bg-white rounded-xl p-6 shadow-lg border border-neutral">
-                <Link
-                  to={`/book-service/${service._id}`}
-                  className="w-full flex items-center justify-center gap-3 px-8 py-4 bg-primary hover:bg-primary/90 text-white text-lg font-semibold rounded-lg transition-all shadow-sm hover:shadow-md group"
-                >
-                  <HiCalendar className="w-6 h-6 group-hover:scale-110 transition-transform" />
-                  Book Service or consultation
-                </Link>
-                <p className="text-center text-xs text-gray-500 mt-3">
-                  100% satisfaction guaranteed • Flexible cancellation policy
+              <div className="mt-6 border-t pt-6">
+                <h2 className="text-lg font-semibold text-gray-900 mb-3">
+                  About this service
+                </h2>
+                <p className="text-gray-700 leading-relaxed">
+                  {service.description}
                 </p>
               </div>
-            )}
+
+              <div className="mt-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-3">
+                  What's included
+                </h3>
+                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-gray-700">
+                  <li className="flex items-start gap-3">
+                    <span className="text-green-600 mt-1">✓</span>
+                    <span>Professional consultation and planning</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="text-green-600 mt-1">✓</span>
+                    <span>Premium quality materials and decorations</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="text-green-600 mt-1">✓</span>
+                    <span>On-site setup and coordination</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="text-green-600 mt-1">✓</span>
+                    <span>Post-event cleanup and removal</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
+
+          <aside className="md:col-span-1">
+            <div className="sticky top-20 space-y-4">
+              <div className="bg-white rounded-lg p-5 shadow-md">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="text-sm text-gray-500">Price</div>
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-3xl font-bold text-gray-900">
+                        ${service.cost}
+                      </span>
+                      <span className="text-sm text-gray-500">
+                        {service.unit}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <span className="inline-block bg-indigo-50 text-indigo-700 text-xs px-2 py-1 rounded-full">
+                      {service.category}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="mt-4">
+                  {!isAdmin && (
+                    <Link
+                      to={`/book-service/${service._id}`}
+                      className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 bg-primary hover:bg-primary-dark text-white rounded-lg transition-all"
+                    >
+                      <HiCalendar className="w-5 h-5" />
+                      <span className="font-medium">Book this service</span>
+                    </Link>
+                  )}
+                </div>
+              </div>
+
+              <div className="bg-white rounded-lg p-4 shadow-sm text-sm text-gray-700">
+                <div className="font-semibold text-gray-900 mb-2">
+                  Service details
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="text-xs text-gray-500">Added by</div>
+                  <div className="text-right font-medium">
+                    {service.createdByName}
+                  </div>
+
+                  <div className="text-xs text-gray-500">Role</div>
+                  <div className="text-right font-medium">{userData.role}</div>
+
+                  <div className="text-xs text-gray-500">Created</div>
+                  <div className="text-right font-medium">
+                    {new Date(service.createdAt).toLocaleDateString()}
+                  </div>
+
+                  <div className="text-xs text-gray-500">Service ID</div>
+                  <div className="text-right text-xs text-gray-500 break-all">
+                    {service._id}
+                  </div>
+                </div>
+              </div>
+
+              <div className="  p-4  text-sm text-gray-600">
+                <div className="font-semibold text-gray-900 mb-2">Notes</div>
+                <div className="text-xs">
+                  Prices may vary for large events. For custom requests, contact
+                  the service center directly.
+                </div>
+              </div>
+            </div>
+          </aside>
         </div>
       </div>
     </div>

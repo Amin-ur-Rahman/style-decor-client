@@ -12,6 +12,7 @@ import BookService from "./pages/service&role/service/BookService";
 import MyBookings from "./pages/dahsboardPages/MyBookings";
 import OnPaymentSuccess from "./pages/dahsboardPages/OnPaymentSuccess";
 import PaymentHistory from "./pages/dahsboardPages/PaymentHistory";
+import MyProfile from "./pages/dahsboardPages/MyProfile";
 
 const router = createBrowserRouter([
   {
@@ -60,6 +61,10 @@ const router = createBrowserRouter([
       {
         path: "payment-history",
         element: <PaymentHistory></PaymentHistory>,
+      },
+      {
+        path: "my-profile",
+        element: <MyProfile></MyProfile>,
       },
     ],
   },

@@ -43,7 +43,7 @@ export default function DashboardLayout() {
   const menuItems = {
     user: [
       { icon: HiHome, label: "Dashboard", path: "/dashboard" },
-      { icon: HiUser, label: "My Profile", path: "/dashboard/profile" },
+      { icon: HiUser, label: "My Profile", path: "/dashboard/my-profile" },
       {
         icon: HiCalendar,
         label: "My Bookings",
