@@ -43,7 +43,7 @@ const DynamicServices = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {services.map((service) => (
+          {services?.map((service) => (
             <div
               key={service._id}
               className="group bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 border border-neutral"

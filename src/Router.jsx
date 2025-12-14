@@ -9,7 +9,8 @@ import PrivateRoute from "./protectedRoutes/PrivateRoute";
 import ManageServices from "./pages/dahsboardPages/ManageServices";
 import ServiceDetails from "./pages/Home/ServiceDetails";
 import BookService from "./pages/service&role/service/BookService";
-import MyBookings from "./layouts/dashboard/user/MyBookings";
+import MyBookings from "./pages/dahsboardPages/MyBookings";
+import OnPaymentSuccess from "./pages/dahsboardPages/OnPaymentSuccess";
 
 const router = createBrowserRouter([
   {
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
       {
         path: "my-bookings",
         element: <MyBookings></MyBookings>,
+      },
+      {
+        path: "on-payment-success",
+        element: <OnPaymentSuccess></OnPaymentSuccess>,
       },
     ],
   },

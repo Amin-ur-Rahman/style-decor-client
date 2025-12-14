@@ -1,10 +1,11 @@
 import React from "react";
-import useAxiosInstance from "../../../hooks and contexts/axios/useAxiosInstance";
+import useAxiosInstance from "../../hooks and contexts/axios/useAxiosInstance";
 import { useQuery } from "@tanstack/react-query";
-import useUserInfo from "../../../hooks and contexts/role/useUserInfo";
-import { LoadingBubbles } from "../../../LoadingAnimations";
-import NoData from "../../../components/NoData";
+import useUserInfo from "../../hooks and contexts/role/useUserInfo";
+import { LoadingBubbles } from "../../LoadingAnimations";
+import NoData from "../../components/NoData";
 import { HiCalendar, HiClock, HiCash, HiLocationMarker } from "react-icons/hi";
+import Swal from "sweetalert2";
 
 const MyBookings = () => {
   const axiosInstance = useAxiosInstance();
@@ -25,11 +26,26 @@ const MyBookings = () => {
   });
 
   const handlePayment = async (booking) => {
-    const res = await axiosInstance.post("/create-checkout-session", booking);
-    console.log(res.data);
+    Swal.fire({
+      title: "Continue with payment?",
+      text: `you will be charged ${booking.payableAmount} BDT`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Proceed",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const res = await axiosInstance.post(
+          "/create-checkout-session",
+          booking
+        );
+        console.log(res.data);
 
-    window.location.assign(res.data.url);
-    return res.data;
+        window.location.assign(res.data.url);
+        return res.data;
+      }
+    });
   };
 
   // Status badge styles
@@ -114,7 +130,7 @@ const MyBookings = () => {
                       </p>
                       {booking.quantity > 0 && (
                         <p className="text-xs text-gray-500 mt-1">
-                          Qty: {booking.quantity} × ${booking.unitPrice}
+                          Qty: {booking.quantity} × BDT: {booking.unitPrice}
                         </p>
                       )}
                     </div>
@@ -172,7 +188,7 @@ const MyBookings = () => {
                       <div className="flex items-center gap-1">
                         <HiCash className="w-4 h-4 text-primary" />
                         <span className="text-sm font-bold text-primary">
-                          ${booking.payableAmount.toLocaleString()}
+                          ৳{booking.payableAmount.toLocaleString()}
                         </span>
                       </div>
                     ) : (
@@ -225,7 +241,7 @@ const MyBookings = () => {
         <p>
           Total Unpaid:{" "}
           <span className="font-bold text-red-600">
-            $
+            ৳
             {bookings
               .filter((b) => b.paymentStatus === "unpaid")
               .reduce((sum, b) => sum + b.payableAmount, 0)

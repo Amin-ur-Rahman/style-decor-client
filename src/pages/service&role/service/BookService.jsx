@@ -41,6 +41,7 @@ const BookService = () => {
     handleSubmit,
     formState: { errors },
     control,
+    reset,
   } = useForm({
     defaultValues: {
       bookingType: "consultation",
@@ -91,7 +92,7 @@ const BookService = () => {
       quantity: parseFloat(data.quantity),
 
       status: "pending",
-      paymentStatus: "unpaid",
+      paymentStatus: data.bookingType === "decoration" ? "unpaid" : "free",
     };
 
     Swal.fire({
@@ -120,6 +121,7 @@ const BookService = () => {
             text: "Your booking has been placed",
             icon: "success",
           });
+          reset();
         } catch (error) {
           Swal.fire({
             title: "Request Failed",
@@ -494,9 +496,9 @@ const BookService = () => {
                   Email Address <span className="text-red-500">*</span>
                 </label>
                 <input
-                  type="bookedByEmail"
+                  type="email"
                   defaultValue={user?.email}
-                  {...register("email")}
+                  {...register("bookedByEmail")}
                   placeholder="xyz@example.com"
                   className="w-full px-4 py-3 bg-white border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all"
                 />
