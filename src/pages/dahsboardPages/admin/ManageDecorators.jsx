@@ -165,7 +165,7 @@ const ManageDecorators = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50 p-6">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-max mx-auto">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-light text-slate-900 mb-2">
@@ -177,7 +177,7 @@ const ManageDecorators = () => {
         </div>
 
         {/* Controls */}
-        <div className="bg-white rounded-lg border border-slate-200 p-4 mb-6">
+        <div className="bg-white rounded-lg border max-w-[95%] border-slate-200 p-4 mb-6">
           <div className="flex flex-wrap gap-4 items-center justify-between">
             {/* Sort */}
             <div className="flex items-center gap-2">
@@ -229,7 +229,7 @@ const ManageDecorators = () => {
         </div>
 
         {/* Table */}
-        <div className="bg-white rounded-lg border border-slate-200 overflow-hidden">
+        <div className="bg-white rounded-lg max-w-[95%] border border-slate-200 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
