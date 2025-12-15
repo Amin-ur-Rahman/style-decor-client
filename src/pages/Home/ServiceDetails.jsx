@@ -4,12 +4,10 @@ import useAxiosInstance from "../../hooks and contexts/axios/useAxiosInstance";
 import { LoadingBubbles } from "../../LoadingAnimations";
 import { Link, useParams } from "react-router-dom";
 import NoData from "../../components/NoData";
-import useUserInfo from "../../hooks and contexts/role/useUserInfo";
 
 const ServiceDetails = () => {
   const axiosInstance = useAxiosInstance();
   const { id } = useParams();
-  const { userData, infoLoading } = useUserInfo();
 
   const {
     data: service,
@@ -24,13 +22,11 @@ const ServiceDetails = () => {
     },
   });
 
-  if (isLoading || infoLoading) return <LoadingBubbles />;
+  if (isLoading) return <LoadingBubbles />;
   if (isError) {
     console.log("error from query:", error);
     return <NoData />;
   }
-
-  const isAdmin = userData?.role === "admin";
 
   return !service ? (
     <NoData />
@@ -141,15 +137,13 @@ const ServiceDetails = () => {
                 </div>
 
                 <div className="mt-4">
-                  {!isAdmin && (
-                    <Link
-                      to={`/book-service/${service._id}`}
-                      className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 bg-primary hover:bg-primary-dark text-white rounded-lg transition-all"
-                    >
-                      <HiCalendar className="w-5 h-5" />
-                      <span className="font-medium">Book this service</span>
-                    </Link>
-                  )}
+                  <Link
+                    to={`/book-service/${service._id}`}
+                    className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 bg-primary hover:bg-primary-dark text-white rounded-lg transition-all"
+                  >
+                    <HiCalendar className="w-5 h-5" />
+                    <span className="font-medium">Book this service</span>
+                  </Link>
                 </div>
               </div>
 
@@ -162,9 +156,6 @@ const ServiceDetails = () => {
                   <div className="text-right font-medium">
                     {service.createdByName}
                   </div>
-
-                  <div className="text-xs text-gray-500">Role</div>
-                  <div className="text-right font-medium">{userData.role}</div>
 
                   <div className="text-xs text-gray-500">Created</div>
                   <div className="text-right font-medium">

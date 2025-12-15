@@ -23,7 +23,7 @@ const useAxiosInstance = () => {
     return () => {
       axiosInstance.interceptors.request.eject(interceptor);
     };
-  }, [user]);
+  }, [user, authLoading]);
   return axiosInstance;
 };
 

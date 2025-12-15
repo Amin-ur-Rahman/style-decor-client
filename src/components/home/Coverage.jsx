@@ -89,7 +89,7 @@ const Coverage = () => {
             attribution="© OpenStreetMap contributors © Stadia Maps"
           />
 
-          {serviceCenters.map((center, index) => (
+          {serviceCenters?.map((center, index) => (
             <Marker key={index} position={[center.lat, center.lon]}>
               <Popup>
                 <h3>

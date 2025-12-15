@@ -6,13 +6,16 @@ import DashboardLayout from "./layouts/dashboard/DashboardLayout";
 import AddNewService from "./pages/service&role/service/AddNewService";
 import Home from "./pages/Home/Home";
 import PrivateRoute from "./protectedRoutes/PrivateRoute";
-import ManageServices from "./pages/dahsboardPages/ManageServices";
+
 import ServiceDetails from "./pages/Home/ServiceDetails";
 import BookService from "./pages/service&role/service/BookService";
 import MyBookings from "./pages/dahsboardPages/MyBookings";
 import OnPaymentSuccess from "./pages/dahsboardPages/OnPaymentSuccess";
 import PaymentHistory from "./pages/dahsboardPages/PaymentHistory";
 import MyProfile from "./pages/dahsboardPages/MyProfile";
+import BeADecorator from "./pages/service&role/role/BeADecorator";
+import ManageServices from "./pages/dahsboardPages/admin/ManageServices";
+import ManageDecorators from "./pages/dahsboardPages/admin/ManageDecorators";
 
 const router = createBrowserRouter([
   {
@@ -45,9 +48,14 @@ const router = createBrowserRouter([
       </PrivateRoute>
     ),
     children: [
+      // admin  pages----------------
       {
         path: "admin/services",
         element: <ManageServices></ManageServices>,
+      },
+      {
+        path: "manage-decorators",
+        element: <ManageDecorators></ManageDecorators>,
       },
       // normal users routes
       {
@@ -75,6 +83,10 @@ const router = createBrowserRouter([
   {
     path: "/book-service/:serviceId",
     element: <BookService></BookService>,
+  },
+  {
+    path: "/become-decorator",
+    element: <BeADecorator></BeADecorator>,
   },
 ]);
 export default router;

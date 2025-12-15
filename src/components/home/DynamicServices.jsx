@@ -19,8 +19,6 @@ const DynamicServices = () => {
       const res = await axiosInstance.get("/services");
       return res.data;
     },
-    staleTime: 0,
-    cacheTime: 0,
   });
 
   if (isLoading) return <LoadingBubbles></LoadingBubbles>;

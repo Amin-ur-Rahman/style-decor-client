@@ -6,10 +6,10 @@ import {
   HiPlus,
   HiSearch,
 } from "react-icons/hi";
-import useAxiosInstance from "../../hooks and contexts/axios/useAxiosInstance";
 import { useQuery } from "@tanstack/react-query";
-import { LoadingBubbles } from "../../LoadingAnimations";
 import { Link } from "react-router-dom";
+import useAxiosInstance from "../../../hooks and contexts/axios/useAxiosInstance";
+import { LoadingBubbles } from "../../../LoadingAnimations";
 
 const ManageServices = () => {
   const axiosInstance = useAxiosInstance();
@@ -24,9 +24,9 @@ const ManageServices = () => {
 
   if (isLoading) return <LoadingBubbles></LoadingBubbles>;
 
-  const handleView = (id) => {
-    console.log(id);
-  };
+  // const handleView = (id) => {
+  //   console.log(id);
+  // };
 
   const handleEdit = (id) => {
     console.log(id);

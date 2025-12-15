@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { HiEye, HiEyeOff, HiSparkles } from "react-icons/hi";
 import { FcGoogle } from "react-icons/fc";
 import { useAuth } from "../../hooks and contexts/auth/useAuth";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axiosInstance from "../../hooks and contexts/axios/AxiosInstance";
+import Logo from "../../components/Logo";
 
 export default function Registration() {
   const [showPassword, setShowPassword] = useState(false);
@@ -18,11 +19,12 @@ export default function Registration() {
   const {
     register,
     handleSubmit,
-    watch,
-    formState: { errors },
+    control,
+
+    formState: { errors, isSubmitting },
   } = useForm();
 
-  const password = watch("password");
+  const password = useWatch({ control, name: "password" });
 
   // Password validation rules
   const passwordValidation = {
@@ -89,21 +91,20 @@ export default function Registration() {
   };
 
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex  bg-secondary">
+      <div className="mx-5 lg:mx-10 my-5 absolute">
+        <Link to="/">
+          <Logo></Logo>
+        </Link>
+      </div>
       {/* Left Side - Form */}
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex-1 flex items-center justify-center px-6 py-12 bg-secondary"
+        className="flex-1 mt-10 flex items-center justify-center px-6 py-12"
       >
         <div className="w-full max-w-md">
           {/* Logo & Header */}
           <div className="text-center mb-8">
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center shadow-sm">
-                <HiSparkles className="w-6 h-6 text-white" />
-              </div>
-              <h1 className="text-2xl font-bold text-primary">StyleDecor</h1>
-            </div>
             <h2 className="text-2xl font-semibold text-gray-800 mb-2">
               Create your account
             </h2>
@@ -367,10 +368,13 @@ export default function Registration() {
 
             {/* Submit Button */}
             <button
+              disabled={isSubmitting}
               type="submit"
-              className="w-full bg-primary hover:bg-primary/90 text-white font-semibold py-3 rounded-lg transition-all shadow-sm hover:shadow-md mt-2"
+              className={`w-full ${
+                isSubmitting ? "bg-emerald-300" : "bg-primary"
+              } hover:bg-primary/90 text-white font-semibold py-3 rounded-lg transition-all shadow-sm hover:shadow-md mt-2`}
             >
-              Create Account
+              {isSubmitting ? "Creating your account..." : "Register"}
             </button>
 
             {/* Login Link */}

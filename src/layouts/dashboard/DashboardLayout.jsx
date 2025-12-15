@@ -19,8 +19,9 @@ import {
   HiViewBoards,
   HiArrowsExpand,
 } from "react-icons/hi";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { useAuth } from "../../hooks and contexts/auth/useAuth";
+import Logo from "../../components/Logo";
 
 export default function DashboardLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -60,7 +61,7 @@ export default function DashboardLayout() {
       {
         icon: HiUserGroup,
         label: "Manage Decorators",
-        path: "/dashboard/admin/decorators",
+        path: "/dashboard/manage-decorators",
       },
       {
         icon: HiCollection,
@@ -136,14 +137,11 @@ export default function DashboardLayout() {
                 <HiViewBoards className="w-6 h-6 text-primary" />
               </button>
 
-              <a href="/" className="flex items-center gap-2">
-                <div className="w-9 h-9 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center">
-                  <HiSparkles className="w-5 h-5 text-white" />
-                </div>
-                <span className="text-xl font-semibold text-primary hidden sm:block">
-                  StyleDecor
-                </span>
-              </a>
+              <div className="mx-10 my-5">
+                <Link to="/">
+                  <Logo></Logo>
+                </Link>
+              </div>
             </div>
 
             {/* Center: Search Bar */}

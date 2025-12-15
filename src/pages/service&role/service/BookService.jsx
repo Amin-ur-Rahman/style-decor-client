@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import {
   HiArrowLeft,
@@ -21,6 +21,9 @@ import { MdAlternateEmail, MdModeEditOutline } from "react-icons/md";
 
 const BookService = () => {
   const [bookingType, setBookingType] = useState("consultation");
+  const [serviceCenters, setServiceCenters] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   const { serviceId } = useParams();
   const axiosInstance = useAxiosInstance();
   const { user } = useAuth();
@@ -51,26 +54,29 @@ const BookService = () => {
       contactPhone: "",
       specialInstructions: "",
       serviceAddress: "",
-      serviceCity: "",
-      serviceArea: "",
+
       eventVenueType: "home",
       quantity: 1,
     },
   });
 
   //   for better ux
-
-  const { data: serviceCenters, isLoading: centersLoading } = useQuery({
-    queryKey: ["service-centers"],
-    queryFn: async () => {
-      const res = await axiosInstance.get("/service-centers");
-      return res.data;
-    },
-  });
+  useEffect(() => {
+    fetch("/citiesAndAreas.json")
+      .then((res) => res.json())
+      .then((data) => {
+        setServiceCenters(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Failed to load cities JSON:", err);
+        setLoading(false);
+      });
+  }, []);
 
   const selectedCity = useWatch({ control, name: "serviceCity" });
 
-  if (isLoading || centersLoading || infoLoading || !user || !userData)
+  if (isLoading || loading || infoLoading || !user || !userData)
     return <LoadingBubbles></LoadingBubbles>;
 
   const cities = serviceCenters?.map((center) => center.city);
@@ -79,7 +85,7 @@ const BookService = () => {
   const findAreaByCity = () => {
     if (selectedCity) {
       const result = serviceCenters?.find((c) => selectedCity === c.city);
-      return result?.serviceAreas || [];
+      return result?.covered_area || [];
     }
   };
 
@@ -327,7 +333,7 @@ const BookService = () => {
                         </label>
                         <input
                           type="text"
-                          value={`$${service?.cost || 0}`}
+                          value={`BDT ${service?.cost || 0}`}
                           disabled
                           className="w-full px-3 py-2 bg-white border border-neutral rounded text-gray-700 font-semibold cursor-not-allowed"
                         />
@@ -403,12 +409,12 @@ const BookService = () => {
                         City
                       </label>
                       <select
-                        {...register("serviceCity")}
+                        {...register("serviceCity", {
+                          required: "Service city is required",
+                        })}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300 bg-white"
                       >
-                        <option value="" defaultValue="" disabled={true}>
-                          select your city
-                        </option>
+                        <option disabled={true}>select your city</option>
                         {[...cities]
                           .sort((a, b) => a.localeCompare(b))
                           .map((c, i) => (
@@ -417,6 +423,11 @@ const BookService = () => {
                             </option>
                           ))}
                       </select>
+                      {errors.serviceCity && (
+                        <p className="text-red-600 text-sm mt-1">
+                          {errors.serviceCity.message}
+                        </p>
+                      )}
                     </div>
 
                     <div>
@@ -424,12 +435,12 @@ const BookService = () => {
                         Area
                       </label>
                       <select
-                        {...register("serviceArea")}
+                        {...register("serviceArea", {
+                          required: "Select you area",
+                        })}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300 bg-white"
                       >
-                        <option value="" defaultValue="" disabled={true}>
-                          select your Area
-                        </option>
+                        <option disabled={true}>select your Area</option>
                         {findAreaByCity() &&
                           findAreaByCity().map((a, i) => (
                             <option key={i} value={a}>
@@ -437,6 +448,11 @@ const BookService = () => {
                             </option>
                           ))}
                       </select>
+                      {errors.serviceArea && (
+                        <p className="text-red-600 text-sm mt-1">
+                          {errors.serviceArea.message}
+                        </p>
+                      )}
                     </div>
                   </div>
 

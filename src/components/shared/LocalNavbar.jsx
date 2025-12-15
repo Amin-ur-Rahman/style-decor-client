@@ -9,6 +9,7 @@ import {
 } from "react-icons/hi";
 import { useAuth } from "../../hooks and contexts/auth/useAuth";
 import { Link, useNavigate } from "react-router-dom";
+import Logo from "../Logo";
 
 export default function LocalNavbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -34,9 +35,9 @@ export default function LocalNavbar() {
   //   );
 
   return (
-    <nav className="bg-white font-crimson shadow-sm border-b border-neutral sticky top-0 z-50">
+    <nav className="bg-white h-max py-3 font-crimson  sticky top-0 z-50">
       <div className="max-w-[90dvw] mx-auto ">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center ">
           <div className="flex items-center gap-4">
             {/* Mobile Menu Button */}
             <button
@@ -52,14 +53,9 @@ export default function LocalNavbar() {
             </button>
 
             {/* Logo */}
-            <a href="/" className="flex  items-center gap-2 group">
-              <div className="w-9 h-9 bg-linear-to-br from-primary to-accent rounded-lg flex items-center justify-center transform group-hover:scale-105 transition-transform shadow-sm">
-                <HiSparkles className="w-5 h-5 text-white" />
-              </div>
-              <span className="text-xl font-semibold text-primary hidden sm:block">
-                StyleDecor
-              </span>
-            </a>
+            <Link to="/">
+              <Logo></Logo>
+            </Link>
           </div>
 
           {/* Center: Search Bar (Desktop) */}
@@ -110,8 +106,8 @@ export default function LocalNavbar() {
                   className="flex items-center gap-2 p-1.5 hover:bg-secondary rounded-lg transition-all"
                 >
                   <img
-                    src={user.photoURL}
-                    alt={user.displayName}
+                    src={user?.photoURL}
+                    alt={user?.displayName}
                     className="w-9 h-9 rounded-full object-cover ring-2 ring-accent"
                   />
                 </button>
@@ -122,8 +118,8 @@ export default function LocalNavbar() {
                   {/* User Info */}
                   <div className="flex items-center gap-3 pb-3 border-b border-neutral">
                     <img
-                      src={user.photoURL}
-                      alt={user.displayName}
+                      src={user?.photoURL}
+                      alt={user?.displayName}
                       className="w-12 h-12 rounded-full object-cover ring-2 ring-accent"
                     />
                     <div className="flex-1 min-w-0">
@@ -217,16 +213,16 @@ export default function LocalNavbar() {
               <div className="pt-3 border-t border-neutral space-y-2">
                 <div className="flex items-center gap-3 px-4 py-2">
                   <img
-                    src={user.photoURL}
-                    alt={user.displayName}
+                    src={user?.photoURL}
+                    alt={user?.displayName}
                     className="w-10 h-10 rounded-full object-cover ring-2 ring-accent"
                   />
                   <div className="flex-1 min-w-0">
                     <p className="font-semibold text-gray-800 truncate">
-                      {user.displayName}
+                      {user?.displayName}
                     </p>
                     <p className="text-xs text-gray-500 truncate">
-                      {user.email}
+                      {user?.email}
                     </p>
                   </div>
                 </div>
