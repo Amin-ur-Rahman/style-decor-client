@@ -19,7 +19,7 @@ import {
   HiViewBoards,
   HiArrowsExpand,
 } from "react-icons/hi";
-import { Link, Outlet } from "react-router-dom";
+import { Link, NavLink, Outlet } from "react-router-dom";
 import { useAuth } from "../../hooks and contexts/auth/useAuth";
 import Logo from "../../components/Logo";
 
@@ -43,7 +43,7 @@ export default function DashboardLayout() {
   // All menu items (will be filtered by role later)
   const menuItems = {
     user: [
-      { icon: HiHome, label: "Dashboard", path: "/dashboard" },
+      { icon: HiHome, label: "Dashboard", path: "/dashboard/user" },
       { icon: HiUser, label: "My Profile", path: "/dashboard/my-profile" },
       {
         icon: HiCalendar,
@@ -71,7 +71,7 @@ export default function DashboardLayout() {
       {
         icon: HiClipboardList,
         label: "Manage Bookings",
-        path: "/dashboard/admin/bookings",
+        path: "/dashboard/manage-bookings",
       },
       {
         icon: HiChartBar,
@@ -208,15 +208,20 @@ export default function DashboardLayout() {
                   </h3>
                   <ul className="space-y-1">
                     {section.items.map((item, itemIndex) => (
-                      <li key={itemIndex}>
-                        <a
-                          href={item.path}
-                          className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-secondary hover:text-primary rounded-lg transition-all group"
-                        >
-                          <item.icon className="w-5 h-5 text-gray-500 group-hover:text-primary transition-colors" />
-                          {item.label}
-                        </a>
-                      </li>
+                      <NavLink
+                        key={itemIndex}
+                        to={item.path}
+                        className={({ isActive }) =>
+                          `flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-all group ${
+                            isActive
+                              ? "bg-secondary text-primary"
+                              : "text-gray-700 hover:bg-secondary hover:text-primary"
+                          }`
+                        }
+                      >
+                        <item.icon className="w-5 h-5 text-gray-500 group-hover:text-primary transition-colors" />
+                        {item.label}
+                      </NavLink>
                     ))}
                   </ul>
                 </div>

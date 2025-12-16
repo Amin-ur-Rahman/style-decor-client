@@ -45,143 +45,148 @@ const ManageServices = () => {
   };
 
   return (
-    <div className="w-[90dvw] mx-auto py-8">
+    <div className="w-full mx-auto py-8 px-4">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-800 mb-2">
+        <h1 className="text-2xl sm:text-3xl font-light text-text-primary mb-2">
           Manage Services & Packages
         </h1>
-        <p className="text-gray-600">
+        <p className="text-sm text-text-muted">
           View, edit, and manage all decoration services
         </p>
       </div>
 
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-        {/* ---------search input--------------- */}
-        <div className="relative w-full sm:w-96">
-          <HiSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+      <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4 mb-6">
+        {/* Search input */}
+        <div className="relative flex-1 max-w-md">
+          <HiSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
           <input
             type="text"
             placeholder="Search services..."
-            className="w-full pl-10 pr-4 py-2.5 bg-white border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all text-sm"
+            className="w-full pl-9 pr-4 py-2.5 bg-white border border-neutral rounded-lg focus:outline-none focus:border-primary transition-colors text-sm"
           />
         </div>
 
-        {/* -------------add new service button-------------- */}
+        {/* Add new service button */}
         <Link
           to="/add-new-service"
           onClick={handleAddNew}
-          className="flex items-center gap-2 px-5 py-2.5 bg-primary hover:bg-primary/90 text-white font-medium rounded-lg transition-all shadow-sm hover:shadow-md whitespace-nowrap"
+          className="flex items-center justify-center gap-2 px-4 py-2.5 bg-primary hover:bg-primary-hover text-white text-sm font-medium rounded-lg transition-colors whitespace-nowrap"
         >
-          <HiPlus className="w-5 h-5" />
+          <HiPlus className="w-4 h-4" />
           Add New Service
         </Link>
       </div>
 
-      {/* -----------table container----------------- */}
-      <div className="bg-white rounded-lg border border-neutral shadow-sm overflow-hidden">
+      {/* Table container with proper overflow handling */}
+      <div className="bg-white rounded-lg border border-neutral overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-secondary">
-              <tr>
-                <th></th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                  Service Name
+          <table className="w-full min-w-[800px]">
+            <thead className="bg-secondary border-b border-neutral">
+              <tr className="text-left">
+                <th className="px-3 py-3 text-[11px] font-semibold text-text-secondary uppercase tracking-wide w-12">
+                  #
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                <th className="px-3 py-3 text-[11px] font-semibold text-text-secondary uppercase tracking-wide min-w-[140px]">
+                  Service
+                </th>
+                <th className="px-3 py-3 text-[11px] font-semibold text-text-secondary uppercase tracking-wide min-w-[100px]">
                   Category
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                <th className="px-3 py-3 text-[11px] font-semibold text-text-secondary uppercase tracking-wide min-w-[80px]">
                   Cost
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                <th className="px-3 py-3 text-[11px] font-semibold text-text-secondary uppercase tracking-wide min-w-[70px]">
                   Unit
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                <th className="px-3 py-3 text-[11px] font-semibold text-text-secondary uppercase tracking-wide min-w-[140px]">
                   Created By
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                <th className="px-3 py-3 text-[11px] font-semibold text-text-secondary uppercase tracking-wide min-w-[90px]">
                   Date
                 </th>
-                <th className="px-6 py-4 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                <th className="px-3 py-3 text-[11px] font-semibold text-text-secondary uppercase tracking-wide text-center min-w-[140px]">
                   Actions
                 </th>
               </tr>
             </thead>
+
             <tbody className="divide-y divide-neutral">
               {services.map((service, index) => (
                 <tr
                   key={service._id}
                   className="hover:bg-secondary/50 transition-colors"
                 >
-                  <th className="px-6">{index + 1}</th>
-                  <td className="px-6 py-4 text-sm font-medium text-gray-800">
-                    {service.serviceName}
+                  <td className="px-3 py-3 text-xs text-text-muted">
+                    {index + 1}
                   </td>
-                  <td className="px-6 py-4 text-sm text-gray-600">
-                    <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-medium">
+
+                  <td className="px-3 py-3 text-xs font-medium text-text-primary">
+                    <div className="line-clamp-2">{service.serviceName}</div>
+                  </td>
+
+                  <td className="px-3 py-3">
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-medium whitespace-nowrap">
                       {service.category}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-sm font-semibold text-gray-800">
+
+                  <td className="px-3 py-3 text-xs font-semibold text-text-primary whitespace-nowrap">
                     ${service.cost}
                   </td>
-                  <td className="px-6 py-4 text-sm text-gray-600">
+
+                  <td className="px-3 py-3 text-xs text-text-secondary">
                     {service.unit}
                   </td>
-                  <td className="px-6 py-4 text-sm text-gray-600">
-                    {service.createdByEmail}
+
+                  <td className="px-3 py-3 text-xs text-text-secondary">
+                    <div
+                      className="max-w-[140px] truncate"
+                      title={service.createdByEmail}
+                    >
+                      {service.createdByEmail}
+                    </div>
                   </td>
-                  <td className="px-6 py-4 text-sm text-gray-600">
-                    {new Date(service.createdAt).toLocaleDateString()}
+
+                  <td className="px-3 py-3 text-xs text-text-secondary whitespace-nowrap">
+                    {new Date(service.createdAt).toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                    })}
                   </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center justify-center gap-2">
-                      {/* ------------details button-------- */}
+
+                  <td className="px-3 py-3">
+                    <div className="flex items-center justify-center gap-1">
                       <Link
                         to={`/service-details/${service._id}`}
-                        className="group relative p-2 text-gray-600 hover:text-primary hover:bg-primary/10 rounded-lg transition-all"
-                        title="View Details"
+                        className="p-1.5 rounded-md text-text-muted hover:text-primary hover:bg-primary/10 transition-colors"
+                        title="View"
                       >
-                        <HiEye className="w-5 h-5" />
-                        <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
-                          View
-                        </span>
+                        <HiEye className="w-4 h-4" />
                       </Link>
 
-                      {/* ----------------edit button------------- */}
                       <button
                         onClick={() => handleEdit(service._id)}
-                        className="group relative p-2 text-gray-600 hover:text-accent hover:bg-accent/10 rounded-lg transition-all"
-                        title="Edit Service"
+                        className="p-1.5 rounded-md text-text-muted hover:text-accent hover:bg-accent/10 transition-colors"
+                        title="Edit"
                       >
-                        <HiPencil className="w-5 h-5" />
-                        <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
-                          Edit
-                        </span>
+                        <HiPencil className="w-4 h-4" />
                       </button>
 
-                      {/* assign decorator button ----------------------- */}
-                      <button
+                      {/* <button
                         onClick={() => handleAssignDecorator(service._id)}
-                        className="group relative p-2 text-gray-600 hover:text-green-600 hover:bg-green-50 rounded-lg transition-all"
+                        className="p-1.5 rounded-md text-text-muted hover:text-green-600 hover:bg-green-50 transition-colors"
                         title="Assign Decorator"
                       >
-                        <HiUserAdd className="w-5 h-5" />
-                        <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
-                          Assign Decorator
-                        </span>
-                      </button>
+                        <HiUserAdd className="w-4 h-4" />
+                      </button> */}
 
-                      {/* ---------------delete button---------------- */}
                       <button
                         onClick={() => handleDelete(service._id)}
-                        className="group relative p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
-                        title="Delete Service"
+                        className="p-1.5 rounded-md text-text-muted hover:text-red-600 hover:bg-red-50 transition-colors"
+                        title="Delete"
                       >
-                        <HiTrash className="w-5 h-5" />
-                        <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
-                          Delete
-                        </span>
+                        <HiTrash className="w-4 h-4" />
                       </button>
                     </div>
                   </td>
@@ -192,8 +197,8 @@ const ManageServices = () => {
         </div>
       </div>
 
-      <div className="mt-4 text-sm text-gray-600">
-        Showing {services.length} services
+      <div className="mt-4 text-xs text-text-muted">
+        Showing {services.length} service{services.length !== 1 ? "s" : ""}
       </div>
     </div>
   );

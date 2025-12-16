@@ -60,6 +60,7 @@ const BeADecorator = () => {
 
   const onSubmit = async (data) => {
     const applicationData = {
+      userId: userData?._id,
       decoratorEmail: data.decoratorEmail,
       decoratorName: data.decoratorName,
       serviceLocation: {

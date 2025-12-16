@@ -16,6 +16,7 @@ import MyProfile from "./pages/dahsboardPages/MyProfile";
 import BeADecorator from "./pages/service&role/role/BeADecorator";
 import ManageServices from "./pages/dahsboardPages/admin/ManageServices";
 import ManageDecorators from "./pages/dahsboardPages/admin/ManageDecorators";
+import ManageBookings from "./pages/dahsboardPages/admin/ManageBookings";
 
 const router = createBrowserRouter([
   {
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
       {
         path: "manage-decorators",
         element: <ManageDecorators></ManageDecorators>,
+      },
+      {
+        path: "manage-bookings",
+        element: <ManageBookings></ManageBookings>,
       },
       // normal users routes
       {
