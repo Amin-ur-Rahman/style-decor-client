@@ -325,7 +325,13 @@ export default function DashboardLayout() {
         </aside>
 
         {/* Main Content   */}
-        <Outlet></Outlet>
+        <div
+          className={`${
+            isSidebarOpen ? "w-[80%]" : "w-[90dvw]"
+          } mx-auto overflow-hidden`}
+        >
+          <Outlet></Outlet>
+        </div>
       </div>
     </div>
   );

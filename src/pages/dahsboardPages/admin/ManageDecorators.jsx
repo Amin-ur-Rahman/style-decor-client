@@ -88,6 +88,7 @@ const ManageDecorators = () => {
             userId: decorator.userId,
           }
         );
+
         console.log(decoRes.data);
 
         Swal.fire({
@@ -189,7 +190,7 @@ const ManageDecorators = () => {
   return (
     <div className="min-h-screen overflow-x-hidden bg-gradient-to-br from-slate-50 via-white to-slate-50 p-6">
       <div className="max-w-max mx-auto">
-        {/* Header */}
+        {/* ------------------Header------------------ */}
         <div className="mb-8">
           <h1 className="text-xl md:text-2xl font-semibold md:font-bold  text-slate-900 mb-2">
             Manage Decorators
@@ -198,11 +199,9 @@ const ManageDecorators = () => {
             Review and manage decorator applications
           </p>
         </div>
-
-        {/* Controls */}
+        {/*--------------------------Sort ----------------- */}
         <div className="bg-white rounded-lg border max-w-[95%] border-slate-200 p-4 mb-6">
           <div className="flex flex-wrap gap-4 items-center justify-between">
-            {/* Sort */}
             <div className="flex items-center gap-2">
               <HiSortAscending className="w-5 h-5 text-slate-400" />
               <span className="text-sm text-slate-600">Sort by:</span>
@@ -217,7 +216,7 @@ const ManageDecorators = () => {
               </select>
             </div>
 
-            {/* Filter */}
+            {/* ----------------------Filter----------------- */}
             <div className="flex items-center gap-2">
               <HiFilter className="w-5 h-5 text-slate-400" />
               <span className="text-sm text-slate-600">Filter:</span>
@@ -233,7 +232,7 @@ const ManageDecorators = () => {
               </select>
             </div>
 
-            {/* Stats */}
+            {/* -------------------------Stats----------------------- */}
             <div className="flex items-center gap-4 text-sm">
               <span className="text-slate-600">
                 Total:{" "}
@@ -250,8 +249,7 @@ const ManageDecorators = () => {
             </div>
           </div>
         </div>
-
-        {/* Table */}
+        {/*----------------------------- Table---------------------- */}
         <div className="bg-white rounded-lg max-w-[95%] border border-slate-200 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-xs sm:text-sm">
@@ -375,8 +373,7 @@ const ManageDecorators = () => {
             </table>
           </div>
         </div>
-
-        {/* Details Modal */}
+        {/* -------------------------Details Modal---------------------------- */}
         {selectedDecorator && (
           <div
             className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"

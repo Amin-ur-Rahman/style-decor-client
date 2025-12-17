@@ -12,6 +12,9 @@ import {
   HiBan,
 } from "react-icons/hi";
 import Swal from "sweetalert2";
+import status from "daisyui/components/status";
+import { TiInputChecked } from "react-icons/ti";
+import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 
 const ManageBookings = () => {
   const axiosInstance = useAxiosInstance();
@@ -31,12 +34,8 @@ const ManageBookings = () => {
   } = useQuery({
     queryKey: ["all-bookings"],
     queryFn: async () => {
-      try {
-        const res = await axiosInstance.get("/bookings/admin");
-        return res.data;
-      } catch (error) {
-        console.log(error.message || error);
-      }
+      const res = await axiosInstance.get("/bookings/admin");
+      return res.data;
     },
   });
 
@@ -110,19 +109,79 @@ const ManageBookings = () => {
     }
   };
 
-  const handleConfirm = (bookingId) => {
-    console.log("Confirm booking:", bookingId);
-    // Handle confirm logic
+  const handleConfirm = async (booking) => {
+    try {
+      const res = await axiosInstance.patch(
+        `/consultation/${booking._id}/update`,
+        { status: "scheduled", bookingType: booking.bookingType }
+      );
+
+      console.log(res.data);
+
+      Swal.fire({
+        title: "Consultation confirmed",
+        text: res.data?.decoratorUpdate,
+        icon: "success",
+      });
+
+      bookingsRefetch();
+    } catch (error) {
+      Swal.fire({
+        title: "Something went wrong!",
+        text: error?.message,
+        icon: "warning",
+      });
+    }
   };
 
-  const handleComplete = (bookingId) => {
-    console.log("Complete booking:", bookingId);
-    // Handle complete logic
+  const handleComplete = async (booking) => {
+    try {
+      const res = await axiosInstance.patch(
+        `/consultation/${booking._id}/update`,
+        { status: "completed", bookingType: booking.bookingType }
+      );
+
+      console.log(res.data);
+
+      Swal.fire({
+        title: "Consultation marked as completed",
+        text: res.data?.decoratorUpdate,
+        icon: "success",
+      });
+
+      bookingsRefetch();
+    } catch (error) {
+      Swal.fire({
+        title: "Something went wrong!",
+        text: error?.message,
+        icon: "warning",
+      });
+    }
   };
 
-  const handleCancel = (bookingId) => {
-    console.log("Cancel booking:", bookingId);
-    // Handle cancel logic
+  const handleCancel = async (booking) => {
+    try {
+      const res = await axiosInstance.patch(
+        `/consultation/${booking._id}/update`,
+        { status: "cancelled", bookingType: booking.bookingType }
+      );
+
+      console.log(res.data);
+
+      Swal.fire({
+        title: "Consultation cancelled",
+        text: res.data?.decoratorUpdate,
+        icon: "success",
+      });
+
+      bookingsRefetch();
+    } catch (error) {
+      Swal.fire({
+        title: "Something went wrong!",
+        text: error?.message,
+        icon: "warning",
+      });
+    }
   };
 
   // Filter bookings
@@ -142,7 +201,7 @@ const ManageBookings = () => {
   if (bookings.length === 0 || bookingsError) return <NoData></NoData>;
 
   return (
-    <div className="w-[90dvw] mx-auto py-8">
+    <div className="w-full overflow-hidden mx-auto py-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-800 mb-2">
           Manage Bookings
@@ -150,7 +209,7 @@ const ManageBookings = () => {
         <p className="text-gray-600">View and manage all service bookings</p>
       </div>
 
-      {/* Filters */}
+      {/* ----------------------------Filters------------------------- */}
       <div className="bg-white rounded-lg border border-neutral p-4 mb-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
@@ -207,7 +266,7 @@ const ManageBookings = () => {
         </div>
       </div>
 
-      {/* Bookings Table */}
+      {/*----------------------------- Bookings Table------------------------- */}
       <div className="bg-white rounded-lg border border-neutral shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[1000px]">
@@ -242,7 +301,7 @@ const ManageBookings = () => {
                   key={booking._id}
                   className="hover:bg-secondary/50 transition-colors"
                 >
-                  {/* Booking Info */}
+                  {/* -------------------------Booking Info---------------------- */}
                   <td className="px-4 md:px-6 py-4">
                     <div>
                       <p className="text-sm font-semibold text-gray-800">
@@ -257,14 +316,14 @@ const ManageBookings = () => {
                     </div>
                   </td>
 
-                  {/* Type */}
+                  {/* ------------------------------Type---------------------- */}
                   <td className="px-4 md:px-6 py-4">
                     <span className="px-3 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium capitalize">
                       {booking.bookingType}
                     </span>
                   </td>
 
-                  {/* Scheduled Date */}
+                  {/* ------------------------Scheduled Date-------------------- */}
                   <td className="px-4 md:px-6 py-4">
                     <div className="flex flex-col gap-1">
                       <div className="flex items-center gap-1 text-sm text-gray-700">
@@ -285,14 +344,14 @@ const ManageBookings = () => {
                     </div>
                   </td>
 
-                  {/* Amount */}
+                  {/* ------------------------Amount -------------------------*/}
                   <td className="px-4 md:px-6 py-4">
                     <p className="text-sm font-bold text-primary">
                       ${booking.payableAmount?.toLocaleString() || 0}
                     </p>
                   </td>
 
-                  {/* Payment Status */}
+                  {/*------------------------ Payment Status---------------------- */}
                   <td className="px-4 md:px-6 py-4">
                     <span
                       className={`px-3 py-1 rounded-full text-xs font-semibold capitalize ${
@@ -305,31 +364,31 @@ const ManageBookings = () => {
                     </span>
                   </td>
 
-                  {/* Status */}
+                  {/* ---------------------Status----------------------------------- */}
                   <td className="px-4 md:px-6 py-4">
                     <span
-                      className={`px-3 py-1 rounded-full text-xs font-semibold capitalize ${
+                      className={`px-3 py-1 rounded-full text-xs   capitalize ${
                         booking.status === "confirmed"
-                          ? "bg-blue-100 text-blue-700"
+                          ? "bg-blue-100 text-primary"
                           : booking.status === "assigned"
                           ? "bg-purple-100 text-purple-700"
-                          : "bg-yellow-100 text-yellow-700"
+                          : "bg-neutral text-accent"
                       }`}
                     >
                       {booking.status}
                     </span>
                   </td>
 
-                  {/* Action */}
+                  {/* ----------------------Action ---------------------*/}
                   <td className="px-4 md:px-6 py-4">
                     <div className="flex justify-center gap-2">
-                      {booking.bookingType === "decoration" ? (
+                      {booking.bookingType === "decoration" && (
                         <button
                           disabled={booking.status !== "confirmed"}
                           onClick={() => handleFindDecorators(booking)}
                           className={`px-4 py-2 ${
                             booking.status === "confirmed" &&
-                            "bg-primary/90 hover:cursor-pointer hover:bg-primary/80 text-neutral"
+                            "bg-primary/10 border border-primary hover:cursor-pointer hover:bg-primary/80 text-primary"
                           }   text-xs font-semibold rounded-lg transition-all
                          `}
                         >
@@ -338,24 +397,55 @@ const ManageBookings = () => {
                             ? "Find Decorator"
                             : booking.status}
                         </button>
-                      ) : (
-                        <div className="flex gap-2">
-                          <button
-                            onClick={() => handleConfirm(booking._id)}
-                            className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-all"
-                            title="Confirm"
-                          >
-                            <HiCheck className="w-5 h-5" />
-                          </button>
-                          <button
-                            onClick={() => handleCancel(booking._id)}
-                            className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-all"
-                            title="Cancel"
-                          >
-                            <HiBan className="w-5 h-5" />
-                          </button>
-                        </div>
                       )}
+                      {booking.bookingType === "consultation" &&
+                        booking.status === "pending" && (
+                          <div className="flex text-sm gap-2">
+                            <button
+                              onClick={() => handleConfirm(booking)}
+                              className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-all"
+                              title="Confirm"
+                            >
+                              Accept
+                            </button>
+                            <button
+                              onClick={() => handleCancel(booking)}
+                              className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-all"
+                              title="Cancel"
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        )}
+                      {booking.bookingType === "consultation" &&
+                        booking.status === "scheduled" && (
+                          <div className="flex text-sm gap-2">
+                            <button
+                              onClick={() => handleComplete(booking)}
+                              className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-all"
+                              title="mark as complete"
+                            >
+                              Completed
+                            </button>
+                            <button
+                              onClick={() => handleCancel(booking)}
+                              className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-all"
+                              title="Cancel"
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        )}
+                      {booking.bookingType === "consultation" &&
+                        booking.status === "completed" && (
+                          <p
+                            title="consultation successfully completed"
+                            className="text-green-700"
+                          >
+                            {" "}
+                            <IoMdCheckmarkCircleOutline size={24} />
+                          </p>
+                        )}
                     </div>
                   </td>
                 </tr>
@@ -369,18 +459,17 @@ const ManageBookings = () => {
         Showing {filteredBookings.length} of {bookings.length} bookings
       </div>
 
-      {/* Decorators Modal */}
+      {/*------------------------ Decorators Modal ----------------------------*/}
       {selectedBooking && isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          {/* Backdrop */}
+          {/*================= Backdrop=================== */}
           <div
             className="absolute inset-0 bg-black bg-opacity-50"
             onClick={() => setIsModalOpen(false)}
           ></div>
 
-          {/* Modal Content */}
           <div className="relative bg-white rounded-lg w-full max-w-5xl max-h-[90vh] overflow-hidden shadow-xl">
-            {/* Header */}
+            {/*---------------------------- Header------------------ */}
             <div className="flex items-start justify-between p-6 border-b border-neutral">
               <div>
                 <h3 className="text-2xl font-light text-text-primary">
@@ -399,7 +488,7 @@ const ManageBookings = () => {
               </button>
             </div>
 
-            {/* Content */}
+            {/*-------------------------- Content------------------------ */}
             <div className="p-6 overflow-y-auto max-h-[calc(90vh-180px)]">
               {decoLoading ? (
                 <div className="flex justify-center py-12">
@@ -526,7 +615,7 @@ const ManageBookings = () => {
               )}
             </div>
 
-            {/* Footer */}
+            {/*--------------------- Footer------------------- */}
             <div className="flex justify-end p-6 border-t border-neutral">
               <button
                 onClick={() => setIsModalOpen(false)}
