@@ -14,7 +14,7 @@ const Coverage = () => {
   const mapRef = useRef(null);
   const position = [23.685, 90.3563];
   const customIcon = L.icon({
-    iconUrl: { markerImg },
+    iconUrl: markerImg,
     iconSize: [32, 32],
     iconAnchor: [16, 32],
     popupAnchor: [0, -32],
