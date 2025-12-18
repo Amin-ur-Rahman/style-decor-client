@@ -85,7 +85,7 @@ const Coverage = () => {
           ref={mapRef}
         >
           <TileLayer
-            url="https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png"
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution="© OpenStreetMap contributors © Stadia Maps"
           />
 
