@@ -349,17 +349,15 @@ const DecoratorProjects = () => {
                           statusFlow[currentProject.status].next
                         )
                       }
-                      className="flex items-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition-all"
+                      className="   px-2 bg-primary hover:bg-green-700 text-white  rounded-lg transition-all"
                     >
-                      <HiCheck className="w-5 h-5" />
-                      {statusFlow[currentProject.status].action}
+                      <small>{statusFlow[currentProject.status].action}</small>
                     </button>
                     <button
                       onClick={() => handleDeclineProject(currentProject._id)}
-                      className="flex items-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition-all"
+                      className="   px-2  bg-red-600 hover:bg-red-700 text-white  rounded-lg transition-all"
                     >
-                      <HiX className="w-5 h-5" />
-                      Decline
+                      <small>Decline</small>
                     </button>
                   </>
                 )}

@@ -11,7 +11,7 @@ import {
   HiCheckCircle,
   HiCash,
 } from "react-icons/hi";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useAxiosInstance from "../../../hooks and contexts/axios/useAxiosInstance";
 import { LoadingBubbles } from "../../../LoadingAnimations";
 import Swal from "sweetalert2";

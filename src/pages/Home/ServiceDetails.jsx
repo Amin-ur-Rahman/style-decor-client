@@ -35,162 +35,159 @@ const ServiceDetails = () => {
   return !service ? (
     <NoData />
   ) : (
-    <div className="min-h-screen bg-gray-50">
-      <div className="w-[92dvw] mx-auto pt-8 max-w-6xl">
+    <div className="min-h-screen bg-bg-alt">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <button
           onClick={() => window.history.back()}
-          className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors mb-6"
+          className="flex items-center gap-2 text-text-muted hover:text-primary transition-colors mb-6"
         >
-          <HiArrowLeft className="w-5 h-5" />
-          <span className="text-sm font-medium">Back</span>
+          <HiArrowLeft className="w-4 h-4" />
+          <span className="text-sm">Back</span>
         </button>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="md:col-span-2 space-y-4">
-            <div className="rounded-lg overflow-hidden shadow-sm bg-white">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          {/* Left: Image Gallery */}
+          <div className="lg:col-span-7">
+            <div className="bg-neutral rounded-sm overflow-hidden">
               <img
                 src={service.photo}
                 alt={service.serviceName}
-                className="w-full h-[420px] md:h-[480px] object-cover"
+                className="w-full h-[500px] object-cover"
               />
             </div>
+          </div>
 
-            <div className="bg-white rounded-lg p-6 shadow-sm">
-              <div className="flex items-center justify-between">
-                <div>
-                  <span className="text-xs text-gray-500 uppercase tracking-wide">
-                    {service.category}
-                  </span>
-                  <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 mt-2">
-                    {service.serviceName}
-                  </h1>
-                  <p className="text-gray-600 mt-2">
-                    {service.shortDescription}
-                  </p>
+          {/* Right: Product Details */}
+          <div className="lg:col-span-5 space-y-6">
+            {/* Category & Title */}
+            <div>
+              <p className="text-xs uppercase tracking-wide text-text-muted mb-2">
+                {service.category}
+              </p>
+              <h1 className="text-3xl font-normal text-text-primary mb-3">
+                {service.serviceName}
+              </h1>
+              <p className="text-sm text-text-secondary leading-relaxed">
+                {service.shortDescription}
+              </p>
+            </div>
+
+            {/* Pricing */}
+            <div className="border-t border-neutral pt-4">
+              <div className="flex items-baseline gap-2 mb-1">
+                <span className="text-2xl font-light text-text-primary">
+                  ৳{service.cost}
+                </span>
+                <span className="text-sm text-text-muted">{service.unit}</span>
+              </div>
+              <p className="text-xs text-text-muted">
+                {service.rateType === "flat-rate"
+                  ? "Flat rate pricing"
+                  : "Rate per unit"}
+              </p>
+            </div>
+
+            {/* Book Button */}
+            <button
+              type="button"
+              onClick={() => {
+                setSelectedService(service);
+                setIsModalOpen(true);
+              }}
+              className="w-full py-3 bg-primary hover:bg-primary-hover text-white text-sm tracking-wide transition-colors"
+            >
+              Book this service
+            </button>
+
+            {/* Description Section */}
+            <div className="border-t border-neutral pt-6">
+              <button className="w-full flex items-center justify-between text-left py-3 border-b border-neutral">
+                <span className="text-sm uppercase tracking-wide text-text-primary">
+                  Description
+                </span>
+                <span className="text-text-muted">+</span>
+              </button>
+              <div className="py-4">
+                <p className="text-sm text-text-secondary leading-relaxed">
+                  {service.description}
+                </p>
+              </div>
+            </div>
+
+            {/* What's Included */}
+            <div className="border-t border-neutral pt-3">
+              <button className="w-full flex items-center justify-between text-left py-3 border-b border-neutral">
+                <span className="text-sm uppercase tracking-wide text-text-primary">
+                  What's included
+                </span>
+                <span className="text-text-muted">+</span>
+              </button>
+              <div className="py-4 space-y-2">
+                <div className="flex items-start gap-2 text-sm text-text-secondary">
+                  <span className="text-primary mt-0.5">✓</span>
+                  <span>Professional consultation and planning</span>
                 </div>
+                <div className="flex items-start gap-2 text-sm text-text-secondary">
+                  <span className="text-primary mt-0.5">✓</span>
+                  <span>Premium quality materials and decorations</span>
+                </div>
+                <div className="flex items-start gap-2 text-sm text-text-secondary">
+                  <span className="text-primary mt-0.5">✓</span>
+                  <span>On-site setup and coordination</span>
+                </div>
+                <div className="flex items-start gap-2 text-sm text-text-secondary">
+                  <span className="text-primary mt-0.5">✓</span>
+                  <span>Post-event cleanup and removal</span>
+                </div>
+              </div>
+            </div>
 
-                <div className="hidden sm:flex flex-col items-end text-right">
-                  <span className="text-sm text-gray-500">Added by</span>
-                  <span className="font-semibold text-gray-900">
+            {/* Service Details */}
+            <div className="border-t border-neutral pt-3">
+              <button className="w-full flex items-center justify-between text-left py-3 border-b border-neutral">
+                <span className="text-sm uppercase tracking-wide text-text-primary">
+                  Service details
+                </span>
+                <span className="text-text-muted">+</span>
+              </button>
+              <div className="py-4 space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-text-muted">Added by</span>
+                  <span className="text-text-secondary">
                     {service.createdByName}
                   </span>
-                  <span className="text-xs text-gray-400 mt-1">
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-text-muted">Created</span>
+                  <span className="text-text-secondary">
                     {new Date(service.createdAt).toLocaleDateString("en-US", {
                       month: "short",
+                      day: "numeric",
                       year: "numeric",
                     })}
                   </span>
                 </div>
+                <div className="flex justify-between">
+                  <span className="text-text-muted">Category</span>
+                  <span className="text-text-secondary capitalize">
+                    {service.category}
+                  </span>
+                </div>
               </div>
+            </div>
 
-              <div className="mt-6 border-t pt-6">
-                <h2 className="text-lg font-semibold text-gray-900 mb-3">
-                  About this service
-                </h2>
-                <p className="text-gray-700 leading-relaxed">
-                  {service.description}
-                </p>
-              </div>
-
-              <div className="mt-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">
-                  What's included
-                </h3>
-                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-gray-700">
-                  <li className="flex items-start gap-3">
-                    <span className="text-green-600 mt-1">✓</span>
-                    <span>Professional consultation and planning</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-green-600 mt-1">✓</span>
-                    <span>Premium quality materials and decorations</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-green-600 mt-1">✓</span>
-                    <span>On-site setup and coordination</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-green-600 mt-1">✓</span>
-                    <span>Post-event cleanup and removal</span>
-                  </li>
-                </ul>
-              </div>
+            {/* Notes */}
+            <div className="bg-secondary p-4 text-xs text-text-muted leading-relaxed">
+              Prices may vary for large events. For custom requests, contact the
+              service center directly.
             </div>
           </div>
-
-          <aside className="md:col-span-1">
-            <div className="sticky top-20 space-y-4">
-              <div className="bg-white rounded-lg p-5 shadow-md">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="text-sm text-gray-500">Price</div>
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-3xl font-bold text-gray-900">
-                        ${service.cost}
-                      </span>
-                      <span className="text-sm text-gray-500">
-                        {service.unit}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <span className="inline-block bg-indigo-50 text-indigo-700 text-xs px-2 py-1 rounded-full">
-                      {service.category}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="mt-4">
-                  <button
-                    type="button"
-                    // to={`/book-service/${service._id}`}
-                    onClick={() => {
-                      setSelectedService(service);
-                      setIsModalOpen(true);
-                    }}
-                    className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 bg-primary hover:bg-primary-dark text-white rounded-lg transition-all"
-                  >
-                    <HiCalendar className="w-5 h-5" />
-                    <span className="font-medium">Book this service</span>
-                  </button>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-lg p-4 shadow-sm text-sm text-gray-700">
-                <div className="font-semibold text-gray-900 mb-2">
-                  Service details
-                </div>
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="text-xs text-gray-500">Added by</div>
-                  <div className="text-right font-medium">
-                    {service.createdByName}
-                  </div>
-
-                  <div className="text-xs text-gray-500">Created</div>
-                  <div className="text-right font-medium">
-                    {new Date(service.createdAt).toLocaleDateString()}
-                  </div>
-
-                  <div className="text-xs text-gray-500">Service ID</div>
-                  <div className="text-right text-xs text-gray-500 break-all">
-                    {service._id}
-                  </div>
-                </div>
-              </div>
-
-              <div className="  p-4  text-sm text-gray-600">
-                <div className="font-semibold text-gray-900 mb-2">Notes</div>
-                <div className="text-xs">
-                  Prices may vary for large events. For custom requests, contact
-                  the service center directly.
-                </div>
-              </div>
-            </div>
-          </aside>
         </div>
       </div>
+
+      {/* Modal */}
       {isModalOpen && (
-        <div className="fixed  inset-0 z-50 flex items-end sm:items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4">
           {/* Backdrop */}
           <div
             className="absolute inset-0 bg-black/50"
@@ -199,24 +196,24 @@ const ServiceDetails = () => {
 
           {/* Modal */}
           <div
-            className="relative bg-white  sm:max-w-5xl 
+            className="relative bg-white sm:max-w-5xl 
                  h-[90vh] sm:h-auto sm:max-h-[90vh]
                  rounded-t-xl sm:rounded-lg 
                  shadow-xl flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="flex items-center justify-between   ">
+            <div className="flex items-center bg-secondary justify-between">
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="text-gray-500  m-5 hover:text-gray-800"
+                className="text-text-muted m-5 hover:text-text-primary"
               >
-                <HiX></HiX>
+                <HiX />
               </button>
             </div>
 
             {/* Scrollable content */}
-            <div className="flex-1 min-w-[70dvw] overflow-y-auto p-4 sm:p-6">
+            <div className="flex-1  min-w-[70dvw] overflow-y-auto ">
               <BookService serviceId={service._id} />
             </div>
           </div>
