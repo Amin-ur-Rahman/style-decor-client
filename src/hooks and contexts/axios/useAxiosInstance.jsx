@@ -7,10 +7,11 @@ const useAxiosInstance = () => {
 
   useEffect(() => {
     const interceptor = axiosInstance.interceptors.request.use(
-      (config) => {
-        if (authLoading) return;
-        if (user && user.accessToken) {
-          config.headers.Authorization = `Bearer ${user.accessToken}`;
+      async (config) => {
+        if (authLoading) return config;
+        if (user) {
+          const token = await user.getIdToken();
+          config.headers.Authorization = `Bearer ${token}`;
           // console.log("access token", user.accessToken);
         }
         return config;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useAxiosInstance from "../../../hooks and contexts/axios/useAxiosInstance";
 import { useQuery } from "@tanstack/react-query";
 import useUserInfo from "../../../hooks and contexts/role/useUserInfo";
@@ -45,7 +45,11 @@ const DecoratorProjects = () => {
     },
   });
 
-  const { data: completedProjects, isLoading: comDataLoading } = useQuery({
+  const {
+    data: completedProjects = [],
+    isLoading: comDataLoading,
+    refetch: refetchComProjects,
+  } = useQuery({
     queryKey: ["completed-projects"],
     queryFn: async () => {
       const res = await axiosInstance.get(
@@ -55,32 +59,49 @@ const DecoratorProjects = () => {
     },
   });
 
-  if (isLoading || infoLoading || comDataLoading)
-    return <LoadingBubbles></LoadingBubbles>;
-  if (!bookings || isError) return <NoData></NoData>;
+  // Sort completed projects whenever completedProjects or sortBy changes
+  useEffect(() => {
+    if (!Array.isArray(completedProjects) || completedProjects.length === 0) {
+      setTimeout(() => {
+        setSortedProjects([]);
+      }, 100);
+      return;
+    }
 
-  console.log(completedProjects);
-
-  // Separate current and completed projects
-  const currentProject = bookings.find(
-    (b) => b.status !== "completed" && b.status !== "cancelled"
-  );
-  // const completedProjects = bookings.filter((b) => b.status === "completed");
-
-  // Sort completed projects
-  if (completedProjects?.length > 0) {
     const sorted = [...completedProjects].sort((a, b) => {
       if (sortBy === "recent-desc") {
         return new Date(b.bookingDate) - new Date(a.bookingDate);
-      } else if (sortBy === "recent-asc") {
+      }
+      if (sortBy === "recent-asc") {
         return new Date(a.bookingDate) - new Date(b.bookingDate);
-      } else if (sortBy === "city") {
+      }
+      if (sortBy === "city") {
         return a.serviceCity.localeCompare(b.serviceCity);
       }
       return 0;
     });
-    setSortedProjects(sorted);
+
+    setTimeout(() => {
+      setSortedProjects(sorted);
+    }, 100);
+  }, [completedProjects, sortBy]);
+
+  // Show loading state
+  if (isLoading || infoLoading || comDataLoading) {
+    return <LoadingBubbles />;
   }
+
+  // Show NoData if bookings is not available or there's an error
+  if (!bookings || !Array.isArray(bookings) || isError) {
+    return <NoData />;
+  }
+
+  console.log(completedProjects);
+
+  // Separate current and completed projects - with safe array handling
+  const currentProject = bookings.find(
+    (b) => b.status !== "completed" && b.status !== "cancelled"
+  );
 
   // Status flow and actions
   const statusFlow = {
@@ -149,6 +170,9 @@ const DecoratorProjects = () => {
         decoratorId: booking.assignedDecoratorId,
         bookingId: booking._id,
       });
+      if (nextStatus === "completed") {
+        refetchComProjects();
+      }
 
       console.log(res.data.message);
       await refreshBookingData();
@@ -169,7 +193,7 @@ const DecoratorProjects = () => {
     }
   };
 
-  const handleDeclineProject = async (bookingId) => {
+  const handleDeclineProject = async (booking) => {
     try {
       const result = await Swal.fire({
         title: "Are You sure to Decline?",
@@ -181,9 +205,9 @@ const DecoratorProjects = () => {
         confirmButtonText: "Yes, remove",
       });
       if (result.isConfirmed) {
-        const res = await axiosInstance.patch(`on-booking-rejected/decorator`, {
-          bookingId: bookingId,
-          decoratorId: userData.decoratorId,
+        const res = await axiosInstance.patch(`/booking/reject-by-decorator`, {
+          bookingId: booking?._id,
+          decoratorId: userData?.decoratorId,
         });
         console.log(res.data.message);
         await refreshBookingData();
@@ -212,7 +236,7 @@ const DecoratorProjects = () => {
   };
 
   return (
-    <div className="w-[90dvw] mx-auto py-8">
+    <div className=" py-8">
       {/* Header with Availability Toggle */}
       <div className="flex items-center justify-between mb-8">
         <div>
@@ -349,13 +373,13 @@ const DecoratorProjects = () => {
                           statusFlow[currentProject.status].next
                         )
                       }
-                      className="   px-2 bg-primary hover:bg-green-700 text-white  rounded-lg transition-all"
+                      className="  gap-2 px-3 py-2 bg-primary hover:bg-green-700 text-white  rounded-lg transition-all"
                     >
                       <small>{statusFlow[currentProject.status].action}</small>
                     </button>
                     <button
-                      onClick={() => handleDeclineProject(currentProject._id)}
-                      className="   px-2  bg-red-600 hover:bg-red-700 text-white  rounded-lg transition-all"
+                      onClick={() => handleDeclineProject(currentProject)}
+                      className="  gap-2 px-3 py-2 bg-red-600 hover:bg-red-700 text-white  rounded-lg transition-all"
                     >
                       <small>Decline</small>
                     </button>

@@ -10,9 +10,13 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import useAxiosInstance from "../../../hooks and contexts/axios/useAxiosInstance";
 import { LoadingBubbles } from "../../../LoadingAnimations";
+import { useState } from "react";
+import { EditServiceModal } from "./EditServiceModal";
 
 const ManageServices = () => {
   const axiosInstance = useAxiosInstance();
+  const [selectedService, setSelectedService] = useState(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   const { data: services, isLoading } = useQuery({
     queryKey: ["services-admin"],
@@ -29,19 +33,20 @@ const ManageServices = () => {
   // };
 
   const handleEdit = (id) => {
-    console.log(id);
+    const service = services.find((s) => s._id === id);
+    setSelectedService(service);
+    setIsEditModalOpen(true);
   };
 
   const handleDelete = (id) => {
     console.log(id);
   };
 
-  const handleAssignDecorator = (id) => {
-    console.log(id);
-  };
-
   const handleAddNew = () => {
     console.log("new service added");
+  };
+  const handleUpdate = async (service) => {
+    console.log(service._id);
   };
 
   return (
@@ -200,6 +205,13 @@ const ManageServices = () => {
       <div className="mt-4 text-xs text-text-muted">
         Showing {services.length} service{services.length !== 1 ? "s" : ""}
       </div>
+
+      <EditServiceModal
+        service={selectedService}
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        onUpdate={handleUpdate}
+      />
     </div>
   );
 };

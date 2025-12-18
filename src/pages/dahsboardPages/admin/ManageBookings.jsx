@@ -382,17 +382,24 @@ const ManageBookings = () => {
                     <div className="flex justify-center gap-2">
                       {booking.bookingType === "decoration" && (
                         <button
-                          disabled={booking.status !== "confirmed"}
+                          disabled={
+                            !["confirmed", "awaiting-reassignment"].includes(
+                              booking.status
+                            )
+                          }
                           onClick={() => handleFindDecorators(booking)}
                           className={`px-4 py-2 ${
-                            booking.status === "confirmed" &&
+                            ["awaiting-reassignment", "confirmed"].includes(
+                              booking.status
+                            ) &&
                             "bg-primary/10 border border-primary hover:cursor-pointer hover:bg-primary/80 text-primary"
                           }   text-xs font-semibold rounded-lg transition-all
                          `}
                         >
-                          {booking.status === "confirmed" &&
-                          booking.paymentStatus === "paid"
-                            ? "Find Decorator"
+                          {["awaiting-reassignment", "confirmed"].includes(
+                            booking.status
+                          )
+                            ? "Find Decorators"
                             : booking.status}
                         </button>
                       )}
@@ -462,7 +469,7 @@ const ManageBookings = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           {/*================= Backdrop=================== */}
           <div
-            className="absolute inset-0 bg-black bg-opacity-50"
+            className="absolute inset-0 bg-gray-400 bg-opacity-50"
             onClick={() => setIsModalOpen(false)}
           ></div>
 

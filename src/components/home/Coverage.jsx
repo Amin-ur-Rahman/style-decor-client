@@ -78,7 +78,7 @@ const Coverage = () => {
 
       <div className="min-h-[80dvh]">
         <MapContainer
-          style={{ height: "70vh" }} // ensures Leaflet works
+          style={{ height: "80vh" }} // ensures Leaflet works
           className="
           sm:w-[90%]   
           md:w-[85%]   
