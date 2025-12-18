@@ -186,7 +186,7 @@ export default function DashboardLayout() {
                   <p className="text-sm font-semibold text-gray-800">
                     {user.displayName}
                   </p>
-                  <p className="text-xs text-gray-500">{userData.role}</p>
+                  <p className="text-xs text-gray-500">{userData?.role}</p>
                 </div>
                 <img
                   src={user.photoURL}
