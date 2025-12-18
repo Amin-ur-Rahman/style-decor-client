@@ -13,7 +13,6 @@ import {
 import Swal from "sweetalert2";
 import { FaUserCheck } from "react-icons/fa";
 import { FiStar } from "react-icons/fi";
-import axios from "axios";
 
 const ManageDecorators = () => {
   const axiosInstance = useAxiosInstance();
@@ -84,7 +83,7 @@ const ManageDecorators = () => {
         const decoRes = await axiosInstance.patch(
           `/decorator/${decorator._id}`,
           {
-            applicationStatus: "approved",
+            action: "approve",
             userId: decorator.userId,
           }
         );
@@ -121,7 +120,7 @@ const ManageDecorators = () => {
     if (result.isConfirmed) {
       try {
         const res = await axiosInstance.patch(`/decorator/${decorator._id}`, {
-          applicationStatus: "rejected",
+          action: "reject",
         });
         console.log(res.data);
 
@@ -137,6 +136,75 @@ const ManageDecorators = () => {
           text: "Failed to reject decorator.",
           icon: "error",
         });
+        console.log(error);
+      }
+    }
+  };
+  const handleDisable = async (decorator) => {
+    const result = await Swal.fire({
+      title: "Disbale Decorator?",
+      text: "This decorator account will be disabled",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#ef4444",
+      cancelButtonColor: "#6b7280",
+      confirmButtonText: "Disable",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        const res = await axiosInstance.patch(`/decorator/${decorator._id}`, {
+          action: "disable",
+        });
+        console.log(res.data);
+
+        Swal.fire({
+          title: "disabled!",
+          text: "Decorator account disabled.",
+          icon: "success",
+        });
+        refetch();
+      } catch (error) {
+        Swal.fire({
+          title: "Error!",
+          text: "Failed to reject decorator.",
+          icon: "error",
+        });
+        console.log(error);
+      }
+    }
+  };
+  const handleEnable = async (decorator) => {
+    const result = await Swal.fire({
+      title: "re-Enable this Decorator?",
+      text: "This decorator account will be enabled",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#008000",
+      cancelButtonColor: "#6b7280",
+      confirmButtonText: "Enable",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        const res = await axiosInstance.patch(`/decorator/${decorator._id}`, {
+          action: "enable",
+        });
+        console.log(res.data);
+
+        Swal.fire({
+          title: "Enabled!",
+          text: "Decorator account enabled.",
+          icon: "success",
+        });
+        refetch();
+      } catch (error) {
+        Swal.fire({
+          title: "Error!",
+          text: "Failed to reject decorator.",
+          icon: "error",
+        });
+        console.log(error);
       }
     }
   };
@@ -188,7 +256,7 @@ const ManageDecorators = () => {
   }
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-gradient-to-br from-slate-50 via-white to-slate-50 p-6">
+    <div className="min-h-screen overflow-x-hidden bg-linear-to-br from-slate-50 via-white to-slate-50 p-6">
       <div className="max-w-max mx-auto">
         {/* ------------------Header------------------ */}
         <div className="mb-8">
@@ -356,13 +424,35 @@ const ManageDecorators = () => {
                         >
                           <HiEye className="w-5 h-5" />
                         </button>
-                        {decorator.applicationStatus === "rejected" || (
+                        {decorator.applicationStatus === "pending" && (
                           <button
                             onClick={() => handleReject(decorator)}
                             className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                             title="Reject"
                           >
                             <HiX className="w-5 h-5" />
+                          </button>
+                        )}
+                        {decorator.applicationStatus === "pending" ||
+                        decorator.accountStatus === "disabled" ||
+                        decorator.applicationStatus === "rejected" ? (
+                          ""
+                        ) : (
+                          <button
+                            onClick={() => handleDisable(decorator)}
+                            className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors hover:cursor-pointer"
+                            title="Reject"
+                          >
+                            <small> Disable</small>
+                          </button>
+                        )}{" "}
+                        {decorator.accountStatus === "disabled" && (
+                          <button
+                            onClick={() => handleEnable(decorator)}
+                            className="px-2 py-1 text-sm text-green-600 cursor-pointer hover:bg-green-50 border border-green-200  rounded-lg transition-colors"
+                            title="Reject"
+                          >
+                            <small> Enable</small>
                           </button>
                         )}
                       </div>
@@ -460,7 +550,7 @@ const ManageDecorators = () => {
                   </div>
                 </div>
 
-                <div className="flex gap-3 pt-4">
+                {/* <div className="flex gap-3 pt-4">
                   {selectedDecorator.applicationStatus === "pending" && (
                     <>
                       <button
@@ -484,7 +574,7 @@ const ManageDecorators = () => {
                       </button>
                     </>
                   )}
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

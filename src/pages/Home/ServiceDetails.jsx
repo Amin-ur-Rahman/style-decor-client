@@ -1,12 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
-import { HiArrowLeft, HiCalendar } from "react-icons/hi";
+import { HiArrowLeft, HiCalendar, HiX } from "react-icons/hi";
 import useAxiosInstance from "../../hooks and contexts/axios/useAxiosInstance";
 import { LoadingBubbles } from "../../LoadingAnimations";
 import { Link, useParams } from "react-router-dom";
 import NoData from "../../components/NoData";
+import { useState } from "react";
+import BookService from "../service&role/service/BookService";
 
 const ServiceDetails = () => {
   const axiosInstance = useAxiosInstance();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedService, setSelectedService] = useState({});
   const { id } = useParams();
 
   const {
@@ -137,13 +141,18 @@ const ServiceDetails = () => {
                 </div>
 
                 <div className="mt-4">
-                  <Link
-                    to={`/book-service/${service._id}`}
+                  <button
+                    type="button"
+                    // to={`/book-service/${service._id}`}
+                    onClick={() => {
+                      setSelectedService(service);
+                      setIsModalOpen(true);
+                    }}
                     className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 bg-primary hover:bg-primary-dark text-white rounded-lg transition-all"
                   >
                     <HiCalendar className="w-5 h-5" />
                     <span className="font-medium">Book this service</span>
-                  </Link>
+                  </button>
                 </div>
               </div>
 
@@ -180,6 +189,39 @@ const ServiceDetails = () => {
           </aside>
         </div>
       </div>
+      {isModalOpen && (
+        <div className="fixed  inset-0 z-50 flex items-end sm:items-center justify-center p-4">
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0 bg-black/50"
+            onClick={() => setIsModalOpen(false)}
+          />
+
+          {/* Modal */}
+          <div
+            className="relative bg-white  sm:max-w-5xl 
+                 h-[90vh] sm:h-auto sm:max-h-[90vh]
+                 rounded-t-xl sm:rounded-lg 
+                 shadow-xl flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between   ">
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="text-gray-500  m-5 hover:text-gray-800"
+              >
+                <HiX></HiX>
+              </button>
+            </div>
+
+            {/* Scrollable content */}
+            <div className="flex-1 min-w-[70dvw] overflow-y-auto p-4 sm:p-6">
+              <BookService serviceId={service._id} />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

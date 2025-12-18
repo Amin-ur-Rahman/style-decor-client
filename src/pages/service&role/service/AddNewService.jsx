@@ -18,7 +18,8 @@ import { BiLeftArrowCircle } from "react-icons/bi";
 
 export default function AddNewService() {
   const { user } = useAuth();
-  const serviceCategories = ["Wedding", "Home", "Office", "Seminar", "Meeting"];
+  const serviceCategories = ["wedding", "home", "office", "event", "meeting"];
+
   const unitOptions = [
     "Per Sq-Ft",
     "Per Meter",

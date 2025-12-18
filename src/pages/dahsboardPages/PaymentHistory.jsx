@@ -41,7 +41,7 @@ const PaymentHistory = () => {
   if (infoLoading || isLoading) return <LoadingBubbles></LoadingBubbles>;
 
   return payments && payments.length > 0 ? (
-    <div className="w-[90dvw] mx-auto py-8">
+    <div className="  mx-auto py-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-800 mb-2">
           Payment History
@@ -51,7 +51,7 @@ const PaymentHistory = () => {
 
       <div className="bg-white rounded-lg border border-neutral shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[900px]">
+          <table className="w-full  overflow-x-auto">
             <thead className="bg-secondary">
               <tr>
                 <th className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">

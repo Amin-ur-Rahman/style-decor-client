@@ -11,7 +11,7 @@ import {
   HiCheckCircle,
   HiCash,
 } from "react-icons/hi";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useAxiosInstance from "../../../hooks and contexts/axios/useAxiosInstance";
 import { LoadingBubbles } from "../../../LoadingAnimations";
 import Swal from "sweetalert2";
@@ -19,12 +19,13 @@ import { useAuth } from "../../../hooks and contexts/auth/useAuth";
 import useUserInfo from "../../../hooks and contexts/role/useUserInfo";
 import { MdAlternateEmail, MdModeEditOutline } from "react-icons/md";
 
-const BookService = () => {
+const BookService = ({ serviceId }) => {
   const [bookingType, setBookingType] = useState("consultation");
   const [serviceCenters, setServiceCenters] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
-  const { serviceId } = useParams();
+  // const { serviceId } = useParams();
   const axiosInstance = useAxiosInstance();
   const { user } = useAuth();
   const { userData, infoLoading } = useUserInfo();
@@ -38,6 +39,8 @@ const BookService = () => {
     },
   });
 
+  // console.log(service);
+
   //   react hook form---------------
   const {
     register,
@@ -47,15 +50,6 @@ const BookService = () => {
     reset,
   } = useForm({
     defaultValues: {
-      bookingType: "consultation",
-      bookingDate: "",
-      bookingTime: "",
-      consultationType: "studio",
-      contactPhone: "",
-      specialInstructions: "",
-      serviceAddress: "",
-
-      eventVenueType: "home",
       quantity: 1,
     },
   });
@@ -128,6 +122,9 @@ const BookService = () => {
             icon: "success",
           });
           reset();
+          setTimeout(() => {
+            navigate("/dashboard/my-bookings");
+          }, 2000);
         } catch (error) {
           Swal.fire({
             title: "Request Failed",
@@ -146,9 +143,9 @@ const BookService = () => {
   };
 
   return (
-    <div className="min-h-screen bg-secondary">
+    <div className="  bg-secondary">
       {/* Header */}
-      <header className="bg-white border-b border-neutral sticky top-0 z-10 shadow-sm">
+      {/* <header className="bg-white border-b border-neutral sticky top-0 z-10 shadow-sm">
         <div className="w-[90dvw] mx-auto py-4 flex items-center justify-between">
           <a href="/" className="flex items-center gap-2">
             <div className="w-9 h-9 bg-linear-to-br from-primary to-accent rounded-lg flex items-center justify-center shadow-sm">
@@ -167,10 +164,10 @@ const BookService = () => {
             <span className="hidden sm:inline">Back</span>
           </button>
         </div>
-      </header>
+      </header> */}
 
       {/* Main Content */}
-      <div className="w-[90dvw] mx-auto py-12">
+      <div className=" p-4 rounded-lg mx-auto py-12">
         <div className="max-w-2xl mx-auto">
           {/* Page Title with Service Name */}
           <div className="text-center mb-8">
@@ -188,7 +185,7 @@ const BookService = () => {
           {/* Booking Form */}
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="bg-white rounded-xl shadow-sm border border-neutral p-8"
+            className="bg-white rounded-lg shadow-sm border border-neutral p-6 sm:p-8"
           >
             {/* Booking Type Selection */}
             <div className="mb-8">
@@ -197,7 +194,7 @@ const BookService = () => {
               </label>
               <div className="grid grid-cols-2 gap-4">
                 <label
-                  className={`flex items-center justify-center gap-2 p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                  className={`flex items-center justify-center gap-2 p-2 text-sm  rounded-lg cursor-pointer transition-all ${
                     bookingType === "consultation"
                       ? "border-primary bg-primary/5"
                       : "border-neutral hover:border-primary/50"
@@ -217,7 +214,7 @@ const BookService = () => {
                 </label>
 
                 <label
-                  className={`flex items-center justify-center gap-2 p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                  className={`flex items-center justify-center gap-2 p-2 text-sm  rounded-lg cursor-pointer transition-all ${
                     bookingType === "decoration"
                       ? "border-primary bg-primary/5"
                       : "border-neutral hover:border-primary/50"
@@ -242,15 +239,17 @@ const BookService = () => {
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   <HiCalendar className="inline w-4 h-4 mr-1" />
-                  Booking Date <span className="text-red-500">*</span>
+                  Your schedule Date <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="date"
-                  {...register("bookingDate", {
+                  {...register("scheduleDate", {
                     required: "Booking date is required",
                   })}
                   min={new Date().toISOString().split("T")[0]}
-                  className="w-full px-4 py-3 bg-white border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all"
+                  className="w-full px-3 py-2.5 text-sm bg-white border border-neutral 
+           rounded-md focus:outline-none focus:ring-2 
+           focus:ring-primary focus:border-primary transition"
                 />
                 {errors.bookingDate && (
                   <p className="text-red-600 text-sm mt-1">
@@ -263,14 +262,16 @@ const BookService = () => {
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   <HiClock className="inline w-4 h-4 mr-1" />
-                  Booking Time <span className="text-red-500">*</span>
+                  Your schedule Time <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="time"
-                  {...register("bookingTime", {
+                  {...register("scheduleTime", {
                     required: "Booking time is required",
                   })}
-                  className="w-full px-4 py-3 bg-white border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all"
+                  className="w-full px-3 py-2.5 text-sm bg-white border border-neutral 
+           rounded-md focus:outline-none focus:ring-2 
+           focus:ring-primary focus:border-primary transition"
                 />
                 {errors.bookingTime && (
                   <p className="text-red-600 text-sm mt-1">
@@ -368,7 +369,9 @@ const BookService = () => {
                       })}
                       placeholder="Enter quantity"
                       min="1"
-                      className="w-full px-4 py-3 bg-white border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all"
+                      className="w-full px-3 py-2.5 text-sm bg-white border border-neutral 
+           rounded-md focus:outline-none focus:ring-2 
+           focus:ring-primary focus:border-primary transition"
                     />
                     {errors.quantity && (
                       <p className="text-red-600 text-sm mt-1">
@@ -393,7 +396,9 @@ const BookService = () => {
                         required: "Service address is required",
                       })}
                       placeholder="House/Flat No, Road No"
-                      className="w-full px-4 py-3 bg-white border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all"
+                      className="w-full px-3 py-2.5 text-sm bg-white border border-neutral 
+           rounded-md focus:outline-none focus:ring-2 
+           focus:ring-primary focus:border-primary transition"
                     />
                     {errors.serviceAddress && (
                       <p className="text-red-600 text-sm mt-1">
@@ -412,7 +417,9 @@ const BookService = () => {
                         {...register("serviceCity", {
                           required: "Service city is required",
                         })}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300 bg-white"
+                        className="w-full px-3 py-2.5 text-sm bg-white border border-neutral 
+           rounded-md focus:outline-none focus:ring-2 
+           focus:ring-primary focus:border-primary transition"
                       >
                         <option disabled={true}>select your city</option>
                         {[...cities]
@@ -438,7 +445,9 @@ const BookService = () => {
                         {...register("serviceArea", {
                           required: "Select you area",
                         })}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300 bg-white"
+                        className="w-full px-3 py-2.5 text-sm bg-white border border-neutral 
+           rounded-md focus:outline-none focus:ring-2 
+           focus:ring-primary focus:border-primary transition"
                       >
                         <option disabled={true}>select your Area</option>
                         {findAreaByCity() &&
@@ -459,18 +468,17 @@ const BookService = () => {
                   {/* Event Venue Type */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Event Venue Type <span className="text-red-500">*</span>
+                      Service category <span className="text-red-500">*</span>
                     </label>
-                    <select
-                      {...register("eventVenueType")}
-                      className="w-full px-4 py-3 bg-white border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all"
-                    >
-                      <option value="home">Home</option>
-                      <option value="hall">Hall</option>
-                      <option value="garden">Garden</option>
-                      <option value="office">Office</option>
-                      <option value="other">Other</option>
-                    </select>
+                    <input
+                      defaultValue={service?.category}
+                      placeholder={service?.category}
+                      readOnly
+                      {...register("serviceCategory")}
+                      className="w-full px-3 py-2.5 text-sm bg-white border border-neutral 
+           rounded-md focus:outline-none focus:ring-2 
+           focus:ring-primary focus:border-primary transition"
+                    ></input>
                   </div>
                 </>
               )}
@@ -487,7 +495,9 @@ const BookService = () => {
                   defaultValue={user?.displayName}
                   {...register("bookedByName")}
                   placeholder="input your full name..."
-                  className="w-full px-4 py-3 bg-white border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all"
+                  className="w-full px-3 py-2.5 text-sm bg-white border border-neutral 
+           rounded-md focus:outline-none focus:ring-2 
+           focus:ring-primary focus:border-primary transition"
                 />
               </div>
 
@@ -501,7 +511,9 @@ const BookService = () => {
                   type="tel"
                   {...register("contactPhone")}
                   placeholder="01XXXXXXXX"
-                  className="w-full px-4 py-3 bg-white border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all"
+                  className="w-full px-3 py-2.5 text-sm bg-white border border-neutral 
+           rounded-md focus:outline-none focus:ring-2 
+           focus:ring-primary focus:border-primary transition"
                 />
               </div>
 
@@ -516,7 +528,9 @@ const BookService = () => {
                   defaultValue={user?.email}
                   {...register("bookedByEmail")}
                   placeholder="xyz@example.com"
-                  className="w-full px-4 py-3 bg-white border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all"
+                  className="w-full px-3 py-2.5 text-sm bg-white border border-neutral 
+           rounded-md focus:outline-none focus:ring-2 
+           focus:ring-primary focus:border-primary transition"
                 />
               </div>
 

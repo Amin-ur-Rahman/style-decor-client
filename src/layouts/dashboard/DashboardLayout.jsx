@@ -22,11 +22,15 @@ import {
 import { Link, NavLink, Outlet } from "react-router-dom";
 import { useAuth } from "../../hooks and contexts/auth/useAuth";
 import Logo from "../../components/Logo";
+import { LoadingBubbles } from "../../LoadingAnimations";
+import useUserInfo from "../../hooks and contexts/role/useUserInfo";
 
 export default function DashboardLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isDesktopSidebarOpen, setIsDesktopSidebarOpen] = useState(true);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const { userData, infoLoading } = useUserInfo();
+  const { logout } = useAuth();
 
   const { user, authLoading } = useAuth();
 
@@ -81,10 +85,10 @@ export default function DashboardLayout() {
       { icon: HiCash, label: "Revenue", path: "/dashboard/admin/revenue" },
     ],
     decorator: [
-      { icon: HiHome, label: "Dashboard", path: "/dashboard/decorator" },
+      { icon: HiHome, label: "Dashboard", path: "/dashboard/decorator-home" },
       {
         icon: HiClipboardList,
-        label: "My Projects",
+        label: " Assigned Projects",
         path: "/dashboard/decorator/projects",
       },
       {
@@ -113,6 +117,9 @@ export default function DashboardLayout() {
     { category: "Settings", items: menuItems.common },
   ];
 
+  if (authLoading || infoLoading) return <LoadingBubbles></LoadingBubbles>;
+
+  console.log(`userInfo from dashboard:`, userData);
   return (
     <div className="min-h-screen bg-secondary">
       {/* Top Navbar */}
@@ -179,7 +186,7 @@ export default function DashboardLayout() {
                   <p className="text-sm font-semibold text-gray-800">
                     {user.displayName}
                   </p>
-                  <p className="text-xs text-gray-500">admin</p>
+                  <p className="text-xs text-gray-500">{userData.role}</p>
                 </div>
                 <img
                   src={user.photoURL}
@@ -229,7 +236,10 @@ export default function DashboardLayout() {
 
               {/* Logout Button */}
               <div className="pt-4 border-t border-neutral">
-                <button className="flex items-center gap-3 w-full px-3 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition-all">
+                <button
+                  onClick={logout}
+                  className="flex items-center gap-3 w-full px-3 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition-all"
+                >
                   <HiLogout className="w-5 h-5" />
                   Logout
                 </button>
@@ -315,7 +325,10 @@ export default function DashboardLayout() {
 
               {/* Logout Button */}
               <div className="pt-4 border-t border-neutral">
-                <button className="flex items-center gap-3 w-full px-3 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition-all">
+                <button
+                  onClick={logout}
+                  className="flex items-center gap-3 w-full px-3 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition-all"
+                >
                   <HiLogout className="w-5 h-5" />
                   Logout
                 </button>

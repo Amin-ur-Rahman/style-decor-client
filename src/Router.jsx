@@ -17,6 +17,8 @@ import BeADecorator from "./pages/service&role/role/BeADecorator";
 import ManageServices from "./pages/dahsboardPages/admin/ManageServices";
 import ManageDecorators from "./pages/dahsboardPages/admin/ManageDecorators";
 import ManageBookings from "./pages/dahsboardPages/admin/ManageBookings";
+import DecoratorProjects from "./pages/dahsboardPages/decorator/DecoratorProjects";
+import Services from "./pages/Services";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +32,10 @@ const router = createBrowserRouter([
       {
         path: "service-details/:id",
         element: <ServiceDetails></ServiceDetails>,
+      },
+      {
+        path: "services",
+        element: <Services></Services>,
       },
     ],
   },
@@ -79,16 +85,22 @@ const router = createBrowserRouter([
         path: "my-profile",
         element: <MyProfile></MyProfile>,
       },
+
+      // decorator pages
+      {
+        path: "decorator/projects",
+        element: <DecoratorProjects></DecoratorProjects>,
+      },
     ],
   },
   {
     path: "/add-new-service",
     element: <AddNewService></AddNewService>,
   },
-  {
-    path: "/book-service/:serviceId",
-    element: <BookService></BookService>,
-  },
+  // {
+  //   path: "/book-service/:serviceId",
+  //   element: <BookService></BookService>,
+  // },
   {
     path: "/become-decorator",
     element: <BeADecorator></BeADecorator>,

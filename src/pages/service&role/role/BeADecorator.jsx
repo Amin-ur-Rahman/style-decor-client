@@ -280,6 +280,20 @@ const BeADecorator = () => {
                 <label className="flex items-center gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
                   <input
                     type="checkbox"
+                    value="event"
+                    {...register("specialization", {
+                      required: "Please select at least one specialization",
+                    })}
+                    className="md:w-4 md:h-4 w-2 h-2  text-slate-900 border-slate-300 rounded focus:ring-2 focus:ring-slate-300"
+                  />
+                  <span className="text-sm text-slate-700 font-medium">
+                    Event Decorations{" "}
+                    <small>(Wedding, Birthday, Corporate, Seminar)</small>
+                  </span>
+                </label>
+                <label className="flex items-center gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                  <input
+                    type="checkbox"
                     value="wedding"
                     {...register("specialization", {
                       required: "Please select at least one specialization",
@@ -287,7 +301,7 @@ const BeADecorator = () => {
                     className="md:w-4 md:h-4 w-2 h-2  text-slate-900 border-slate-300 rounded focus:ring-2 focus:ring-slate-300"
                   />
                   <span className="text-sm text-slate-700 font-medium">
-                    Wedding Dec oration
+                    Exclusive wedding event
                   </span>
                 </label>
                 <label className="flex items-center gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
@@ -315,12 +329,12 @@ const BeADecorator = () => {
                 <label className="flex items-center gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
                   <input
                     type="checkbox"
-                    value="event"
+                    value="meeting"
                     {...register("specialization")}
                     className="md:w-4 md:h-4 w-2 h-2  text-slate-900 border-slate-300 rounded focus:ring-2 focus:ring-slate-300"
                   />
                   <span className="text-sm text-slate-700 font-medium">
-                    Event Decoration
+                    Meeting management
                   </span>
                 </label>
               </div>

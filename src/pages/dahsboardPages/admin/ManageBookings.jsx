@@ -12,8 +12,6 @@ import {
   HiBan,
 } from "react-icons/hi";
 import Swal from "sweetalert2";
-import status from "daisyui/components/status";
-import { TiInputChecked } from "react-icons/ti";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 
 const ManageBookings = () => {
@@ -53,7 +51,7 @@ const ManageBookings = () => {
     queryFn: async () => {
       try {
         const res = await axiosInstance.get(
-          `/decorators?applicationStatus=approved&isAvailable=true&city=${selectedBooking.serviceCity}`
+          `/decorators?serviceCategory=${selectedBooking.serviceCategory}&city=${selectedBooking.serviceCity}`
         );
         console.log(selectedBooking);
 
@@ -328,7 +326,7 @@ const ManageBookings = () => {
                     <div className="flex flex-col gap-1">
                       <div className="flex items-center gap-1 text-sm text-gray-700">
                         <HiCalendar className="w-4 h-4 text-gray-400" />
-                        {new Date(booking.bookingDate).toLocaleDateString(
+                        {new Date(booking.scheduleDate).toLocaleDateString(
                           "en-US",
                           {
                             month: "short",
@@ -339,7 +337,7 @@ const ManageBookings = () => {
                       </div>
                       <div className="flex items-center gap-1 text-sm text-gray-600">
                         <HiClock className="w-4 h-4 text-gray-400" />
-                        {booking.bookingTime}
+                        {booking.scheduleTime}
                       </div>
                     </div>
                   </td>
@@ -517,7 +515,7 @@ const ManageBookings = () => {
                         <th className="px-3 py-3 text-left text-[11px] font-semibold text-text-secondary uppercase tracking-wide min-w-[90px]">
                           Experience
                         </th>
-                        <th className="px-3 py-3 text-left text-[11px] font-semibold text-text-secondary uppercase tracking-wide min-w-[80px]">
+                        <th className="px-3 py-3 text-left text-[11px] font-semibold text-text-secondary uppercase tracking-wide min-w-20">
                           Rating
                         </th>
                         <th className="px-3 py-3 text-center text-[11px] font-semibold text-text-secondary uppercase tracking-wide min-w-[100px]">

@@ -11,13 +11,15 @@ const MyBookings = () => {
   const axiosInstance = useAxiosInstance();
   const { userData, infoLoading } = useUserInfo();
 
-  const { data: bookings, isLoading } = useQuery({
+  const {
+    data: bookings,
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["my-bookings", userData?.userEmail],
     enabled: !!userData && !infoLoading,
     queryFn: async () => {
-      const res = await axiosInstance.get(
-        `/bookings?email=${userData.userEmail}`
-      );
+      const res = await axiosInstance.get(`/bookings/${userData.userEmail}`);
       return res.data;
     },
     throwOnError: (error) => {
@@ -48,6 +50,33 @@ const MyBookings = () => {
     });
   };
 
+  const handleCancelBooking = async (booking) => {
+    try {
+      const result = await Swal.fire({
+        title: "Cancel this booking?",
+        text: "This action cannot be reversed",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#008000",
+        cancelButtonColor: "#6b7280",
+        confirmButtonText: "Cancel booking",
+      });
+      if (result.isConfirmed) {
+        const res = await axiosInstance.delete(`/bookings/${booking._id}`);
+        console.log(res.data.message);
+        Swal.fire({
+          title: "Deleted!",
+          text: `${res.data.message}`,
+          icon: "success",
+        });
+        refetch();
+        return res.data;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   // Status badge styles
   const getStatusBadge = (status) => {
     const styles = {
@@ -71,7 +100,7 @@ const MyBookings = () => {
   if (isLoading || infoLoading) return <LoadingBubbles></LoadingBubbles>;
 
   return bookings && bookings.length > 0 ? (
-    <div className="w-[90dvw] mx-auto py-8">
+    <div className="w-full mx-auto py-8">
       {/* ------------heading------------ */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-800 mb-2">My Bookings</h1>
@@ -81,9 +110,9 @@ const MyBookings = () => {
       </div>
 
       {/* ---------the table------------ */}
-      <div className="bg-white rounded-lg border border-neutral shadow-sm overflow-hidden">
-        <div className="overflow-x-auto max-w-full">
-          <table className="w-full min-w-max">
+      <div className="bg-white rounded-lg border border-neutral shadow-sm ">
+        <div className="overflow-x-auto">
+          <table className="overflow-x-auto text-nowrap   ">
             <thead className="bg-secondary">
               <tr>
                 <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
@@ -148,18 +177,21 @@ const MyBookings = () => {
                     <div className="flex flex-col gap-1">
                       <div className="flex items-center gap-1 text-sm text-gray-700">
                         <HiCalendar className="w-4 h-4 text-gray-400" />
-                        {new Date(booking.bookingDate).toLocaleDateString(
-                          "en-US",
-                          {
-                            month: "short",
-                            day: "numeric",
-                            year: "numeric",
-                          }
-                        )}
+                        <small>
+                          {" "}
+                          {new Date(booking.bookingDate).toLocaleDateString(
+                            "en-US",
+                            {
+                              month: "short",
+                              day: "numeric",
+                              year: "numeric",
+                            }
+                          )}
+                        </small>
                       </div>
                       <div className="flex items-center gap-1 text-sm text-gray-600">
                         <HiClock className="w-4 h-4 text-gray-400" />
-                        {booking.bookingTime}
+                        <small>{booking.bookingTime}</small>
                       </div>
                     </div>
                   </td>
@@ -210,12 +242,22 @@ const MyBookings = () => {
                   {/* -------------payment status-------------- */}
                   <td className="px-6 py-4">
                     {booking.paymentStatus === "unpaid" ? (
-                      <button
-                        onClick={() => handlePayment(booking)}
-                        className="px-4 py-2 bg-primary hover:bg-primary/90 text-white text-xs font-semibold rounded-lg transition-all"
-                      >
-                        Pay Now
-                      </button>
+                      <div className="flex flex-col gap-2">
+                        <button
+                          onClick={() => handlePayment(booking)}
+                          className="px-4 py-2 border-[0.5px] border-primary/10 bg-primary/10 hover:bg-primary/90 hover:text-white text-xs  rounded-lg transition-all"
+                        >
+                          Pay Now
+                        </button>
+                        <button
+                          onClick={() => {
+                            handleCancelBooking(booking);
+                          }}
+                          className="text-red-400 hover:border hover:border-red-200 hover:bg-red-100 p-1 rounded-md "
+                        >
+                          <small>Cancel Booking</small>
+                        </button>
+                      </div>
                     ) : (
                       <span
                         className={`px-3 py-1 rounded-full text-xs font-semibold capitalize ${getPaymentBadge(

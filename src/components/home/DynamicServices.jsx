@@ -59,7 +59,7 @@ const DynamicServices = () => {
                       {service.serviceName}
                     </h3>
                     <Link
-                      to={`service-details/${service._id}`}
+                      to={`/service-details/${service._id}`}
                       className="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary/90 text-white text-sm font-medium rounded-lg transition-all"
                     >
                       View Details
