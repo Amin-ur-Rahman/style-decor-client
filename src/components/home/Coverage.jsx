@@ -6,11 +6,19 @@ import { LoadingBubbles } from "../../LoadingAnimations";
 import NoData from "../NoData";
 import { FiSearch } from "react-icons/fi";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import markerImg from "../../assets/marker.png";
+import L from "leaflet";
 
 const Coverage = () => {
   const axiosInstance = useAxiosInstance();
   const mapRef = useRef(null);
   const position = [23.685, 90.3563];
+  const customIcon = L.icon({
+    iconUrl: { markerImg },
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
+    popupAnchor: [0, -32],
+  });
 
   const { data: serviceCenters, isLoading } = useQuery({
     queryKey: ["service-centers"],
@@ -90,7 +98,11 @@ const Coverage = () => {
           />
 
           {serviceCenters?.map((center, index) => (
-            <Marker key={index} position={[center.lat, center.lon]}>
+            <Marker
+              icon={customIcon}
+              key={index}
+              position={[center.lat, center.lon]}
+            >
               <Popup>
                 <h3>
                   {" "}
