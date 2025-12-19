@@ -89,7 +89,7 @@ export default function DashboardLayout() {
       {
         icon: HiClipboardList,
         label: " Assigned Projects",
-        path: "/dashboard/decorator/projects",
+        path: "/dashboard/decorator/assigned-projects",
       },
       {
         icon: HiCalendar,

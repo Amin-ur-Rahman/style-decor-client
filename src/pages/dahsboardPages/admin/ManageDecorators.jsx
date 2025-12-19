@@ -121,6 +121,7 @@ const ManageDecorators = () => {
       try {
         const res = await axiosInstance.patch(`/decorator/${decorator._id}`, {
           action: "reject",
+          userId: decorator.userId,
         });
         console.log(res.data);
 
@@ -155,6 +156,7 @@ const ManageDecorators = () => {
       try {
         const res = await axiosInstance.patch(`/decorator/${decorator._id}`, {
           action: "disable",
+          userId: decorator.userId,
         });
         console.log(res.data);
 
@@ -167,7 +169,7 @@ const ManageDecorators = () => {
       } catch (error) {
         Swal.fire({
           title: "Error!",
-          text: "Failed to reject decorator.",
+          text: "Failed to disable this account.",
           icon: "error",
         });
         console.log(error);
@@ -189,6 +191,7 @@ const ManageDecorators = () => {
       try {
         const res = await axiosInstance.patch(`/decorator/${decorator._id}`, {
           action: "enable",
+          userId: decorator.userId,
         });
         console.log(res.data);
 
@@ -201,7 +204,7 @@ const ManageDecorators = () => {
       } catch (error) {
         Swal.fire({
           title: "Error!",
-          text: "Failed to reject decorator.",
+          text: "Failed to re-Enable this account.",
           icon: "error",
         });
         console.log(error);
@@ -330,7 +333,7 @@ const ManageDecorators = () => {
                     Contact
                   </th>
                   <th className="px-6 py-4 text-left text-xs font-medium text-slate-700 uppercase tracking-wider">
-                    Experience
+                    Account status
                   </th>
                   <th className="px-6 py-4 text-left text-xs font-medium text-slate-700 uppercase tracking-wider">
                     Status
@@ -376,12 +379,15 @@ const ManageDecorators = () => {
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="text-sm text-slate-900">
-                        {decorator.experienceYears} years
-                      </div>
-                      <div className="text-xs text-slate-500">
-                        {decorator.specialization?.join(", ")}
-                      </div>
+                      <span
+                        className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                          decorator.accountStatus === "active"
+                            ? "bg-green-100 text-green-700"
+                            : "bg-red-100 text-red-700"
+                        }`}
+                      >
+                        {decorator.accountStatus || "N / A"}
+                      </span>
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex  flex-col gap-2">

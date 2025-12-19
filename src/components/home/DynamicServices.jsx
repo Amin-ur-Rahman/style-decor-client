@@ -53,8 +53,15 @@ const DynamicServices = () => {
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
 
-                <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="absolute bottom-0 left-0 right-0 p-6 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                <div
+                  className="absolute inset-0 bg-linear-to-t from-black/80 via-black/40 to-transparent 
+                opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300"
+                >
+                  <div
+                    className="absolute bottom-0 left-0 right-0 p-6
+                translate-y-0 md:translate-y-2 md:group-hover:translate-y-0
+                transition-transform duration-300"
+                  >
                     <h3 className="text-white text-xl font-semibold mb-3">
                       {service.serviceName}
                     </h3>
@@ -88,7 +95,7 @@ const DynamicServices = () => {
         </div>
         <div className="flex items-center justify-center my-5 lg:my-10">
           <Link
-            to="/all-services"
+            to="/services"
             className="inline-flex items-center gap-2 px-8 py-3 bg-primary hover:bg-primary/90 text-white text-sm font-medium rounded-lg transition-all hover:scale-105"
           >
             Browse All Our Services

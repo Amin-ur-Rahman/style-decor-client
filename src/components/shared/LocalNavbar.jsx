@@ -27,13 +27,6 @@ export default function LocalNavbar() {
     { name: "Contact", href: "/contact" },
   ];
 
-  // if (authLoading)
-  //   return (
-  //     <span className="skeleton skeleton-text">
-  //       Authentication in process...
-  //     </span>
-  //   );
-
   return (
     <nav className="bg-white h-max py-3 font-crimson  sticky top-0 z-50">
       <div className="max-w-[90dvw] mx-auto ">
@@ -83,6 +76,13 @@ export default function LocalNavbar() {
                   {link.name}
                 </a>
               ))}
+              <a
+                className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-primary hover:bg-secondary rounded-lg transition-all"
+                href="/coverage"
+              >
+                Coverage
+              </a>
+
               {user && (
                 <Link
                   className="bg-linear-to-br from-accent-light to-gray-200 py-1 px-2 rounded-lg hover:scale-105 transition-all ease-in duration-200"
@@ -207,6 +207,12 @@ export default function LocalNavbar() {
                 {link.name}
               </a>
             ))}
+            <a
+              className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-primary hover:bg-secondary rounded-lg transition-all"
+              href="/coverage"
+            >
+              Coverage
+            </a>
 
             {/* Mobile Auth */}
             {user ? (

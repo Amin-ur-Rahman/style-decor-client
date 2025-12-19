@@ -8,7 +8,6 @@ import Home from "./pages/Home/Home";
 import PrivateRoute from "./protectedRoutes/PrivateRoute";
 
 import ServiceDetails from "./pages/Home/ServiceDetails";
-import BookService from "./pages/service&role/service/BookService";
 import MyBookings from "./pages/dahsboardPages/MyBookings";
 import OnPaymentSuccess from "./pages/dahsboardPages/OnPaymentSuccess";
 import PaymentHistory from "./pages/dahsboardPages/PaymentHistory";
@@ -17,8 +16,11 @@ import BeADecorator from "./pages/service&role/role/BeADecorator";
 import ManageServices from "./pages/dahsboardPages/admin/ManageServices";
 import ManageDecorators from "./pages/dahsboardPages/admin/ManageDecorators";
 import ManageBookings from "./pages/dahsboardPages/admin/ManageBookings";
-import DecoratorProjects from "./pages/dahsboardPages/decorator/DecoratorProjects";
 import Services from "./pages/Services";
+import Coverage from "./components/home/Coverage";
+import DecoratorProfile from "./pages/dahsboardPages/decorator/DecoratorProfile";
+import AssignedProjects from "./pages/dahsboardPages/decorator/AssignedProjects";
+import DecoratorLandingPage from "./pages/dahsboardPages/decorator/DecoratorLandingPage";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +38,10 @@ const router = createBrowserRouter([
       {
         path: "services",
         element: <Services></Services>,
+      },
+      {
+        path: "coverage",
+        element: <Coverage></Coverage>,
       },
     ],
   },
@@ -88,8 +94,16 @@ const router = createBrowserRouter([
 
       // decorator pages
       {
-        path: "decorator/projects",
-        element: <DecoratorProjects></DecoratorProjects>,
+        path: "decorator-home",
+        element: <DecoratorLandingPage></DecoratorLandingPage>,
+      },
+      {
+        path: "decorator/profile",
+        element: <DecoratorProfile></DecoratorProfile>,
+      },
+      {
+        path: "decorator/assigned-projects",
+        element: <AssignedProjects></AssignedProjects>,
       },
     ],
   },

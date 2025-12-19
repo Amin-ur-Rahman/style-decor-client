@@ -246,7 +246,7 @@ const ManageBookings = () => {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Status
+              Booking Status
             </label>
             <select
               value={filters.status}
@@ -424,20 +424,13 @@ const ManageBookings = () => {
                         )}
                       {booking.bookingType === "consultation" &&
                         booking.status === "scheduled" && (
-                          <div className="flex text-sm gap-2">
+                          <div className="flex flex-col text-sm gap-2">
                             <button
                               onClick={() => handleComplete(booking)}
                               className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-all"
                               title="mark as complete"
                             >
-                              Completed
-                            </button>
-                            <button
-                              onClick={() => handleCancel(booking)}
-                              className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-all"
-                              title="Cancel"
-                            >
-                              Cancel
+                              Mark as completed
                             </button>
                           </div>
                         )}

@@ -112,7 +112,7 @@ const MyBookings = () => {
       {/* ---------the table------------ */}
       <div className="bg-white rounded-lg border border-neutral shadow-sm ">
         <div className="overflow-x-auto">
-          <table className="overflow-x-auto text-nowrap   ">
+          <table className="overflow-x-auto text-nowrap w-full">
             <thead className="bg-secondary">
               <tr>
                 <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">

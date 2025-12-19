@@ -12,13 +12,18 @@ import useAxiosInstance from "../../../hooks and contexts/axios/useAxiosInstance
 import { LoadingBubbles } from "../../../LoadingAnimations";
 import { useState } from "react";
 import { EditServiceModal } from "./EditServiceModal";
+import Swal from "sweetalert2";
 
 const ManageServices = () => {
   const axiosInstance = useAxiosInstance();
   const [selectedService, setSelectedService] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-  const { data: services, isLoading } = useQuery({
+  const {
+    data: services,
+    isLoading,
+    refetch: serviceRefetch,
+  } = useQuery({
     queryKey: ["services-admin"],
     queryFn: async () => {
       const res = await axiosInstance.get("/services");
@@ -32,21 +37,42 @@ const ManageServices = () => {
   //   console.log(id);
   // };
 
-  const handleEdit = (id) => {
-    const service = services.find((s) => s._id === id);
+  const handleEdit = (item) => {
+    const service = services.find((s) => s._id === item?._id);
     setSelectedService(service);
-    setIsEditModalOpen(true);
+    setTimeout(() => {
+      setIsEditModalOpen(true);
+    }, 200);
   };
 
-  const handleDelete = (id) => {
-    console.log(id);
-  };
-
-  const handleAddNew = () => {
-    console.log("new service added");
-  };
-  const handleUpdate = async (service) => {
-    console.log(service._id);
+  const handleDelete = async (id) => {
+    const result = await Swal.fire({
+      title: "Confirm delete?",
+      text: "Data will be Deleted permanently from database",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#ff0000",
+      cancelButtonColor: "#808080",
+      confirmButtonText: "Delete",
+    });
+    try {
+      if (!result.isConfirmed) return;
+      const res = await axiosInstance.delete(`/service/${id}`);
+      await Swal.fire({
+        title: "Deleted!",
+        text: "Service data Deleted permanently",
+        icon: "success",
+      });
+      serviceRefetch();
+      console.log(res.data);
+    } catch (error) {
+      Swal.fire({
+        title: "Error!",
+        text: "Failed to update service.",
+        icon: "error",
+      });
+      console.log(error);
+    }
   };
 
   return (
@@ -74,7 +100,6 @@ const ManageServices = () => {
         {/* Add new service button */}
         <Link
           to="/add-new-service"
-          onClick={handleAddNew}
           className="flex items-center justify-center gap-2 px-4 py-2.5 bg-primary hover:bg-primary-hover text-white text-sm font-medium rounded-lg transition-colors whitespace-nowrap"
         >
           <HiPlus className="w-4 h-4" />
@@ -171,7 +196,7 @@ const ManageServices = () => {
                       </Link>
 
                       <button
-                        onClick={() => handleEdit(service._id)}
+                        onClick={() => handleEdit(service)}
                         className="p-1.5 rounded-md text-text-muted hover:text-accent hover:bg-accent/10 transition-colors"
                         title="Edit"
                       >
@@ -210,7 +235,6 @@ const ManageServices = () => {
         service={selectedService}
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
-        onUpdate={handleUpdate}
       />
     </div>
   );

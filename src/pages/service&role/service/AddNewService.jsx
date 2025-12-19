@@ -206,7 +206,7 @@ export default function AddNewService() {
                     {unitOptions.map((option) => (
                       <option
                         key={option}
-                        value={option.toLowerCase().replace(/[\/\s]/g, "-")}
+                        value={option.toLowerCase().replace(/[/\s]/g, "-")}
                       >
                         {option}
                       </option>
