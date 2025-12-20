@@ -91,11 +91,7 @@ export default function DashboardLayout() {
         label: " Assigned Projects",
         path: "/dashboard/decorator/assigned-projects",
       },
-      {
-        icon: HiCalendar,
-        label: "Today's Schedule",
-        path: "/dashboard/decorator/schedule",
-      },
+
       {
         icon: HiCash,
         label: "Earnings",

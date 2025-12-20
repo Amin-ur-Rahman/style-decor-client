@@ -19,12 +19,14 @@ import {
   HiLocationMarker,
   HiUser,
   HiPhone,
+  HiClock,
 } from "react-icons/hi";
 import Swal from "sweetalert2";
 
 const CompletedProjectItem = ({ project }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
+  // funciton for completed projects list rendering----------------
   return (
     <div className="border border-neutral rounded-lg overflow-hidden">
       <button
@@ -81,7 +83,7 @@ const CompletedProjectItem = ({ project }) => {
             <div>
               <p className="text-sm text-gray-500">Amount</p>
               <p className="font-semibold text-primary">
-                ${project.payableAmount?.toLocaleString() || 0}
+                ৳{project.payableAmount?.toLocaleString() || 0}
               </p>
             </div>
             <div>
@@ -104,6 +106,124 @@ const CompletedProjectItem = ({ project }) => {
     </div>
   );
 };
+// funciton for todays projects list rendering----------------
+
+const TodayScheduleItem = ({ booking }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  return (
+    <div className="border border-accent/30 rounded-lg overflow-hidden bg-accent/5">
+      <button
+        onClick={() => setIsExpanded(!isExpanded)}
+        className="w-full flex items-center justify-between p-4 hover:bg-accent/10 transition-colors text-left"
+      >
+        <div className="flex items-start gap-3 flex-1">
+          <div className="p-2 bg-accent/20 rounded-lg shrink-0 mt-0.5">
+            <HiClock className="w-5 h-5 text-accent" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <h3 className="font-semibold text-gray-800">
+              {booking.serviceName}
+            </h3>
+            <div className="flex flex-wrap items-center gap-2 mt-1 text-sm text-gray-600">
+              <span className="flex items-center gap-1 font-medium text-accent">
+                <HiClock className="w-4 h-4" />
+                {booking.scheduleTime}
+              </span>
+              <span className="text-gray-400">•</span>
+              <span className="flex items-center gap-1">
+                <HiLocationMarker className="w-4 h-4" />
+                {booking.serviceArea}, {booking.serviceCity}
+              </span>
+            </div>
+          </div>
+        </div>
+        <svg
+          className={`w-5 h-5 text-gray-400 transition-transform  shrink-0 ${
+            isExpanded ? "rotate-180" : ""
+          }`}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M19 9l-7 7-7-7"
+          />
+        </svg>
+      </button>
+
+      {isExpanded && (
+        <div className="p-4 pt-0 border-t border-accent/20 space-y-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="flex items-start gap-2">
+              <HiUser className="w-5 h-5 text-primary mt-0.5 shrink-0" />
+              <div>
+                <p className="text-sm text-gray-500">Client</p>
+                <p className="font-semibold text-gray-800">
+                  {booking.bookedByName}
+                </p>
+                <p className="text-sm text-gray-600">{booking.bookedByEmail}</p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-2">
+              <HiPhone className="w-5 h-5 text-primary mt-0.5 shrink-0" />
+              <div>
+                <p className="text-sm text-gray-500">Contact</p>
+                <p className="font-semibold text-gray-800">
+                  {booking.contactPhone}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-2">
+              <HiLocationMarker className="w-5 h-5 text-primary mt-0.5 shrink-0" />
+              <div className="md:col-span-2">
+                <p className="text-sm text-gray-500">Full Address</p>
+                <p className="font-semibold text-gray-800">
+                  {booking.serviceAddress}
+                </p>
+                <p className="text-sm text-gray-600">
+                  {booking.serviceArea}, {booking.serviceCity}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-2">
+              <HiCalendar className="w-5 h-5 text-primary mt-0.5 shrink-0" />
+              <div>
+                <p className="text-sm text-gray-500">Status</p>
+                <span className="inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-semibold capitalize">
+                  {booking.status?.replace(/-/g, " ")}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {booking.specialInstructions && (
+            <div className="bg-accent/10 p-3 rounded border border-accent/20">
+              <p className="text-sm text-gray-500 mb-1 font-medium">
+                Special Instructions
+              </p>
+              <p className="text-sm text-gray-700">
+                {booking.specialInstructions}
+              </p>
+            </div>
+          )}
+
+          <div className="pt-2">
+            <p className="text-xs text-gray-500">
+              Booking ID: #{booking._id.slice(-8)}
+            </p>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
 
 const DecoratorLandingPage = () => {
   const axiosInstance = useAxiosInstance();
@@ -111,6 +231,7 @@ const DecoratorLandingPage = () => {
   const [sortBy, setSortBy] = useState("recent-desc");
   const queryClient = useQueryClient();
 
+  //current projects---------------
   const {
     data: currentProject,
     isLoading,
@@ -127,6 +248,7 @@ const DecoratorLandingPage = () => {
     },
   });
 
+  // ------finished projects----------------//
   const { data: finishedProjects, isLoading: loadingFinishedProjects } =
     useQuery({
       queryKey: ["finished-projects", userData?.decoratorId],
@@ -138,6 +260,18 @@ const DecoratorLandingPage = () => {
         return res.data || [];
       },
     });
+
+  //---------todays projects--------
+  const { data: todaysBookings, isLoading: loadingTodaysSchedule } = useQuery({
+    queryKey: ["todays-schedule", userData?.decoratorId],
+    enabled: !!userData?.decoratorId,
+    queryFn: async () => {
+      const res = await axiosInstance.get(
+        `/decorator/${userData.decoratorId}/today-schedule`
+      );
+      return res.data || [];
+    },
+  });
 
   if (isLoading || infoLoading) {
     return <LoadingBubbles />;
@@ -201,7 +335,7 @@ const DecoratorLandingPage = () => {
         bookingId: booking._id,
       });
 
-      // Invalidate and refetch both queries to get fresh data
+      // invalidate and refetch both queries to get fresh data, and
       await queryClient.invalidateQueries([
         "current-project",
         userData?.decoratorId,
@@ -247,6 +381,7 @@ const DecoratorLandingPage = () => {
         </p>
       </div>
 
+      {/* -----------------on going project here--------------- */}
       {currentProject ? (
         <div className="bg-white rounded-lg border border-neutral p-6 mb-8 shadow-sm">
           <h2 className="text-xl font-semibold text-gray-800 mb-6">
@@ -282,7 +417,7 @@ const DecoratorLandingPage = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex items-start gap-3">
-                  <HiUser className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
+                  <HiUser className="w-5 h-5 text-primary mt-1  shrink-0" />
                   <div className="min-w-0">
                     <p className="text-sm text-gray-500">Booked By</p>
                     <p className="font-semibold text-gray-800 truncate">
@@ -295,7 +430,7 @@ const DecoratorLandingPage = () => {
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <HiPhone className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
+                  <HiPhone className="w-5 h-5 text-primary mt-1  shrink-0" />
                   <div>
                     <p className="text-sm text-gray-500">Contact</p>
                     <p className="font-semibold text-gray-800">
@@ -305,7 +440,7 @@ const DecoratorLandingPage = () => {
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <HiCalendar className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
+                  <HiCalendar className="w-5 h-5 text-primary mt-1  shrink-0" />
                   <div>
                     <p className="text-sm text-gray-500">Scheduled Date</p>
                     <p className="font-semibold text-gray-800">
@@ -326,10 +461,10 @@ const DecoratorLandingPage = () => {
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <HiLocationMarker className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
+                  <HiLocationMarker className="w-5 h-5 text-primary mt-1  shrink-0" />
                   <div className="min-w-0">
                     <p className="text-sm text-gray-500">Address</p>
-                    <p className="font-semibold text-gray-800 break-words">
+                    <p className="font-semibold text-gray-800 wrap-break-word">
                       {currentProject.serviceAddress || "N/A"}
                     </p>
                     <p className="text-sm text-gray-600">
@@ -392,6 +527,49 @@ const DecoratorLandingPage = () => {
         </div>
       )}
 
+      {/* ----------todays schedule------------------- */}
+      <div className="bg-white rounded-lg border border-accent/30 p-6 mb-8 shadow-sm">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="p-2 bg-accent/10 rounded-lg">
+            <HiCalendar className="w-6 h-6 text-accent" />
+          </div>
+          <div>
+            <h2 className="text-xl font-semibold text-gray-800">
+              Today's Schedule
+            </h2>
+            <p className="text-sm text-gray-500">
+              {new Date().toLocaleDateString("en-US", {
+                weekday: "long",
+                month: "long",
+                day: "numeric",
+                year: "numeric",
+              })}
+            </p>
+          </div>
+        </div>
+
+        {loadingTodaysSchedule ? (
+          <div className="text-center py-8">
+            <LoadingBubbles />
+          </div>
+        ) : !todaysBookings || todaysBookings.length === 0 ? (
+          <div className="text-center py-8 px-4 bg-accent/5 rounded-lg">
+            <HiClock className="w-12 h-12 text-accent/40 mx-auto mb-3" />
+            <p className="text-gray-600 font-medium">
+              No bookings scheduled for today
+            </p>
+            <p className="text-sm text-gray-500 mt-1">Enjoy your free time!</p>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {todaysBookings.map((booking) => (
+              <TodayScheduleItem key={booking._id} booking={booking} />
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/*----------------- Completed Projects----------------------   */}
       <div className="bg-white rounded-lg border border-neutral p-6 shadow-sm">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
           <h2 className="text-xl font-semibold text-gray-800">

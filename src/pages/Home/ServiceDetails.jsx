@@ -203,17 +203,17 @@ const ServiceDetails = () => {
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="flex items-center bg-secondary justify-between">
+            {/* <div className="flex items-center bg-secondary justify-between">
               <button
                 onClick={() => setIsModalOpen(false)}
                 className="text-text-muted m-5 hover:text-text-primary"
               >
                 <HiX />
               </button>
-            </div>
+            </div> */}
 
             {/* Scrollable content */}
-            <div className="flex-1  min-w-[70dvw] overflow-y-auto ">
+            <div className="flex-1 rounded-lg min-w-[80dvw] lg:min-w-[60dvw] max-w-[90dvw]  lg:max-w-[80dvw] overflow-y-auto ">
               <BookService serviceId={service._id} />
             </div>
           </div>

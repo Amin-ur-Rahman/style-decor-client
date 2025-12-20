@@ -21,6 +21,7 @@ import Coverage from "./components/home/Coverage";
 import DecoratorProfile from "./pages/dahsboardPages/decorator/DecoratorProfile";
 import AssignedProjects from "./pages/dahsboardPages/decorator/AssignedProjects";
 import DecoratorLandingPage from "./pages/dahsboardPages/decorator/DecoratorLandingPage";
+import EarningsSummary from "./pages/dahsboardPages/decorator/EarningsSummary";
 
 const router = createBrowserRouter([
   {
@@ -104,6 +105,10 @@ const router = createBrowserRouter([
       {
         path: "decorator/assigned-projects",
         element: <AssignedProjects></AssignedProjects>,
+      },
+      {
+        path: "decorator/earnings",
+        element: <EarningsSummary></EarningsSummary>,
       },
     ],
   },

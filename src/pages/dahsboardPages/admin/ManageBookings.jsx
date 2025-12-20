@@ -345,7 +345,7 @@ const ManageBookings = () => {
                   {/* ------------------------Amount -------------------------*/}
                   <td className="px-4 md:px-6 py-4">
                     <p className="text-sm font-bold text-primary">
-                      ${booking.payableAmount?.toLocaleString() || 0}
+                      ৳{booking.payableAmount?.toLocaleString() || 0}
                     </p>
                   </td>
 

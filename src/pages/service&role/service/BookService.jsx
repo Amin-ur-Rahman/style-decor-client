@@ -143,7 +143,7 @@ const BookService = ({ serviceId }) => {
   };
 
   return (
-    <div className="  bg-secondary">
+    <div className=" md:p-5 bg-secondary">
       {/* Header */}
       {/* <header className="bg-white border-b border-neutral sticky top-0 z-10 shadow-sm">
         <div className="w-[90dvw] mx-auto py-4 flex items-center justify-between">
@@ -167,8 +167,8 @@ const BookService = ({ serviceId }) => {
       </header> */}
 
       {/* Main Content */}
-      <div className=" p-4 rounded-lg mx-auto py-12">
-        <div className="max-w-2xl mx-auto">
+      <div className=" p-4   mx-auto ">
+        <div className="  mx-auto">
           {/* Page Title with Service Name */}
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-gray-800 mb-2">

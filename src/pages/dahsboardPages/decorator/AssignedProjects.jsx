@@ -39,11 +39,22 @@ const AssignedProjects = () => {
     retry: false,
   });
 
+  const { data: decoratorData } = useQuery({
+    queryKey: ["decorator-data", userData?.decoratorId],
+    enabled: !!userData?.decoratorId,
+    queryFn: async () => {
+      const res = await axiosInstance.get(`/decorator/${userData.decoratorId}`);
+      console.log(res.data);
+      return res.data;
+    },
+  });
+
   if (isLoading || infoLoading) return <LoadingBubbles></LoadingBubbles>;
 
   if (isError && error?.response?.status !== 404) {
     return <NoData />;
   }
+  // console.log(decoratorData);
 
   const toggleExpand = (id) => {
     setExpandedId(expandedId === id ? null : id);
@@ -51,9 +62,16 @@ const AssignedProjects = () => {
 
   const handleAssigned = async (bookingId) => {
     try {
+      if (decoratorData.currentProject) {
+        return Swal.fire({
+          title: "Cannot accept this project right now!",
+          text: "You already have on-going project, try again after completing that",
+          icon: "warning",
+        });
+      }
       const result = await Swal.fire({
-        title: "Accept the project?",
-        text: "The project will be added in your assigned list",
+        title: "Accept this project?",
+        text: "The project will be added in your assigned list and put into planning phase",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#008000",
