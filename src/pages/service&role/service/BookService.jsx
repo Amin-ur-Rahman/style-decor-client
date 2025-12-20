@@ -524,6 +524,8 @@ const BookService = ({ serviceId }) => {
                   Email Address <span className="text-red-500">*</span>
                 </label>
                 <input
+                  readOnly
+                  disabled
                   type="email"
                   defaultValue={user?.email}
                   {...register("bookedByEmail")}

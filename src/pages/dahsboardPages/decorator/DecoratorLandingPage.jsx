@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import useAxiosInstance from "../../../hooks and contexts/axios/useAxiosInstance";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import useUserInfo from "../../../hooks and contexts/role/useUserInfo";
 import { LoadingBubbles } from "../../../LoadingAnimations";
 import NoData from "../../../components/NoData";
@@ -10,8 +10,6 @@ import materials from "../../../assets/materials.jpeg";
 import inprogress from "../../../assets/inprogress.jpeg";
 import ontheway from "../../../assets/ontheway.jpeg";
 import {
-  HiCheck,
-  HiX,
   HiClipboardList,
   HiShoppingBag,
   HiTruck,
@@ -36,7 +34,7 @@ const CompletedProjectItem = ({ project }) => {
         <div className="flex-1">
           <h3 className="font-semibold text-gray-800">{project.serviceName}</h3>
           <p className="text-sm text-gray-500 mt-1">
-            {new Date(project.bookingDate).toLocaleDateString("en-US", {
+            {new Date(project.scheduleDate).toLocaleDateString("en-US", {
               month: "short",
               day: "numeric",
               year: "numeric",
@@ -111,11 +109,11 @@ const DecoratorLandingPage = () => {
   const axiosInstance = useAxiosInstance();
   const { userData, infoLoading } = useUserInfo();
   const [sortBy, setSortBy] = useState("recent-desc");
+  const queryClient = useQueryClient();
 
   const {
     data: currentProject,
     isLoading,
-    refetch: refreshBookingData,
     isError,
     error,
   } = useQuery({
@@ -127,7 +125,6 @@ const DecoratorLandingPage = () => {
       );
       return res.data?.currentProjectData || null;
     },
-    retry: false,
   });
 
   const { data: finishedProjects, isLoading: loadingFinishedProjects } =
@@ -140,7 +137,6 @@ const DecoratorLandingPage = () => {
         );
         return res.data || [];
       },
-      retry: false,
     });
 
   if (isLoading || infoLoading) {
@@ -205,7 +201,15 @@ const DecoratorLandingPage = () => {
         bookingId: booking._id,
       });
 
-      await refreshBookingData();
+      // Invalidate and refetch both queries to get fresh data
+      await queryClient.invalidateQueries([
+        "current-project",
+        userData?.decoratorId,
+      ]);
+      await queryClient.invalidateQueries([
+        "finished-projects",
+        userData?.decoratorId,
+      ]);
 
       Swal.fire({
         title: "Status updated",
@@ -228,8 +232,8 @@ const DecoratorLandingPage = () => {
 
   const sortedProjects = finishedProjects
     ? [...finishedProjects].sort((a, b) => {
-        const dateA = new Date(a.bookingDate);
-        const dateB = new Date(b.bookingDate);
+        const dateA = new Date(a.scheduleDate);
+        const dateB = new Date(b.scheduleDate);
         return sortBy === "recent-desc" ? dateB - dateA : dateA - dateB;
       })
     : [];
