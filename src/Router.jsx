@@ -17,11 +17,13 @@ import ManageServices from "./pages/dahsboardPages/admin/ManageServices";
 import ManageDecorators from "./pages/dahsboardPages/admin/ManageDecorators";
 import ManageBookings from "./pages/dahsboardPages/admin/ManageBookings";
 import Services from "./pages/Services";
-import Coverage from "./components/home/Coverage";
+
 import DecoratorProfile from "./pages/dahsboardPages/decorator/DecoratorProfile";
 import AssignedProjects from "./pages/dahsboardPages/decorator/AssignedProjects";
 import DecoratorLandingPage from "./pages/dahsboardPages/decorator/DecoratorLandingPage";
 import EarningsSummary from "./pages/dahsboardPages/decorator/EarningsSummary";
+import CoveragePage from "./pages/CoveragePage";
+import AdminLandingPage from "./pages/dahsboardPages/admin/AdminLandingPage";
 
 const router = createBrowserRouter([
   {
@@ -42,7 +44,7 @@ const router = createBrowserRouter([
       },
       {
         path: "coverage",
-        element: <Coverage></Coverage>,
+        element: <CoveragePage></CoveragePage>,
       },
     ],
   },
@@ -64,7 +66,11 @@ const router = createBrowserRouter([
     children: [
       // admin  pages----------------
       {
-        path: "admin/services",
+        path: "admin",
+        element: <AdminLandingPage></AdminLandingPage>,
+      },
+      {
+        path: "manage-services",
         element: <ManageServices></ManageServices>,
       },
       {

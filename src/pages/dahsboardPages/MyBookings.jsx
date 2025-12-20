@@ -71,7 +71,7 @@ const MyBookings = () => {
     try {
       const res = await axiosInstance.patch(
         `/bookings/${selectedBooking._id}`,
-        updatedData
+        { ...updatedData, quantity: parseFloat(updatedData.quantity) }
       );
 
       Swal.fire({

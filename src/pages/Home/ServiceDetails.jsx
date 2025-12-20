@@ -10,7 +10,7 @@ import BookService from "../service&role/service/BookService";
 const ServiceDetails = () => {
   const axiosInstance = useAxiosInstance();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedService, setSelectedService] = useState({});
+  // const [selectedService, setSelectedService] = useState({});
   const { id } = useParams();
 
   const {
@@ -91,7 +91,7 @@ const ServiceDetails = () => {
             <button
               type="button"
               onClick={() => {
-                setSelectedService(service);
+                // setSelectedService(service);
                 setIsModalOpen(true);
               }}
               className="w-full py-3 bg-primary hover:bg-primary-hover text-white text-sm tracking-wide transition-colors"

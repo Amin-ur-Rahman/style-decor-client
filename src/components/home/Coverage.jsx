@@ -4,10 +4,11 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosInstance from "../../hooks and contexts/axios/useAxiosInstance";
 import { LoadingBubbles } from "../../LoadingAnimations";
 import NoData from "../NoData";
-import { FiSearch } from "react-icons/fi";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import markerImg from "../../assets/marker.png";
 import L from "leaflet";
+import { FaMagnifyingGlass } from "react-icons/fa6";
+import { NavLink } from "react-router-dom";
 
 const Coverage = () => {
   const axiosInstance = useAxiosInstance();
@@ -27,58 +28,21 @@ const Coverage = () => {
       return res.data;
     },
   });
-  //   console.log(serviceCenters);
-
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    const inputValue = e.target.location.value;
-    if (!inputValue) return;
-
-    const location = await serviceCenters.find((center) =>
-      center.district.toLowerCase().includes(inputValue)
-    );
-    if (location) {
-      const query = [location.lat, location.lon];
-      console.log(query);
-      mapRef.current.flyTo(query, 12);
-    }
-    // console.log(inputValue);
-  };
 
   if (isLoading) return <LoadingBubbles></LoadingBubbles>;
   return serviceCenters?.length === 0 ? (
     <NoData></NoData>
   ) : (
-    <div className="max-w-[90dvw] mx-auto">
-      <h1 className="text-3xl text-center font-bold secondary-text">
-        Our Service Centers
+    <div className="max-w-[90dvw] mx-auto relative z-0">
+      <h1 className="text-3xl text-center font-bold secondary-text py-5 my-5">
+        We Are Available All Over the Country
       </h1>
-      <form
-        onSubmit={handleSearch}
-        className="flex my-10 items-center md:w-3/4 w-max  relative gap-4  rounded-lg  shadow-sm max-w-4xl mx-auto border border-accent"
-      >
-        <FiSearch className="text-2xl ml-2 text-primary shrink-0" />
-
-        <input
-          name="location"
-          type="text"
-          placeholder="Search here"
-          className="lg:flex-1 lg:w-3/4 w-max bg-transparent outline-none px-6 py-4 text-gray-700 placeholder-gray-400 text-base "
-        />
-
-        <button
-          type="submit"
-          className="border-l-2 bg-neutral border-accent absolute right-0 text-gray-800  px-5 lg:px-10 h-full rounded-lg hover:shadow-lg transition-all duration-300 hover:scale-105 shrink-0"
-        >
-          Search
-        </button>
-      </form>
 
       {/* -------map container------------- */}
 
-      <div className="min-h-[80dvh]">
+      <div className="min-h-[80dvh] relative z-0">
         <MapContainer
-          style={{ height: "80vh" }} // ensures Leaflet works
+          style={{ height: "80vh", position: "relative", zIndex: 0 }}
           className="
           sm:w-[90%]   
           md:w-[85%]   
@@ -88,7 +52,7 @@ const Coverage = () => {
       rounded-lg
     "
           center={position}
-          zoom={7}
+          zoom={8}
           scrollWheelZoom={false}
           ref={mapRef}
         >
@@ -115,6 +79,10 @@ const Coverage = () => {
             </Marker>
           ))}
         </MapContainer>
+      </div>
+      <div className="flex items-center gap-3 border-accent/50 border-2 justify-center bg-linear-to-br from-primary via-neutral to-accent py-4 my-5 w-[50%] mx-auto rounded-lg hover:scale-105 transition-all duration-300 ease-in">
+        <FaMagnifyingGlass></FaMagnifyingGlass>
+        <NavLink to="/coverage">Find out your Area</NavLink>
       </div>
     </div>
   );

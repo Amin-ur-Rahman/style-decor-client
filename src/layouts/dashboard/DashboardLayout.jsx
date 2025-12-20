@@ -70,7 +70,7 @@ export default function DashboardLayout() {
       {
         icon: HiCollection,
         label: "Manage Services",
-        path: "/dashboard/admin/services",
+        path: "/dashboard/manage-services",
       },
       {
         icon: HiClipboardList,
@@ -103,14 +103,14 @@ export default function DashboardLayout() {
         path: "/dashboard/decorator/profile",
       },
     ],
-    common: [{ icon: HiCog, label: "Settings", path: "/dashboard/settings" }],
+    // common: [{ icon: HiCog, label: "Settings", path: "/dashboard/settings" }],
   };
 
   const allMenuItems = [
     { category: "User Menu", items: menuItems.user },
     { category: "Admin Menu", items: menuItems.admin },
     { category: "Decorator Menu", items: menuItems.decorator },
-    { category: "Settings", items: menuItems.common },
+    // { category: "Settings", items: menuItems.common },
   ];
 
   if (authLoading || infoLoading) return <LoadingBubbles></LoadingBubbles>;
