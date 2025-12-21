@@ -126,7 +126,7 @@ const EarningsSummary = () => {
                 Average per Project
               </p>
               <p className="text-3xl font-bold text-text-primary">
-                {avgEarningPerProject}
+                {Math.round(avgEarningPerProject)}
               </p>
               <p className="text-sm text-text-muted mt-1">
                 {(earnings[0]?.commissionRate * 100 || 25).toFixed(0)}%
@@ -213,7 +213,7 @@ const EarningsSummary = () => {
                         {(earning.commissionRate * 100).toFixed(0)}% commission
                       </p>
                     </div>
-                    <span
+                    {/* <span
                       className={`px-3 py-1 rounded-full text-xs font-semibold ${
                         earning.paymentStatus === "paid"
                           ? "bg-green-100 text-green-700"
@@ -221,7 +221,7 @@ const EarningsSummary = () => {
                       }`}
                     >
                       {earning.paymentStatus === "paid" ? "Paid" : "Pending"}
-                    </span>
+                    </span> */}
                   </div>
                 </div>
               </div>
