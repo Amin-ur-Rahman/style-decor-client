@@ -5,7 +5,8 @@ import { FcGoogle } from "react-icons/fc";
 // If you're using react-hook-form, make sure these come from props or import them:
 import { useForm } from "react-hook-form";
 import { useAuth } from "../../hooks and contexts/auth/useAuth";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Logo from "../../components/Logo";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -38,13 +39,10 @@ const Login = () => {
       >
         <div className="w-full max-w-md">
           {/* Logo & Header */}
-          <div className="text-center mb-8">
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center shadow-sm">
-                <HiSparkles className="w-6 h-6 text-white" />
-              </div>
-              <h1 className="text-2xl font-bold text-primary">StyleDecor</h1>
-            </div>
+          <div className="text-center mb-8 flex flex-col items-center gap-5">
+            <Link to="/">
+              <Logo></Logo>
+            </Link>
 
             <h2 className="text-2xl font-semibold text-gray-800 mb-2">
               Login to your account
