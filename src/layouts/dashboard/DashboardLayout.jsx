@@ -19,11 +19,13 @@ import {
   HiViewBoards,
   HiArrowsExpand,
 } from "react-icons/hi";
+import { FaHistory } from "react-icons/fa";
 import { Link, NavLink, Outlet } from "react-router-dom";
 import { useAuth } from "../../hooks and contexts/auth/useAuth";
 import Logo from "../../components/Logo";
 import { LoadingBubbles } from "../../LoadingAnimations";
 import useUserInfo from "../../hooks and contexts/role/useUserInfo";
+import { ImHistory } from "react-icons/im";
 
 export default function DashboardLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -49,11 +51,7 @@ export default function DashboardLayout() {
     user: [
       { icon: HiHome, label: "Dashboard", path: "/dashboard/user" },
       { icon: HiUser, label: "My Profile", path: "/dashboard/my-profile" },
-      {
-        icon: HiCalendar,
-        label: "My Bookings",
-        path: "/dashboard/my-bookings",
-      },
+
       {
         icon: HiCreditCard,
         label: "Payment History",
@@ -77,12 +75,12 @@ export default function DashboardLayout() {
         label: "Manage Bookings",
         path: "/dashboard/manage-bookings",
       },
+
       {
-        icon: HiChartBar,
-        label: "Analytics",
-        path: "/dashboard/admin/analytics",
+        icon: FaHistory,
+        label: "Booking History",
+        path: "/dashboard/booking-history",
       },
-      { icon: HiCash, label: "Revenue", path: "/dashboard/admin/revenue" },
     ],
     decorator: [
       { icon: HiHome, label: "Dashboard", path: "/dashboard/decorator-home" },
@@ -114,6 +112,9 @@ export default function DashboardLayout() {
   ];
 
   if (authLoading || infoLoading) return <LoadingBubbles></LoadingBubbles>;
+
+  const role = userData?.role;
+  const activeMenu = menuItems[role] || [];
 
   console.log(`userInfo from dashboard:`, userData);
   return (
@@ -204,31 +205,39 @@ export default function DashboardLayout() {
         >
           <div className="p-4 w-64">
             <nav className="space-y-6">
-              {allMenuItems.map((section, Index) => (
-                <div key={Index}>
-                  <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3 px-3">
-                    {section.category}
-                  </h3>
-                  <ul className="space-y-1">
-                    {section.items.map((item, itemIndex) => (
-                      <NavLink
-                        key={itemIndex}
-                        to={item.path}
-                        className={({ isActive }) =>
-                          `flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-all group ${
-                            isActive
-                              ? "bg-secondary text-primary"
-                              : "text-gray-700 hover:bg-secondary hover:text-primary"
-                          }`
-                        }
-                      >
-                        <item.icon className="w-5 h-5 text-gray-500 group-hover:text-primary transition-colors" />
-                        {item.label}
-                      </NavLink>
-                    ))}
-                  </ul>
-                </div>
+              {activeMenu.map((item, index) => (
+                <NavLink
+                  key={index}
+                  to={item.path}
+                  className={({ isActive }) =>
+                    `flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-all group ${
+                      isActive
+                        ? "bg-secondary text-primary"
+                        : "text-gray-700 hover:bg-secondary hover:text-primary"
+                    }`
+                  }
+                >
+                  <item.icon className="w-5 h-5 text-gray-500 group-hover:text-primary" />
+                  {item.label}
+                </NavLink>
               ))}
+
+              {role !== "user" && (
+                <NavLink
+                  key="a1231"
+                  to="/dashboard/payment/history/admin/decorator"
+                  className={({ isActive }) =>
+                    `flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-all group ${
+                      isActive
+                        ? "bg-secondary text-primary"
+                        : "text-gray-700 hover:bg-secondary hover:text-primary"
+                    }`
+                  }
+                >
+                  <ImHistory size={24} color="gray"></ImHistory>
+                  Payment History
+                </NavLink>
+              )}
 
               {/* Logout Button */}
               <div className="pt-4 border-t border-neutral">
@@ -297,27 +306,38 @@ export default function DashboardLayout() {
 
             {/* Mobile Menu */}
             <nav className="space-y-6 max-h-[calc(100vh-250px)] overflow-y-auto">
-              {allMenuItems.map((section, Index) => (
-                <div key={Index}>
-                  <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3 px-3">
-                    {section.category}
-                  </h3>
-                  <ul className="space-y-1">
-                    {section.items.map((item, itemIndex) => (
-                      <li key={itemIndex}>
-                        <a
-                          href={item.path}
-                          onClick={() => setIsSidebarOpen(false)}
-                          className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-secondary hover:text-primary rounded-lg transition-all group"
-                        >
-                          <item.icon className="w-5 h-5 text-gray-500 group-hover:text-primary transition-colors" />
-                          {item.label}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+              {activeMenu.map((item, index) => (
+                <NavLink
+                  key={index}
+                  to={item.path}
+                  className={({ isActive }) =>
+                    `flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-all group ${
+                      isActive
+                        ? "bg-secondary text-primary"
+                        : "text-gray-700 hover:bg-secondary hover:text-primary"
+                    }`
+                  }
+                >
+                  <item.icon className="w-5 h-5 text-gray-500 group-hover:text-primary" />
+                  {item.label}
+                </NavLink>
               ))}
+              {role !== "user" && (
+                <NavLink
+                  key="a1231"
+                  to="/dashboard/payment/history/admin/decorator"
+                  className={({ isActive }) =>
+                    `flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-all group ${
+                      isActive
+                        ? "bg-secondary text-primary"
+                        : "text-gray-700 hover:bg-secondary hover:text-primary"
+                    }`
+                  }
+                >
+                  <ImHistory size={24} color="gray"></ImHistory>
+                  Payment History
+                </NavLink>
+              )}
 
               {/* Logout Button */}
               <div className="pt-4 border-t border-neutral">

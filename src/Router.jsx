@@ -8,7 +8,6 @@ import Home from "./pages/Home/Home";
 import PrivateRoute from "./protectedRoutes/PrivateRoute";
 
 import ServiceDetails from "./pages/Home/ServiceDetails";
-import MyBookings from "./pages/dahsboardPages/MyBookings";
 import OnPaymentSuccess from "./pages/dahsboardPages/OnPaymentSuccess";
 import PaymentHistory from "./pages/dahsboardPages/PaymentHistory";
 import MyProfile from "./pages/dahsboardPages/MyProfile";
@@ -24,6 +23,15 @@ import DecoratorLandingPage from "./pages/dahsboardPages/decorator/DecoratorLand
 import EarningsSummary from "./pages/dahsboardPages/decorator/EarningsSummary";
 import CoveragePage from "./pages/CoveragePage";
 import AdminLandingPage from "./pages/dahsboardPages/admin/AdminLandingPage";
+import About from "./pages/About";
+import SearchResultPage from "./pages/SearchResultPage";
+import BookingHistory from "./pages/dahsboardPages/admin/BookingHistory";
+import UserLandingPage from "./pages/dahsboardPages/UserLandingPage";
+import ErrorPage from "./pages/ErrorPage";
+import DashboardRedirect from "./pages/dahsboardPages/DashboardRedirect";
+import AdminRoute from "./protectedRoutes/AdminRoute";
+import DecoratorRoute from "./protectedRoutes/DecoratorRoute";
+import PaymentHistoryUni from "./pages/PaymentHistoryUni";
 
 const router = createBrowserRouter([
   {
@@ -46,6 +54,14 @@ const router = createBrowserRouter([
         path: "coverage",
         element: <CoveragePage></CoveragePage>,
       },
+      {
+        path: "about",
+        element: <About></About>,
+      },
+      {
+        path: "search",
+        element: <SearchResultPage></SearchResultPage>,
+      },
     ],
   },
   {
@@ -65,26 +81,55 @@ const router = createBrowserRouter([
     ),
     children: [
       // admin  pages----------------
+
+      {
+        index: true,
+        element: <DashboardRedirect></DashboardRedirect>,
+      },
       {
         path: "admin",
-        element: <AdminLandingPage></AdminLandingPage>,
+        element: (
+          <AdminRoute>
+            <AdminLandingPage></AdminLandingPage>
+          </AdminRoute>
+        ),
       },
       {
         path: "manage-services",
-        element: <ManageServices></ManageServices>,
+        element: (
+          <AdminRoute>
+            <ManageServices></ManageServices>
+          </AdminRoute>
+        ),
       },
       {
         path: "manage-decorators",
-        element: <ManageDecorators></ManageDecorators>,
+        element: (
+          <AdminRoute>
+            <ManageDecorators></ManageDecorators>
+          </AdminRoute>
+        ),
       },
       {
         path: "manage-bookings",
-        element: <ManageBookings></ManageBookings>,
+        element: (
+          <AdminRoute>
+            <ManageBookings></ManageBookings>
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "booking-history",
+        element: (
+          <AdminRoute>
+            <BookingHistory></BookingHistory>
+          </AdminRoute>
+        ),
       },
       // normal users routes
       {
-        path: "my-bookings",
-        element: <MyBookings></MyBookings>,
+        path: "user",
+        element: <UserLandingPage></UserLandingPage>,
       },
       {
         path: "on-payment-success",
@@ -102,25 +147,49 @@ const router = createBrowserRouter([
       // decorator pages
       {
         path: "decorator-home",
-        element: <DecoratorLandingPage></DecoratorLandingPage>,
+        element: (
+          <DecoratorRoute>
+            <DecoratorLandingPage></DecoratorLandingPage>
+          </DecoratorRoute>
+        ),
       },
       {
         path: "decorator/profile",
-        element: <DecoratorProfile></DecoratorProfile>,
+        element: (
+          <DecoratorRoute>
+            <DecoratorProfile></DecoratorProfile>
+          </DecoratorRoute>
+        ),
       },
       {
         path: "decorator/assigned-projects",
-        element: <AssignedProjects></AssignedProjects>,
+        element: (
+          <DecoratorRoute>
+            <AssignedProjects></AssignedProjects>
+          </DecoratorRoute>
+        ),
       },
       {
         path: "decorator/earnings",
-        element: <EarningsSummary></EarningsSummary>,
+        element: (
+          <DecoratorRoute>
+            <EarningsSummary></EarningsSummary>
+          </DecoratorRoute>
+        ),
+      },
+      {
+        path: "payment/history/admin/decorator",
+        element: <PaymentHistoryUni></PaymentHistoryUni>,
       },
     ],
   },
   {
     path: "/add-new-service",
-    element: <AddNewService></AddNewService>,
+    element: (
+      <AdminRoute>
+        <AddNewService></AddNewService>
+      </AdminRoute>
+    ),
   },
   // {
   //   path: "/book-service/:serviceId",
@@ -128,7 +197,15 @@ const router = createBrowserRouter([
   // },
   {
     path: "/become-decorator",
-    element: <BeADecorator></BeADecorator>,
+    element: (
+      <PrivateRoute>
+        <BeADecorator></BeADecorator>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "*",
+    element: <ErrorPage></ErrorPage>,
   },
 ]);
 export default router;

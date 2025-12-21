@@ -6,6 +6,8 @@ import {
   FaLinkedinIn,
   FaPinterestP,
 } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import Logo from "../Logo";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -16,19 +18,16 @@ export default function Footer() {
       <div className="max-w-[90dvw] mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand Section */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-accent rounded-lg flex items-center justify-center">
-                <span className="text-2xl">✨</span>
-              </div>
-              <h3 className="text-xl font-bold text-white">StyleDecor</h3>
-            </div>
-            <p className="text-gray-200 text-sm leading-relaxed">
+          <div className="space-y-4 bg-linear-to-br  from-neutral via-yellow-100 to-neutral p-5 rounded-lg">
+            <Link to="/">
+              <Logo></Logo>
+            </Link>
+            <p className="text-gray-700 text-sm leading-relaxed">
               Transform your spaces with elegant decoration services. From home
               interiors to grand ceremonies, we bring your vision to life.
             </p>
             {/* Social Media Links */}
-            <div className="flex items-center gap-3 pt-2">
+            <div className="flex items-center text-gray-700 gap-3 pt-2">
               <a
                 href="https://facebook.com"
                 target="_blank"

@@ -20,21 +20,7 @@ const EditBookingModal = ({ isOpen, onClose, bookingData, onSubmit }) => {
     formState: { errors },
     control,
     reset,
-  } = useForm({
-    defaultValues: {
-      scheduleDate: bookingData?.scheduleDate || "",
-      scheduleTime: bookingData?.scheduleTime || "",
-      consultationType: bookingData?.consultationType || "",
-      quantity: bookingData?.quantity || 1,
-      serviceAddress: bookingData?.serviceAddress || "",
-      serviceCity: bookingData?.serviceCity || "",
-      serviceArea: bookingData?.serviceArea || "",
-      serviceCategory: bookingData?.serviceCategory || "",
-      bookedByName: bookingData?.bookedByName || "",
-      contactPhone: bookingData?.contactPhone || "",
-      specialInstructions: bookingData?.specialInstructions || "",
-    },
-  });
+  } = useForm();
 
   useEffect(() => {
     fetch("/citiesAndAreas.json")

@@ -6,10 +6,14 @@ import { Link, useParams } from "react-router-dom";
 import NoData from "../../components/NoData";
 import { useState } from "react";
 import BookService from "../service&role/service/BookService";
+import useUserInfo from "../../hooks and contexts/role/useUserInfo";
+import AvailableDecoratorsModal from "../../components/modals/AvailableDecoratorsModal";
 
 const ServiceDetails = () => {
   const axiosInstance = useAxiosInstance();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { userData, infoLoading } = useUserInfo();
+  const [isDecoratorsModalOpen, setIsDecoratorsModalOpen] = useState(false);
   // const [selectedService, setSelectedService] = useState({});
   const { id } = useParams();
 
@@ -26,7 +30,7 @@ const ServiceDetails = () => {
     },
   });
 
-  if (isLoading) return <LoadingBubbles />;
+  if (isLoading || infoLoading) return <LoadingBubbles />;
   if (isError) {
     console.log("error from query:", error);
     return <NoData />;
@@ -55,6 +59,13 @@ const ServiceDetails = () => {
                 className="w-full h-[500px] object-cover"
               />
             </div>
+            <button
+              onClick={() => setIsDecoratorsModalOpen(true)}
+              type="button"
+              className="w-full my-5 rounded-lg py-3 bg-primary hover:bg-primary-hover text-white text-sm tracking-wide transition-colors"
+            >
+              See Available decorators
+            </button>
           </div>
 
           {/* Right: Product Details */}
@@ -88,16 +99,18 @@ const ServiceDetails = () => {
             </div>
 
             {/* Book Button */}
-            <button
-              type="button"
-              onClick={() => {
-                // setSelectedService(service);
-                setIsModalOpen(true);
-              }}
-              className="w-full py-3 bg-primary hover:bg-primary-hover text-white text-sm tracking-wide transition-colors"
-            >
-              Book this service
-            </button>
+            {userData.role === "user" && (
+              <button
+                type="button"
+                onClick={() => {
+                  // setSelectedService(service);
+                  setIsModalOpen(true);
+                }}
+                className="w-full py-3 rounded-lg bg-primary hover:bg-primary-hover text-white text-sm tracking-wide transition-colors"
+              >
+                Book this service
+              </button>
+            )}
 
             {/* Description Section */}
             <div className="border-t border-neutral pt-6">
@@ -215,6 +228,30 @@ const ServiceDetails = () => {
             {/* Scrollable content */}
             <div className="flex-1 rounded-lg min-w-[80dvw] lg:min-w-[60dvw] max-w-[90dvw]  lg:max-w-[80dvw] overflow-y-auto ">
               <BookService serviceId={service._id} />
+            </div>
+          </div>
+        </div>
+      )}
+      {isDecoratorsModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4">
+          {/* backdrop */}
+          <div
+            className="absolute inset-0 bg-black/90"
+            onClick={() => setIsDecoratorsModalOpen(false)}
+          ></div>
+
+          {/* modal */}
+          <div
+            className="relative bg-white sm:max-w-5xl 
+                 h-auto py-10 px-5 sm:h-auto sm:max-h-[90vh]
+                 rounded-t-xl sm:rounded-lg 
+                 shadow-xl flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex-1 rounded-lg min-w-[80dvw] lg:min-w-[60dvw] max-w-[90dvw]  lg:max-w-[80dvw] overflow-y-auto ">
+              <AvailableDecoratorsModal
+                service={service}
+              ></AvailableDecoratorsModal>
             </div>
           </div>
         </div>

@@ -18,6 +18,7 @@ const ManageBookings = () => {
   const axiosInstance = useAxiosInstance();
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [sortBy, setSortBy] = useState("recent");
   const [filters, setFilters] = useState({
     bookingType: "",
     paymentStatus: "",
@@ -182,8 +183,12 @@ const ManageBookings = () => {
     }
   };
 
-  // Filter bookings
-  const filteredBookings = bookings.filter((booking) => {
+  // Filter and sort bookings
+  const actionableBookings = bookings.filter(
+    (booking) => booking.status !== "completed"
+  );
+
+  const filteredBookings = actionableBookings.filter((booking) => {
     if (filters.bookingType && booking.bookingType !== filters.bookingType)
       return false;
     if (
@@ -193,6 +198,16 @@ const ManageBookings = () => {
       return false;
     if (filters.status && booking.status !== filters.status) return false;
     return true;
+  });
+
+  // Sort the filtered bookings
+  const sortedBookings = [...filteredBookings].sort((a, b) => {
+    if (sortBy === "recent") {
+      return new Date(b.scheduleDate) - new Date(a.scheduleDate);
+    } else if (sortBy === "oldest") {
+      return new Date(a.scheduleDate) - new Date(b.scheduleDate);
+    }
+    return 0;
   });
 
   if (bookingsLoading) return <LoadingBubbles></LoadingBubbles>;
@@ -209,7 +224,7 @@ const ManageBookings = () => {
 
       {/* ----------------------------Filters------------------------- */}
       <div className="bg-white rounded-lg border border-neutral p-4 mb-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Booking Type
@@ -261,6 +276,20 @@ const ManageBookings = () => {
               <option value="pending">Pending</option>
             </select>
           </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Sort by Date
+            </label>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="w-full px-4 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+            >
+              <option value="recent">Most Recent</option>
+              <option value="oldest">Oldest First</option>
+            </select>
+          </div>
         </div>
       </div>
 
@@ -294,7 +323,7 @@ const ManageBookings = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-neutral">
-              {filteredBookings.map((booking) => (
+              {sortedBookings.map((booking) => (
                 <tr
                   key={booking._id}
                   className="hover:bg-secondary/50 transition-colors"
@@ -454,7 +483,7 @@ const ManageBookings = () => {
       </div>
 
       <div className="mt-4 text-sm text-gray-600">
-        Showing {filteredBookings.length} of {bookings.length} bookings
+        Showing {sortedBookings.length} of {bookings.length} bookings
       </div>
 
       {/*------------------------ Decorators Modal ----------------------------*/}

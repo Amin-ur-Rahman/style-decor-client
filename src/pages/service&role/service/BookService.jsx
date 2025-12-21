@@ -123,7 +123,7 @@ const BookService = ({ serviceId }) => {
           });
           reset();
           setTimeout(() => {
-            navigate("/dashboard/my-bookings");
+            navigate("/dashboard");
           }, 2000);
         } catch (error) {
           Swal.fire({
