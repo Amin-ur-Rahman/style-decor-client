@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { HiArrowLeft, HiCalendar, HiX } from "react-icons/hi";
 import useAxiosInstance from "../../hooks and contexts/axios/useAxiosInstance";
 import { LoadingBubbles } from "../../LoadingAnimations";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import NoData from "../../components/NoData";
 import { useState } from "react";
 import BookService from "../service&role/service/BookService";
@@ -14,6 +14,8 @@ const ServiceDetails = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { userData, infoLoading } = useUserInfo();
   const [isDecoratorsModalOpen, setIsDecoratorsModalOpen] = useState(false);
+  const navigate = useNavigate();
+
   // const [selectedService, setSelectedService] = useState({});
   const { id } = useParams();
 
@@ -99,18 +101,20 @@ const ServiceDetails = () => {
             </div>
 
             {/* Book Button */}
-            {userData.role === "user" && (
-              <button
-                type="button"
-                onClick={() => {
-                  // setSelectedService(service);
-                  setIsModalOpen(true);
-                }}
-                className="w-full py-3 rounded-lg bg-primary hover:bg-primary-hover text-white text-sm tracking-wide transition-colors"
-              >
-                Book this service
-              </button>
-            )}
+            <button
+              // disabled={userData?.role !== "user"}
+              type="button"
+              onClick={() => {
+                if (!userData) {
+                  return navigate("/login");
+                }
+                // setSelectedService(service);
+                setIsModalOpen(true);
+              }}
+              className="w-full py-3 rounded-lg bg-primary hover:bg-primary-hover text-white text-sm tracking-wide transition-colors"
+            >
+              Book this service
+            </button>
 
             {/* Description Section */}
             <div className="border-t border-neutral pt-6">
