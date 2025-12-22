@@ -58,6 +58,7 @@ export default function AddNewService() {
         createdAt: new Date(),
         cost: parseFloat(data.cost),
         photo: url,
+        isActive: true,
       };
 
       const insertResult = await axiosInstance.post("/services", serviceData);
