@@ -109,7 +109,7 @@ const BeADecorator = () => {
   if (infoLoading || loading) return <LoadingBubbles></LoadingBubbles>;
 
   return userData?.role === "user" ? (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50">
+    <div className="min-h-screen bg-linear-to-br from-slate-50 via-white to-slate-50">
       <div className="mx-10 my-5">
         <Link to="/">
           <Logo></Logo>

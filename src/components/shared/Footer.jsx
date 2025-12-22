@@ -5,6 +5,7 @@ import {
   FaTwitter,
   FaLinkedinIn,
   FaPinterestP,
+  FaGithub,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Logo from "../Logo";
@@ -29,7 +30,7 @@ export default function Footer() {
             {/* Social Media Links */}
             <div className="flex items-center text-gray-700 gap-3 pt-2">
               <a
-                href="https://facebook.com"
+                href="https://www.facebook.com/aminur.rahman.333043"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-9 h-9 bg-white/10 hover:bg-accent rounded-lg flex items-center justify-center transition-all hover:scale-110"
@@ -38,7 +39,7 @@ export default function Footer() {
                 <FaFacebookF className="w-4 h-4" />
               </a>
               <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/amin_ar679"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-9 h-9 bg-white/10 hover:bg-accent rounded-lg flex items-center justify-center transition-all hover:scale-110"
@@ -46,32 +47,24 @@ export default function Footer() {
               >
                 <FaInstagram className="w-4 h-4" />
               </a>
+
               <a
-                href="https://twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-9 h-9 bg-white/10 hover:bg-accent rounded-lg flex items-center justify-center transition-all hover:scale-110"
-                aria-label="Twitter"
-              >
-                <FaTwitter className="w-4 h-4" />
-              </a>
-              <a
-                href="https://pinterest.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-9 h-9 bg-white/10 hover:bg-accent rounded-lg flex items-center justify-center transition-all hover:scale-110"
-                aria-label="Pinterest"
-              >
-                <FaPinterestP className="w-4 h-4" />
-              </a>
-              <a
-                href="https://linkedin.com"
+                href="https://www.linkedin.com/in/aminur-rahman679"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-9 h-9 bg-white/10 hover:bg-accent rounded-lg flex items-center justify-center transition-all hover:scale-110"
                 aria-label="LinkedIn"
               >
                 <FaLinkedinIn className="w-4 h-4" />
+              </a>
+              <a
+                href="https://github.com/Amin-ur-Rahman"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-9 h-9 bg-white/10 hover:bg-accent rounded-lg flex items-center justify-center transition-all hover:scale-110"
+                aria-label="LinkedIn"
+              >
+                <FaGithub className="w-4 h-4" />
               </a>
             </div>
           </div>
@@ -124,7 +117,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="/privacy"
+                  href="/"
                   className="text-gray-200 hover:text-accent transition-colors text-sm"
                 >
                   Privacy Policy
@@ -132,7 +125,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="/terms"
+                  href="/"
                   className="text-gray-200 hover:text-accent transition-colors text-sm"
                 >
                   Terms & Conditions
@@ -148,22 +141,20 @@ export default function Footer() {
             </h4>
             <ul className="space-y-3">
               <li className="flex items-start gap-3 text-sm text-gray-200">
-                <HiLocationMarker className="w-5 h-5 text-accent flex-shrink-0 mt-0.5" />
-                <span>
-                  123 Design Street, Creativity Plaza, New York, NY 10001
-                </span>
+                <HiLocationMarker className="w-5 h-5 text-accent shrink-0 mt-0.5" />
+                <span>123 Design Street, Style Plaza, New Dhaka, ND 10001</span>
               </li>
               <li className="flex items-center gap-3 text-sm text-gray-200">
-                <HiPhone className="w-5 h-5 text-accent flex-shrink-0" />
+                <HiPhone className="w-5 h-5 text-accent shrink-0" />
                 <a
                   href="tel:+1234567890"
                   className="hover:text-accent transition-colors"
                 >
-                  +1 (234) 567-890
+                  +880 234 567-890
                 </a>
               </li>
               <li className="flex items-center gap-3 text-sm text-gray-200">
-                <HiMail className="w-5 h-5 text-accent flex-shrink-0" />
+                <HiMail className="w-5 h-5 text-accent shrink-0" />
                 <a
                   href="mailto:info@styledecor.com"
                   className="hover:text-accent transition-colors"
@@ -181,14 +172,14 @@ export default function Footer() {
             </h4>
             <div className="space-y-3">
               <div className="flex items-start gap-3">
-                <HiClock className="w-5 h-5 text-accent flex-shrink-0 mt-0.5" />
+                <HiClock className="w-5 h-5 text-accent shrink-0 mt-0.5" />
                 <div className="text-sm text-gray-200">
                   <p className="font-medium text-white mb-2">
                     Consultation Hours
                   </p>
-                  <p>Monday - Friday: 9:00 AM - 7:00 PM</p>
-                  <p>Saturday: 10:00 AM - 5:00 PM</p>
-                  <p>Sunday: Closed</p>
+                  <p>Saturday - Thursday: 9:00 AM - 7:00 PM</p>
+                  <p>Thursday: 10:00 AM - 5:00 PM</p>
+                  <p>Friday: Closed</p>
                   <p className="mt-3 text-accent font-medium">
                     Emergency bookings available 24/7
                   </p>

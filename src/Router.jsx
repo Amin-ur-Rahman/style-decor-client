@@ -32,6 +32,7 @@ import DashboardRedirect from "./pages/dahsboardPages/DashboardRedirect";
 import AdminRoute from "./protectedRoutes/AdminRoute";
 import DecoratorRoute from "./protectedRoutes/DecoratorRoute";
 import PaymentHistoryUni from "./pages/PaymentHistoryUni";
+import ContactPage from "./pages/ContactPage";
 
 const router = createBrowserRouter([
   {
@@ -61,6 +62,10 @@ const router = createBrowserRouter([
       {
         path: "search",
         element: <SearchResultPage></SearchResultPage>,
+      },
+      {
+        path: "contact",
+        element: <ContactPage></ContactPage>,
       },
     ],
   },

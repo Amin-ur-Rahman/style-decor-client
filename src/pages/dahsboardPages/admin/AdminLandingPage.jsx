@@ -237,7 +237,7 @@ const AdminLandingPage = () => {
             </div>
 
             {histogramData.length > 0 ? (
-              <ResponsiveContainer width="100%" height={400}>
+              <ResponsiveContainer width="100%" height={600}>
                 <BarChart
                   data={histogramData}
                   margin={{ top: 20, right: 30, left: 20, bottom: 100 }}
