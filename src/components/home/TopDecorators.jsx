@@ -73,10 +73,14 @@ const TopDecorators = () => {
               <div className="flex items-center gap-2 mb-4">
                 <HiStar className="w-5 h-5 text-accent" />
                 <span className="font-semibold text-gray-800">
+                  <span className="text-accent">
+                    {" "}
+                    {decorator.ratingAverage || 4.5}{" "}
+                  </span>
                   {decorator.experienceYears <= 0 && "Junior"}
                 </span>
                 <span className="font-semibold text-gray-800">
-                  {decorator.experienceYears >= 1 && "Rising Star"}
+                  {decorator.experienceYears < 3 && "Rising Star"}
                 </span>
                 <span className="font-semibold text-gray-800">
                   {decorator.experienceYears >= 5 && "Veteran"}
