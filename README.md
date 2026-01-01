@@ -6,7 +6,7 @@ StyleDecor is a comprehensive decoration service management system designed to s
 
 ## Live URL
 
-🔗 [https://style-decor-amin-ur-rahman.netlify.app/](https://style-decor-amin-ur-rahman.netlify.app/)
+🔗 [https://style-decor-client-wheat.vercel.app/](https://style-decor-client-wheat.vercel.app/)
 
 ## Key Features
 
