@@ -32,11 +32,12 @@ const BookingHistory = () => {
 
   return (
     <div className="w-full mx-auto py-8 px-4">
+      {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-800 mb-2">
+        <h1 className="text-3xl font-bold text-text-primary mb-2">
           Booking History
         </h1>
-        <p className="text-gray-600">{numberOfData} completed bookings</p>
+        <p className="text-text-secondary">{numberOfData} completed bookings</p>
       </div>
 
       {/* Bookings List */}
@@ -44,24 +45,26 @@ const BookingHistory = () => {
         {completedBookings.map((booking) => (
           <div
             key={booking._id}
-            className="bg-white rounded-lg border border-neutral p-6 hover:shadow-md transition-shadow"
+            className="bg-bg-alt rounded-xl border border-neutral p-6 hover:shadow-md transition-all duration-200"
           >
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
               <div className="lg:col-span-2">
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                <h3 className="text-lg font-bold text-text-primary mb-1">
                   {booking.serviceName}
                 </h3>
-                <p className="text-sm text-gray-500 mb-3">
-                  ID: {booking._id.slice(-8)}
+                <p className="text-xs font-mono text-text-muted mb-4 uppercase tracking-wider">
+                  Ref: {booking._id.slice(-8)}
                 </p>
-                <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <HiUser className="w-4 h-4 text-primary" />
-                  <span>{booking.bookedByName}</span>
+                <div className="flex items-center gap-2 text-sm text-text-secondary">
+                  <div className="p-1.5 bg-bg-main rounded-md">
+                    <HiUser className="w-4 h-4 text-primary" />
+                  </div>
+                  <span className="font-medium">{booking.bookedByName}</span>
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <div className="flex items-center gap-2 text-sm text-gray-600">
+              <div className="flex flex-col justify-center space-y-3">
+                <div className="flex items-center gap-2 text-sm text-text-secondary">
                   <HiCalendar className="w-4 h-4 text-primary" />
                   <span>
                     {new Date(booking.scheduleDate).toLocaleDateString(
@@ -74,26 +77,26 @@ const BookingHistory = () => {
                     )}
                   </span>
                 </div>
-                <div className="flex items-start gap-2 text-sm text-gray-600">
+                <div className="flex items-start gap-2 text-sm text-text-secondary">
                   <HiLocationMarker className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                  <span>
+                  <span className="line-clamp-1">
                     {booking.serviceArea}, {booking.serviceCity}
                   </span>
                 </div>
               </div>
 
-              <div className="flex flex-col justify-between">
-                <div className="flex items-center gap-2 mb-2">
-                  <HiCash className="w-5 h-5 text-primary" />
-                  <span className="text-xl font-bold text-primary">
+              <div className="flex flex-col justify-between items-start lg:items-end">
+                <div className="flex items-center gap-2 mb-3">
+                  <HiCash className="w-5 h-5 text-accent" />
+                  <span className="text-2xl font-bold text-text-primary">
                     ${booking.amountPaid?.toLocaleString() || 0}
                   </span>
                 </div>
                 <div className="flex gap-2">
-                  <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold">
+                  <span className="px-3 py-1 bg-green-50 text-green-700 border border-green-200 rounded-full text-xs font-bold">
                     Completed
                   </span>
-                  <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-semibold">
+                  <span className="px-3 py-1 bg-primary/5 text-primary border border-primary/20 rounded-full text-xs font-bold">
                     Paid
                   </span>
                 </div>
@@ -105,18 +108,18 @@ const BookingHistory = () => {
 
       {/* Pagination Buttons */}
       {totalPage > 1 && (
-        <div className="flex items-center justify-center gap-2">
+        <div className="flex items-center justify-center gap-2 mt-12">
           {[...Array(totalPage).keys()].map((pageNum) => (
             <button
               key={pageNum}
               onClick={() => setPage(pageNum)}
-              className={`px-4 py-2 rounded-lg border transition-all ${
+              className={`min-w-[40px] h-[40px] rounded-lg border font-medium transition-all ${
                 page === pageNum
-                  ? "bg-primary text-white border-primary"
-                  : "border-neutral hover:bg-primary hover:text-white hover:border-primary"
+                  ? "bg-primary text-white border-primary shadow-sm shadow-primary/30"
+                  : "bg-bg-alt border-neutral text-text-secondary hover:border-primary hover:text-primary"
               }`}
             >
-              {pageNum}
+              {pageNum + 1}
             </button>
           ))}
         </div>

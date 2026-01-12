@@ -33,8 +33,8 @@ const Coverage = () => {
   return serviceCenters?.length === 0 ? (
     <NoData></NoData>
   ) : (
-    <div className="max-w-[90dvw] mx-auto relative z-0">
-      <h1 className="text-3xl text-center font-bold secondary-text py-5 my-5">
+    <div className="max-w-[90dvw] bg-bg-main mx-auto relative z-0">
+      <h1 className="text-3xl text-center font-bold text-text-primary py-5 my-5">
         We Are Available All Over the Country
       </h1>
 
@@ -80,7 +80,7 @@ const Coverage = () => {
           ))}
         </MapContainer>
       </div>
-      <div className="flex items-center gap-3 border-accent/50 border-2 justify-center bg-linear-to-br from-primary via-neutral to-accent py-4 my-5 w-[50%] mx-auto rounded-lg hover:scale-105 transition-all duration-300 ease-in">
+      <div className="flex items-center gap-3 border-accent/50 border-2 justify-center bg-primary py-4 my-5 w-[30%] mx-auto rounded-lg hover:scale-105 transition-all duration-300 ease-in">
         <FaMagnifyingGlass></FaMagnifyingGlass>
         <NavLink to="/coverage">Find out your Area</NavLink>
       </div>

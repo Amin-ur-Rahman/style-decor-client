@@ -50,12 +50,18 @@ const CoveragePage = () => {
     <NoData></NoData>
   ) : (
     <div className="max-w-[90dvw] mx-auto my-10">
-      <h1 className="text-3xl text-center font-bold secondary-text">
+      <h1 className="text-3xl text-center font-bold text-text-primary">
         Our Service Centers
       </h1>
+
       <form
         onSubmit={handleSearch}
-        className="flex my-10 items-center md:w-3/4 w-max  relative gap-4  rounded-lg  shadow-sm max-w-4xl mx-auto border border-accent"
+        className="
+      flex my-10 items-center md:w-3/4 w-max relative gap-4
+      rounded-lg shadow-sm max-w-4xl mx-auto
+      border border-accent
+      bg-bg-alt
+    "
       >
         <FiSearch className="text-2xl ml-2 text-primary shrink-0" />
 
@@ -63,12 +69,29 @@ const CoveragePage = () => {
           name="location"
           type="text"
           placeholder="Search here"
-          className="lg:flex-1 lg:w-3/4 w-max bg-transparent outline-none px-6 py-4 text-gray-700 placeholder-gray-400 text-base "
+          className="
+        lg:flex-1 lg:w-3/4 w-max
+        bg-transparent outline-none px-6 py-4
+        text-text-primary
+        placeholder-text-muted
+        text-base
+      "
         />
 
         <button
           type="submit"
-          className="border-l-2 bg-neutral border-accent absolute right-0 text-gray-800  px-5 lg:px-10 h-full rounded-lg hover:shadow-lg transition-all duration-300 hover:scale-105 shrink-0"
+          className="
+        border-l-2 border-accent
+        bg-neutral
+        text-text-primary
+        absolute right-0
+        px-5 lg:px-10 h-full rounded-lg
+        hover:bg-neutral-dark
+        hover:text-text-primary
+        transition-all duration-300
+        hover:scale-105
+        shrink-0
+      "
         >
           Search
         </button>
@@ -78,15 +101,17 @@ const CoveragePage = () => {
 
       <div className="min-h-[80dvh] z-0">
         <MapContainer
-          style={{ height: "80vh", zIndex: 0 }} // ensures Leaflet works
+          style={{ height: "80vh", zIndex: 0 }}
           className="
-          sm:w-[90%]   
-          md:w-[85%]   
-          lg:w-[80%]   
-          w-[95%]      
-      mx-auto 
-      rounded-lg 
-    "
+        sm:w-[90%]
+        md:w-[85%]
+        lg:w-[80%]
+        w-[95%]
+        mx-auto
+        rounded-lg
+        border border-neutral
+        bg-bg-main
+      "
           center={position}
           zoom={7}
           scrollWheelZoom={false}
@@ -104,13 +129,12 @@ const CoveragePage = () => {
               position={[center.lat, center.lon]}
             >
               <Popup>
-                <h3>
-                  {" "}
-                  <strong>
-                    {center.region}, {center.district}
-                  </strong>
+                <h3 className="text-text-primary font-semibold">
+                  {center.region}, {center.district}
                 </h3>
-                <p>{center.serviceAreas.join(",")}</p>
+                <p className="text-text-secondary">
+                  {center.serviceAreas.join(",")}
+                </p>
               </Popup>
             </Marker>
           ))}

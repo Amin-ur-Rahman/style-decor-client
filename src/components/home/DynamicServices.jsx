@@ -24,17 +24,16 @@ const DynamicServices = () => {
   if (isLoading) return <LoadingBubbles></LoadingBubbles>;
 
   const services = allServices?.slice(0, 6);
-  console.log(services);
   if (!services || isError) return <NoData></NoData>;
 
   return (
-    <div>
+    <div className="bg-bg-main">
       <section className="w-[90dvw] mx-auto py-16">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3">
+          <h2 className="text-3xl md:text-4xl font-bold text-text-primary mb-3">
             Our Services
           </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <p className="text-text-secondary max-w-2xl mx-auto">
             Discover our premium decoration services tailored to make your
             spaces extraordinary
           </p>
@@ -44,7 +43,7 @@ const DynamicServices = () => {
           {services?.map((service) => (
             <div
               key={service._id}
-              className="group bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 border border-neutral"
+              className="group bg-bg-alt rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 border border-neutral"
             >
               <div className="relative h-64 overflow-hidden">
                 <img
@@ -67,7 +66,7 @@ const DynamicServices = () => {
                     </h3>
                     <Link
                       to={`/service-details/${service._id}`}
-                      className="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary/90 text-white text-sm font-medium rounded-lg transition-all"
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-hover text-white text-sm font-medium rounded-lg transition-all"
                     >
                       View Details
                       <HiArrowRight className="w-4 h-4" />
@@ -76,16 +75,16 @@ const DynamicServices = () => {
                 </div>
               </div>
 
-              <div className="p-4 flex justify-between">
-                <p className="text-sm text-gray-500">
+              <div className="p-4 flex justify-between border-t border-neutral">
+                <p className="text-sm text-text-muted">
                   Added by:{" "}
-                  <span className="text-gray-700 font-medium">
+                  <span className="text-text-secondary font-medium">
                     {service.createdByName}
                   </span>
                 </p>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-text-muted">
                   Category:{" "}
-                  <span className="text-gray-700 font-medium">
+                  <span className="text-text-secondary font-medium">
                     {service.category}
                   </span>
                 </p>
@@ -96,7 +95,7 @@ const DynamicServices = () => {
         <div className="flex items-center justify-center my-5 lg:my-10">
           <Link
             to="/services"
-            className="inline-flex items-center gap-2 px-8 py-3 bg-primary hover:bg-primary/90 text-white text-sm font-medium rounded-lg transition-all hover:scale-105"
+            className="inline-flex items-center gap-2 px-8 py-3 bg-primary hover:bg-primary-hover text-white text-sm font-medium rounded-lg transition-all hover:scale-105"
           >
             Browse All Our Services
             <HiArrowRight className="w-4 h-4" />

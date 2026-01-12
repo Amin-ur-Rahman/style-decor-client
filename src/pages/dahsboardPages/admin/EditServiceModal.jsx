@@ -56,7 +56,7 @@ export const EditServiceModal = ({ service, isOpen, onClose }) => {
       text: "Changes will be saved in the database",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#2f5f5d",
+      confirmButtonColor: "#2F5F5D", // primary
       cancelButtonColor: "#6b7280",
       confirmButtonText: "Update",
     });
@@ -66,7 +66,6 @@ export const EditServiceModal = ({ service, isOpen, onClose }) => {
     try {
       let imageUrl = service.photo;
 
-      // Only upload if a new file is selected
       if (data.photo && data.photo[0]) {
         const formData = new FormData();
         formData.append("file", data.photo[0]);
@@ -77,7 +76,6 @@ export const EditServiceModal = ({ service, isOpen, onClose }) => {
           formData
         );
         imageUrl = uploadData.data.secure_url;
-        console.log(imageUrl);
       }
 
       const updateData = {
@@ -92,17 +90,13 @@ export const EditServiceModal = ({ service, isOpen, onClose }) => {
         photo: imageUrl,
       };
 
-      const res = await axiosInstance.patch(
-        `/service/${service._id}`,
-        updateData
-      );
-
-      console.log(res.data);
+      await axiosInstance.patch(`/service/${service._id}`, updateData);
 
       await Swal.fire({
         title: "Updated!",
         text: "Service data updated successfully",
         icon: "success",
+        confirmButtonColor: "#2F5F5D",
       });
 
       onClose();
@@ -112,7 +106,6 @@ export const EditServiceModal = ({ service, isOpen, onClose }) => {
         text: "Failed to update service.",
         icon: "error",
       });
-      console.log(error);
     }
   };
 
@@ -120,112 +113,84 @@ export const EditServiceModal = ({ service, isOpen, onClose }) => {
 
   return (
     <dialog className={`modal ${isOpen ? "modal-open" : ""}`}>
-      <div className="modal-box max-w-3xl bg-white">
+      <div className="modal-box max-w-3xl bg-bg-alt border border-neutral">
         <div className="flex items-start justify-between mb-6">
           <div>
-            <h3 className="text-2xl font-bold text-gray-800">Edit Service</h3>
-            <p className="text-sm text-gray-500 mt-1">
-              Update service information
+            <h3 className="text-2xl font-bold text-text-primary">
+              Edit Service
+            </h3>
+            <p className="text-sm text-text-muted mt-1">
+              Update service details and visibility settings
             </p>
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-all"
+            className="p-2 hover:bg-bg-main rounded-lg transition-all"
           >
-            <HiX className="w-5 h-5 text-gray-500" />
+            <HiX className="w-5 h-5 text-text-muted" />
           </button>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-          {/* SECTION 1  */}
+          {/* SECTION 1 - Basic Info */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div className="md:col-span-4">
-              <label
-                htmlFor="serviceName"
-                className="block text-sm font-semibold mb-2 text-text-secondary"
-              >
+              <label className="block text-sm font-semibold mb-2 text-text-secondary">
                 Service Name
               </label>
               <div className="relative">
                 <HiSparkles className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-accent" />
                 <input
-                  id="serviceName"
                   type="text"
-                  placeholder="e.g., Premium Wedding Stage Decor"
                   {...register("serviceName", { required: true })}
-                  className="w-full pl-12 pr-4 py-3.5 bg-bg-main border-2 border-neutral-dark rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 text-sm hover:border-primary-light"
+                  className="w-full pl-12 pr-4 py-3 bg-bg-main border border-neutral rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-text-primary"
                 />
               </div>
             </div>
 
-            {/*---------------------cost---------------- */}
             <div className="md:col-span-2">
-              <label
-                htmlFor="cost"
-                className="block text-sm font-semibold mb-2 text-text-secondary"
-              >
+              <label className="block text-sm font-semibold mb-2 text-text-secondary">
                 Cost (BDT)
               </label>
               <div className="relative">
                 <HiCurrencyDollar className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-accent" />
                 <input
-                  id="cost"
                   type="number"
-                  placeholder="50000"
-                  {...register("cost", {
-                    required: true,
-                    valueAsNumber: true,
-                  })}
-                  className="w-full pl-12 pr-4 py-3.5 bg-bg-main border-2 border-neutral-dark rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 text-sm hover:border-primary-light"
+                  {...register("cost", { required: true, valueAsNumber: true })}
+                  className="w-full pl-12 pr-4 py-3 bg-bg-main border border-neutral rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-text-primary"
                 />
               </div>
             </div>
 
-            {/* ----------------------rate type -----------------*/}
             <div className="md:col-span-2">
-              <label
-                htmlFor="rateType"
-                className="block text-sm font-semibold mb-2 text-text-secondary"
-              >
-                Rate type
+              <label className="block text-sm font-semibold mb-2 text-text-secondary">
+                Rate Type
               </label>
               <div className="relative">
-                <HiCurrencyDollar className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-primary pointer-events-none" />
+                <HiCurrencyDollar className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-primary" />
                 <select
-                  id="rateType"
                   {...register("rateType", { required: true })}
-                  className="w-full pl-12 pr-4 py-3.5 bg-bg-main border-2 border-neutral-dark rounded-xl appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 text-sm hover:border-primary-light"
+                  className="w-full pl-12 pr-4 py-3 bg-bg-main border border-neutral rounded-xl appearance-none focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-text-primary"
                 >
-                  <option value="" disabled>
-                    Select Model
-                  </option>
                   <option value="rate-per-unit">Rate Per Unit</option>
                   <option value="flat-rate">Flat Rate</option>
                 </select>
-                <span className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none text-text-muted">
+                <span className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-text-muted">
                   ▼
                 </span>
               </div>
             </div>
 
-            {/* --------------------unit-------------------- */}
             <div className="md:col-span-2">
-              <label
-                htmlFor="unit"
-                className="block text-sm font-semibold mb-2 text-text-secondary"
-              >
+              <label className="block text-sm font-semibold mb-2 text-text-secondary">
                 Unit
               </label>
               <div className="relative">
-                <HiScale className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-primary pointer-events-none" />
+                <HiScale className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-primary" />
                 <select
-                  id="unit"
                   {...register("unit", { required: true })}
-                  className="w-full pl-12 pr-4 py-3.5 bg-bg-main border-2 border-neutral-dark rounded-xl appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 text-sm hover:border-primary-light"
+                  className="w-full pl-12 pr-4 py-3 bg-bg-main border border-neutral rounded-xl appearance-none focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-text-primary"
                 >
-                  <option value="" disabled>
-                    Select Unit
-                  </option>
                   {unitOptions.map((option) => (
                     <option
                       key={option}
@@ -235,175 +200,118 @@ export const EditServiceModal = ({ service, isOpen, onClose }) => {
                     </option>
                   ))}
                 </select>
-                <span className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none text-text-muted">
+                <span className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-text-muted">
                   ▼
                 </span>
               </div>
             </div>
 
-            {/* ---------------------category------------------------- */}
-            <div className="md:col-span-4">
-              <label
-                htmlFor="category"
-                className="block text-sm font-semibold mb-2 text-text-secondary"
-              >
-                Service Category
+            <div className="md:col-span-2">
+              <label className="block text-sm font-semibold mb-2 text-text-secondary">
+                Category
               </label>
               <div className="relative">
-                <HiTag className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-accent pointer-events-none" />
+                <HiTag className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-accent" />
                 <select
-                  id="category"
                   {...register("category", { required: true })}
-                  className="w-full pl-12 pr-4 py-3.5 bg-bg-main border-2 border-neutral-dark rounded-xl appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 text-sm hover:border-primary-light"
+                  className="w-full pl-12 pr-4 py-3 bg-bg-main border border-neutral rounded-xl appearance-none focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-text-primary"
                 >
-                  <option value="" disabled>
-                    Select Category
-                  </option>
-                  {serviceCategories.map((option) => (
-                    <option
-                      key={option}
-                      value={option.toLowerCase().replace(/ /g, "-")}
-                    >
-                      {option}
+                  {serviceCategories.map((cat) => (
+                    <option key={cat} value={cat}>
+                      {cat.charAt(0).toUpperCase() + cat.slice(1)}
                     </option>
                   ))}
                 </select>
-                <span className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none text-text-muted">
+                <span className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-text-muted">
                   ▼
                 </span>
               </div>
             </div>
           </div>
 
-          {/* SECTION 2 */}
-          <div className="pt-8 space-y-6 border-t-2 border-neutral">
-            {/*------------------short description ---------------------*/}
+          {/* SECTION 2 - Descriptions */}
+          <div className="pt-8 space-y-6 border-t border-neutral">
             <div>
-              <label
-                htmlFor="shortDescription"
-                className="block text-sm font-semibold mb-2 text-text-secondary"
-              >
-                Short Description (For Service Cards)
+              <label className="block text-sm font-semibold mb-2 text-text-secondary">
+                Short Description
               </label>
               <div className="relative">
                 <HiPencil className="absolute left-4 top-4 w-5 h-5 text-primary" />
                 <textarea
-                  id="shortDescription"
-                  rows="3"
-                  placeholder="A brief, engaging summary (max 250 characters) for the Home/Services page cards."
+                  rows="2"
                   {...register("shortDescription", {
                     required: true,
                     maxLength: 250,
                   })}
-                  className="w-full pl-12 pr-4 py-3.5 bg-bg-main border-2 border-neutral-dark rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 text-sm resize-none hover:border-primary-light"
+                  className="w-full pl-12 pr-4 py-3 bg-bg-main border border-neutral rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-text-primary resize-none"
                 />
               </div>
             </div>
 
-            {/* ------------------long description ----------------------*/}
+            {/* Service Status Radio */}
             <div>
-              <label
-                htmlFor="description"
-                className="block text-sm font-semibold mb-2 text-text-secondary"
-              >
-                Detailed Description (For Details Page)
-              </label>
-              <div className="relative">
-                <HiPencil className="absolute left-4 top-4 w-5 h-5 text-primary" />
-                <textarea
-                  id="description"
-                  rows="5"
-                  placeholder="Describe the inclusions, materials, and scope of this package..."
-                  {...register("description", { required: true })}
-                  className="w-full pl-12 pr-4 py-3.5 bg-bg-main border-2 border-neutral-dark rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 text-sm resize-none hover:border-primary-light"
-                />
-              </div>
-            </div>
-
-            {/* Service Active/Inactive Status */}
-            <div className="border-t-2 border-neutral pt-6">
               <label className="block text-sm font-semibold mb-3 text-text-secondary">
-                Service Status
+                Visibility Status
               </label>
-              <p className="text-sm text-text-muted mb-4">
-                Current status:{" "}
-                <span
-                  className={`font-semibold ${
-                    service.isActive ? "text-green-600" : "text-red-600"
-                  }`}
-                >
-                  {service.isActive ? "Active" : "Inactive"}
-                </span>
-              </p>
-              <div className="space-y-3">
-                <label className="flex items-center gap-3 cursor-pointer p-3 border-2 border-neutral-dark rounded-xl hover:border-primary transition-all">
+              <div className="flex gap-4">
+                <label className="flex-1 flex items-center gap-3 cursor-pointer p-4 border border-neutral rounded-xl hover:border-primary/50 transition-all bg-bg-main">
                   <input
                     type="radio"
                     value="true"
                     {...register("isActive")}
-                    className="w-4 h-4 text-primary focus:ring-primary"
+                    className="w-4 h-4 accent-primary"
                   />
-                  <span className="text-sm text-text-secondary">
-                    <span className="font-semibold text-green-600">Active</span>{" "}
-                    - Service will be visible to customers
+                  <span className="text-sm font-medium text-green-600">
+                    Active
                   </span>
                 </label>
-                <label className="flex items-center gap-3 cursor-pointer p-3 border-2 border-neutral-dark rounded-xl hover:border-primary transition-all">
+                <label className="flex-1 flex items-center gap-3 cursor-pointer p-4 border border-neutral rounded-xl hover:border-primary/50 transition-all bg-bg-main">
                   <input
                     type="radio"
                     value="false"
                     {...register("isActive")}
-                    className="w-4 h-4 text-primary focus:ring-primary"
+                    className="w-4 h-4 accent-primary"
                   />
-                  <span className="text-sm text-text-secondary">
-                    <span className="font-semibold text-red-600">Inactive</span>{" "}
-                    - Service will be hidden from customers
+                  <span className="text-sm font-medium text-red-600">
+                    Inactive
                   </span>
                 </label>
               </div>
             </div>
 
-            {/*-----------------------------Image URL -----------------------*/}
-            <div className="w-full">
-              <label
-                htmlFor="photoURL"
-                className="block text-sm font-semibold mb-2 text-text-secondary"
-              >
-                Photo (Optional)
+            {/* File Upload */}
+            <div>
+              <label className="block text-sm font-semibold mb-2 text-text-secondary">
+                Update Service Photo
               </label>
-              <div className="relative">
-                <input
-                  id="photoURL"
-                  {...register("photo")}
-                  type="file"
-                  className="block w-full text-sm text-text-secondary file:mr-4 file:py-3 file:px-6
-                   file:rounded-xl file:border-2 file:border-neutral file:text-sm file:font-medium
-                   file:bg-secondary file:text-primary
-                   hover:file:bg-accent hover:file:text-white hover:file:border-accent
-                   focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer
-                   transition-all duration-300"
-                />
-              </div>
+              <input
+                type="file"
+                {...register("photo")}
+                className="block w-full text-sm text-text-muted file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-primary/10 file:text-primary hover:file:bg-primary hover:file:text-white transition-all cursor-pointer"
+              />
             </div>
           </div>
         </form>
 
-        <div className="modal-action mt-6">
+        <div className="modal-action gap-3 mt-8">
           <button
             onClick={onClose}
-            className="px-6 py-2 border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg transition-all"
+            className="px-6 py-2.5 border border-neutral text-text-secondary font-semibold rounded-xl hover:bg-bg-main transition-all"
           >
             Cancel
           </button>
           <button
             onClick={handleSubmit(onSubmit)}
-            className="px-6 py-2 bg-primary hover:bg-primary/90 text-white rounded-lg transition-all"
+            className="px-6 py-2.5 bg-primary text-white font-semibold rounded-xl hover:bg-primary/90 shadow-lg shadow-primary/20 transition-all"
           >
             Save Changes
           </button>
         </div>
       </div>
-      <div className="modal-backdrop" onClick={onClose}></div>
+      <div
+        className="modal-backdrop bg-text-primary/40"
+        onClick={onClose}
+      ></div>
     </dialog>
   );
 };

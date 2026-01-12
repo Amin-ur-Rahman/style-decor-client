@@ -20,13 +20,11 @@ export default function Registration() {
     register,
     handleSubmit,
     control,
-
     formState: { errors, isSubmitting },
   } = useForm();
 
   const password = useWatch({ control, name: "password" });
 
-  // Password validation rules
   const passwordValidation = {
     required: "Password is required",
     minLength: {
@@ -47,25 +45,18 @@ export default function Registration() {
   };
 
   const onSubmit = async (data) => {
-    console.log(data);
-
     const formData = new FormData();
     formData.append("file", data.photo[0]);
     formData.append("upload_preset", preset);
 
     try {
       const createRes = await createUser(data.email, data.password);
-      console.log("user account created: ", createRes);
-
       const uploadRes = await axios.post(
         `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
         formData
       );
-      const url = await uploadRes.data.secure_url;
-      console.log(url);
-
+      const url = uploadRes.data.secure_url;
       await handleProfileUpdate(data.name, url);
-      console.log("profile updated with photo url");
 
       const userData = {
         userName: data.name,
@@ -75,9 +66,7 @@ export default function Registration() {
         status: "active",
       };
 
-      const postRes = await axiosInstance.post("/users", userData);
-      console.log(postRes.data);
-
+      await axiosInstance.post("/users", userData);
       navigate("/");
     } catch (error) {
       console.log(error);
@@ -85,30 +74,34 @@ export default function Registration() {
   };
 
   const handleGoogleSignup = async () => {
-    const res = await googleSignIn();
-    console.log("google login successful", res);
-    navigate("/");
+    try {
+      await googleSignIn();
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
-    <div className="min-h-screen flex  bg-secondary">
-      <div className="mx-5 lg:mx-10 my-5 absolute">
+    <div className="min-h-screen flex bg-bg-main">
+      <div className="mx-5 lg:mx-10 my-5 absolute z-10">
         <Link to="/">
           <Logo></Logo>
         </Link>
       </div>
+
       {/* Left Side - Form */}
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex-1 mt-10 flex items-center justify-center px-6 py-12"
       >
         <div className="w-full max-w-md">
-          {/* Logo & Header */}
+          {/* Header */}
           <div className="text-center mb-8">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-2">
+            <h2 className="text-2xl font-semibold text-text-primary mb-2">
               Create your account
             </h2>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-text-secondary">
               Join us and transform your spaces
             </p>
           </div>
@@ -117,7 +110,7 @@ export default function Registration() {
           <button
             type="button"
             onClick={handleGoogleSignup}
-            className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-white border-2 border-neutral hover:border-primary rounded-lg transition-all text-gray-700 font-medium hover:shadow-md mb-6"
+            className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-bg-main border-2 border-neutral hover:border-primary rounded-lg transition-all text-text-primary font-medium hover:shadow-md mb-6"
           >
             <FcGoogle className="w-5 h-5" />
             Sign up with Google
@@ -129,7 +122,7 @@ export default function Registration() {
               <div className="w-full border-t border-neutral"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-secondary text-gray-500">
+              <span className="px-4 bg-bg-main text-text-muted">
                 Or continue with email
               </span>
             </div>
@@ -139,27 +132,17 @@ export default function Registration() {
           <div className="space-y-4">
             {/* Name */}
             <div>
-              <label
-                htmlFor="name"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
+              <label className="block text-sm font-medium text-text-secondary mb-1">
                 Full Name
               </label>
               <input
-                id="name"
                 type="text"
-                {...register("name", {
-                  required: "Name is required",
-                  minLength: {
-                    value: 2,
-                    message: "Name must be at least 2 characters",
-                  },
-                })}
-                className="w-full px-4 py-2.5 bg-white border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all text-gray-700"
+                {...register("name", { required: "Name is required" })}
+                className="w-full px-4 py-2.5 bg-bg-alt border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all text-text-primary"
                 placeholder="Enter your full name"
               />
               {errors.name && (
-                <p className="text-red-600 text-xs mt-1">
+                <p className="text-red-500 text-xs mt-1">
                   {errors.name.message}
                 </p>
               )}
@@ -167,41 +150,33 @@ export default function Registration() {
 
             {/* Email */}
             <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
+              <label className="block text-sm font-medium text-text-secondary mb-1">
                 Email Address
               </label>
               <input
-                id="email"
                 type="email"
-                {...register("email")}
-                className="w-full px-4 py-2.5 bg-white border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all text-gray-700"
+                {...register("email", { required: "Email is required" })}
+                className="w-full px-4 py-2.5 bg-bg-alt border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all text-text-primary"
                 placeholder="Enter your email"
               />
             </div>
 
             {/* Password */}
             <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
+              <label className="block text-sm font-medium text-text-secondary mb-1">
                 Password
               </label>
               <div className="relative">
                 <input
-                  id="password"
                   type={showPassword ? "text" : "password"}
                   {...register("password", passwordValidation)}
-                  className="w-full px-4 py-2.5 bg-white border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all text-gray-700 pr-10"
+                  className="w-full px-4 py-2.5 bg-bg-alt border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all text-text-primary pr-10"
                   placeholder="Create a strong password"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-primary transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-primary transition-colors"
                 >
                   {showPassword ? (
                     <HiEyeOff className="w-5 h-5" />
@@ -211,7 +186,7 @@ export default function Registration() {
                 </button>
               </div>
               {errors.password && (
-                <p className="text-red-600 text-xs mt-1">
+                <p className="text-red-500 text-xs mt-1">
                   {errors.password.message}
                 </p>
               )}
@@ -219,179 +194,115 @@ export default function Registration() {
               {/* Password Strength Indicators */}
               {password && (
                 <div className="mt-2 space-y-1">
-                  <div className="flex items-center gap-2 text-xs">
-                    <div
-                      className={`w-2 h-2 rounded-full ${
-                        password.length >= 8 ? "bg-green-500" : "bg-gray-300"
-                      }`}
-                    ></div>
-                    <span
-                      className={
-                        password.length >= 8
-                          ? "text-green-600"
-                          : "text-gray-500"
-                      }
-                    >
-                      At least 8 characters
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs">
-                    <div
-                      className={`w-2 h-2 rounded-full ${
-                        /[A-Z]/.test(password) ? "bg-green-500" : "bg-gray-300"
-                      }`}
-                    ></div>
-                    <span
-                      className={
-                        /[A-Z]/.test(password)
-                          ? "text-green-600"
-                          : "text-gray-500"
-                      }
-                    >
-                      One uppercase letter
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs">
-                    <div
-                      className={`w-2 h-2 rounded-full ${
-                        /[a-z]/.test(password) ? "bg-green-500" : "bg-gray-300"
-                      }`}
-                    ></div>
-                    <span
-                      className={
-                        /[a-z]/.test(password)
-                          ? "text-green-600"
-                          : "text-gray-500"
-                      }
-                    >
-                      One lowercase letter
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs">
-                    <div
-                      className={`w-2 h-2 rounded-full ${
-                        /[0-9]/.test(password) ? "bg-green-500" : "bg-gray-300"
-                      }`}
-                    ></div>
-                    <span
-                      className={
-                        /[0-9]/.test(password)
-                          ? "text-green-600"
-                          : "text-gray-500"
-                      }
-                    >
-                      One number
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs">
-                    <div
-                      className={`w-2 h-2 rounded-full ${
-                        /[!@#$%^&*(),.?":{}|<>]/.test(password)
-                          ? "bg-green-500"
-                          : "bg-gray-300"
-                      }`}
-                    ></div>
-                    <span
-                      className={
-                        /[!@#$%^&*(),.?":{}|<>]/.test(password)
-                          ? "text-green-600"
-                          : "text-gray-500"
-                      }
-                    >
-                      One special character
-                    </span>
-                  </div>
+                  {[
+                    {
+                      label: "At least 8 characters",
+                      met: password.length >= 8,
+                    },
+                    {
+                      label: "One uppercase letter",
+                      met: /[A-Z]/.test(password),
+                    },
+                    {
+                      label: "One lowercase letter",
+                      met: /[a-z]/.test(password),
+                    },
+                    { label: "One number", met: /[0-9]/.test(password) },
+                    {
+                      label: "One special character",
+                      met: /[!@#$%^&*(),.?":{}|<>]/.test(password),
+                    },
+                  ].map((rule, idx) => (
+                    <div key={idx} className="flex items-center gap-2 text-xs">
+                      <div
+                        className={`w-2 h-2 rounded-full ${
+                          rule.met ? "bg-green-500" : "bg-neutral"
+                        }`}
+                      ></div>
+                      <span
+                        className={
+                          rule.met ? "text-green-600" : "text-text-muted"
+                        }
+                      >
+                        {rule.label}
+                      </span>
+                    </div>
+                  ))}
                 </div>
               )}
             </div>
 
-            {/* Photo URL */}
+            {/* Photo Upload */}
             <div className="w-full">
-              <label
-                htmlFor="photoURL"
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
+              <label className="block text-sm font-medium text-text-secondary mb-2">
                 Photo (Optional)
               </label>
-              <div className="relative">
-                <input
-                  id="photoURL"
-                  {...register("photo")}
-                  type="file"
-                  className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4
+              <input
+                {...register("photo")}
+                type="file"
+                className="block w-full text-sm text-text-muted file:mr-4 file:py-2 file:px-4
                  file:rounded-lg file:border file:border-neutral file:text-sm
-                 file:bg-white file:text-gray-700
+                 file:bg-bg-alt file:text-text-secondary
                  hover:file:bg-primary hover:file:text-white
-                 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary
-                 transition-all duration-300"
-                />
-              </div>
-              {errors.photoURL && (
-                <p className="text-red-600 text-xs mt-1">
-                  {errors.photoURL.message}
-                </p>
-              )}
+                 focus:outline-none transition-all duration-300"
+              />
             </div>
 
             {/* Terms & Conditions */}
             <div className="flex items-start gap-2">
               <input
-                id="terms"
                 type="checkbox"
                 {...register("terms", {
-                  required: "You must accept the terms and conditions",
+                  required: "You must accept the terms",
                 })}
-                className="w-4 h-4 mt-0.5 text-primary border-neutral rounded focus:ring-2 focus:ring-primary cursor-pointer"
+                className="w-4 h-4 mt-0.5 text-primary border-neutral rounded focus:ring-primary cursor-pointer"
               />
-              <label htmlFor="terms" className="text-sm text-gray-600">
+              <label className="text-sm text-text-secondary">
                 I agree to the{" "}
-                <a
-                  href="/terms"
+                <Link
+                  to="/terms"
                   className="text-primary hover:text-accent font-medium"
                 >
-                  Terms and Conditions
-                </a>{" "}
+                  Terms
+                </Link>{" "}
                 and{" "}
-                <a
-                  href="/privacy"
+                <Link
+                  to="/privacy"
                   className="text-primary hover:text-accent font-medium"
                 >
                   Privacy Policy
-                </a>
+                </Link>
               </label>
             </div>
-            {errors.terms && (
-              <p className="text-red-600 text-xs mt-1">
-                {errors.terms.message}
-              </p>
-            )}
 
             {/* Submit Button */}
             <button
               disabled={isSubmitting}
               type="submit"
               className={`w-full ${
-                isSubmitting ? "bg-emerald-300" : "bg-primary"
-              } hover:bg-primary/90 text-white font-semibold py-3 rounded-lg transition-all shadow-sm hover:shadow-md mt-2`}
+                isSubmitting
+                  ? "bg-primary/50 cursor-not-allowed"
+                  : "bg-primary hover:bg-primary/90"
+              } text-white font-semibold py-3 rounded-lg transition-all shadow-sm mt-2`}
             >
               {isSubmitting ? "Creating your account..." : "Register"}
             </button>
 
             {/* Login Link */}
-            <p className="text-center text-sm text-gray-600 mt-4">
+            <p className="text-center text-sm text-text-secondary mt-4">
               Already have an account?{" "}
-              <a
-                href="/login"
+              <Link
+                to="/login"
                 className="text-primary hover:text-accent font-semibold"
               >
                 Login here
-              </a>
+              </Link>
             </p>
           </div>
         </div>
       </form>
 
-      {/* Right Side - Image (Hidden on mobile) */}
+      {/* Right Side - Image */}
       <div className="hidden lg:block lg:flex-1 relative">
         <img
           src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=1200&auto=format&fit=crop"

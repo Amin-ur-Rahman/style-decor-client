@@ -1,59 +1,92 @@
 @import url("https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..900&display=swap");
-
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 
 @import "tailwindcss";
-@plugin "daisyui" {
-  themes: default --light;
-}
-
-/* @theme {
-  --color-primary: #e07b39;
-  --color-secondary: #dce4c9;
-  --color-neutral: #f5f5dc;
-  --color-accent: #b6a28e;
+@plugin "daisyui";
+/* @plugin "daisyui" {
+  themes: light --default;
 } */
 
-@theme {
-  /* Primary Colors */
+/* Light mode (default) */
+:root {
   --color-primary: #2f5f5d;
   --color-primary-hover: #254d4b;
   --color-primary-light: #3d7370;
 
-  /* Secondary Colors */
   --color-secondary: #f8f5f0;
   --color-secondary-dark: #f0ebe3;
 
-  /* Accent Colors */
   --color-accent: #c9a961;
   --color-accent-hover: #b8964d;
   --color-accent-light: #d4b676;
 
-  /* Neutral Colors */
   --color-neutral: #e5ddd5;
   --color-neutral-dark: #d4c9be;
 
-  /* Text Colors */
   --color-text-primary: #1a1a1a;
   --color-text-secondary: #4a4a4a;
   --color-text-muted: #6b6b6b;
 
-  /* Background */
   --color-bg-main: #ffffff;
   --color-bg-alt: #f8f5f0;
 }
 
-/* .font-crimson {
-  font-family: "Crimson Pro", serif;
-  font-optical-sizing: auto;
+/* Dark mode */
+:root.dark {
+  --color-primary: #4a9d99;
+  --color-primary-hover: #5db3af;
+  --color-primary-light: #6bc4c0;
 
-  font-style: normal;
-} */
+  --color-secondary: #2d2419;
+  --color-secondary-dark: #221b12;
+
+  --color-accent: #d4b676;
+  --color-accent-hover: #e0c98a;
+  --color-accent-light: #e8d5a0;
+
+  --color-neutral: #3d342a;
+  --color-neutral-dark: #2f2820;
+
+  --color-text-primary: #f5f5f5;
+  --color-text-secondary: #d1d1d1;
+  --color-text-muted: #a8a8a8;
+
+  --color-bg-main: #1a1510;
+  --color-bg-alt: #2d2419;
+}
+
+@theme {
+  /* Primary Colors */
+  --color-primary: var(--color-primary);
+  --color-primary-hover: var(--color-primary-hover);
+  --color-primary-light: var(--color-primary-light);
+
+  /* Secondary Colors */
+  --color-secondary: var(--color-secondary);
+  --color-secondary-dark: var(--color-secondary-dark);
+
+  /* Accent Colors */
+  --color-accent: var(--color-accent);
+  --color-accent-hover: var(--color-accent-hover);
+  --color-accent-light: var(--color-accent-light);
+
+  /* Neutral Colors */
+  --color-neutral: var(--color-neutral);
+  --color-neutral-dark: var(--color-neutral-dark);
+
+  /* Text Colors */
+  --color-text-primary: var(--color-text-primary);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-text-muted: var(--color-text-muted);
+
+  /* Background */
+  --color-bg-main: var(--color-bg-main);
+  --color-bg-alt: var(--color-bg-alt);
+}
 
 body {
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-
   font-style: normal;
 }
 
@@ -61,3 +94,6 @@ body {
   background-color: antiquewhite;
 }
 
+body {
+  background: var(--color-bg-main);
+}

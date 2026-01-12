@@ -210,18 +210,18 @@ const UserLandingPage = () => {
 
   const renderBookingRow = (booking, index, isPending) => (
     <tr key={booking._id} className="hover:bg-secondary/50 transition-colors">
-      <td className="px-6 py-4 text-sm font-medium text-gray-700">
+      <td className="px-6 py-4 text-sm font-medium text-text-secondary">
         {index + 1}
       </td>
 
       {/* Service name */}
       <td className="px-6 py-4">
         <div>
-          <p className="text-sm font-semibold text-gray-800">
+          <p className="text-sm font-semibold text-text-primary">
             {booking.serviceName}
           </p>
           {booking.quantity > 0 && (
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-text-muted mt-1">
               Qty: {booking.quantity} × BDT: {booking.unitPrice}
             </p>
           )}
@@ -238,8 +238,8 @@ const UserLandingPage = () => {
       {/* Date and time */}
       <td className="px-6 py-4">
         <div className="flex flex-col gap-1">
-          <div className="flex items-center gap-1 text-sm text-gray-700">
-            <HiCalendar className="w-4 h-4 text-gray-400" />
+          <div className="flex items-center gap-1 text-sm text-text-secondary">
+            <HiCalendar className="w-4 h-4 text-text-muted" />
             <small>
               {new Date(booking.scheduleDate).toLocaleDateString("en-US", {
                 month: "short",
@@ -248,8 +248,8 @@ const UserLandingPage = () => {
               })}
             </small>
           </div>
-          <div className="flex items-center gap-1 text-sm text-gray-600">
-            <HiClock className="w-4 h-4 text-gray-400" />
+          <div className="flex items-center gap-1 text-sm text-text-secondary">
+            <HiClock className="w-4 h-4 text-text-muted" />
             <small>{booking.scheduleTime}</small>
           </div>
         </div>
@@ -258,8 +258,8 @@ const UserLandingPage = () => {
       {/* Location */}
       <td className="px-6 py-4">
         {booking.bookingType === "decoration" ? (
-          <div className="flex items-start gap-1 text-sm text-gray-600">
-            <HiLocationMarker className="w-4 h-4 text-gray-400 flex-shrink-0 mt-0.5" />
+          <div className="flex items-start gap-1 text-sm text-text-secondary">
+            <HiLocationMarker className="w-4 h-4 text-text-muted flex-shrink-0 mt-0.5" />
             <div>
               <p className="text-xs">
                 {booking.serviceArea}, {booking.serviceCity}
@@ -267,7 +267,7 @@ const UserLandingPage = () => {
             </div>
           </div>
         ) : (
-          <span className="text-sm text-gray-600 capitalize">
+          <span className="text-sm text-text-secondary capitalize">
             {booking.consultationType}
           </span>
         )}
@@ -283,7 +283,7 @@ const UserLandingPage = () => {
             </span>
           </div>
         ) : (
-          <span className="text-sm text-gray-500">Free</span>
+          <span className="text-sm text-text-muted">Free</span>
         )}
       </td>
 
@@ -318,7 +318,7 @@ const UserLandingPage = () => {
               <>
                 <button
                   onClick={() => handlePayment(booking)}
-                  className="px-4 py-1.5 border-[0.5px] border-primary/10 bg-primary/10 hover:bg-primary/90 hover:text-white text-xs rounded-lg transition-all"
+                  className="px-4 text-text-primary py-1.5 border-[0.5px] border-primary/10 bg-primary/10 hover:bg-primary-hover hover:text-bg-main text-xs rounded-lg transition-all"
                 >
                   Pay Now
                 </button>
@@ -377,23 +377,23 @@ const UserLandingPage = () => {
         {/* Header with sort */}
         <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-gray-800 mb-2">
+            <h1 className="text-3xl font-bold text-text-primary mb-2">
               My Bookings
             </h1>
-            <p className="text-gray-600">
+            <p className="text-text-secondary">
               View and manage all your service bookings
             </p>
           </div>
 
           {/* Sort Dropdown */}
           <div className="flex items-center gap-3">
-            <label className="text-sm font-medium text-gray-700">
+            <label className="text-sm font-medium text-text-secondary">
               Sort by:
             </label>
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="px-4 py-2 border border-neutral rounded-lg bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition"
+              className="px-4 py-2 border border-neutral rounded-lg bg-bg-main text-text-primary text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition"
             >
               <option value="recent">Most Recent</option>
               <option value="oldest">Oldest First</option>
@@ -408,7 +408,7 @@ const UserLandingPage = () => {
           <div className="mb-8">
             <div className="flex items-center gap-2 mb-4">
               <HiExclamationCircle className="w-6 h-6 text-yellow-600" />
-              <h2 className="text-xl font-bold text-gray-800">
+              <h2 className="text-xl font-bold text-text-primary">
                 Pending Bookings
               </h2>
               <span className="px-2 py-1 bg-yellow-100 text-yellow-700 text-xs font-semibold rounded-full">
@@ -416,33 +416,33 @@ const UserLandingPage = () => {
               </span>
             </div>
 
-            <div className="bg-white rounded-lg border border-neutral shadow-sm">
+            <div className="bg-bg-main rounded-lg border border-neutral shadow-sm">
               <div className="overflow-x-auto">
                 <table className="overflow-x-auto text-nowrap w-full">
                   <thead className="bg-secondary">
                     <tr>
-                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-text-secondary uppercase tracking-wider">
                         #
                       </th>
-                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-text-secondary uppercase tracking-wider">
                         Service Name
                       </th>
-                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-text-secondary uppercase tracking-wider">
                         Type
                       </th>
-                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-text-secondary uppercase tracking-wider">
                         Date & Time
                       </th>
-                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-text-secondary uppercase tracking-wider">
                         Location
                       </th>
-                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-text-secondary uppercase tracking-wider">
                         Amount
                       </th>
-                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-text-secondary uppercase tracking-wider">
                         Status
                       </th>
-                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-text-secondary uppercase tracking-wider">
                         Actions
                       </th>
                     </tr>
@@ -517,42 +517,42 @@ const UserLandingPage = () => {
         {hasOtherBookings && (
           <div className="mb-8">
             <div className="flex items-center gap-2 mb-4">
-              <HiCheckCircle className="w-6 h-6 text-blue-600" />
-              <h2 className="text-xl font-bold text-gray-800">
+              <HiCheckCircle className="w-6 h-6 text-primary" />
+              <h2 className="text-xl font-bold text-text-primary">
                 Active & Completed Bookings
               </h2>
-              <span className="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full">
+              <span className="px-2 py-1 bg-primary/10 text-primary text-xs font-semibold rounded-full">
                 {otherBookings.length}
               </span>
             </div>
 
-            <div className="bg-white rounded-lg border border-neutral shadow-sm">
+            <div className="bg-bg-main rounded-lg border border-neutral shadow-sm">
               <div className="overflow-x-auto">
                 <table className="overflow-x-auto text-nowrap w-full">
                   <thead className="bg-secondary">
                     <tr>
-                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-text-secondary uppercase tracking-wider">
                         #
                       </th>
-                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-text-secondary uppercase tracking-wider">
                         Service Name
                       </th>
-                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-text-secondary uppercase tracking-wider">
                         Type
                       </th>
-                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-text-secondary uppercase tracking-wider">
                         Date & Time
                       </th>
-                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-text-secondary uppercase tracking-wider">
                         Location
                       </th>
-                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-text-secondary uppercase tracking-wider">
                         Amount
                       </th>
-                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-text-secondary uppercase tracking-wider">
                         Status
                       </th>
-                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-text-secondary uppercase tracking-wider">
                         Payment
                       </th>
                     </tr>
@@ -570,13 +570,13 @@ const UserLandingPage = () => {
 
         {/* Empty state for filters */}
         {!hasPendingBookings && !hasTodayBookings && !hasOtherBookings && (
-          <div className="bg-white rounded-lg border border-neutral p-12 text-center">
-            <p className="text-gray-500">No bookings found for this filter</p>
+          <div className="bg-bg-main rounded-lg border border-neutral p-12 text-center">
+            <p className="text-text-muted">No bookings found for this filter</p>
           </div>
         )}
 
         {/* Summary */}
-        <div className="mt-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-sm text-gray-600">
+        <div className="mt-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-sm text-text-secondary">
           <p>
             Showing{" "}
             {pendingBookings.length +

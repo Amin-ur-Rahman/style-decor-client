@@ -16,7 +16,6 @@ const ServiceDetails = () => {
   const [isDecoratorsModalOpen, setIsDecoratorsModalOpen] = useState(false);
   const navigate = useNavigate();
 
-  // const [selectedService, setSelectedService] = useState({});
   const { id } = useParams();
 
   const {
@@ -33,28 +32,25 @@ const ServiceDetails = () => {
   });
 
   if (isLoading || infoLoading) return <LoadingBubbles />;
-  if (isError) {
-    console.log("error from query:", error);
-    return <NoData />;
-  }
+  if (isError) return <NoData />;
 
   return !service ? (
     <NoData />
   ) : (
-    <div className="min-h-screen bg-bg-alt">
+    <div className="min-h-screen bg-bg-main transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <button
           onClick={() => window.history.back()}
-          className="flex items-center gap-2 text-text-muted hover:text-primary transition-colors mb-6"
+          className="flex items-center gap-2 text-text-muted hover:text-primary transition-colors mb-6 group"
         >
-          <HiArrowLeft className="w-4 h-4" />
-          <span className="text-sm">Back</span>
+          <HiArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+          <span className="text-sm font-medium">Back</span>
         </button>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Left: Image Gallery */}
           <div className="lg:col-span-7">
-            <div className="bg-neutral rounded-sm overflow-hidden">
+            <div className="bg-neutral rounded-lg overflow-hidden border border-neutral shadow-sm">
               <img
                 src={service.photo}
                 alt={service.serviceName}
@@ -64,20 +60,19 @@ const ServiceDetails = () => {
             <button
               onClick={() => setIsDecoratorsModalOpen(true)}
               type="button"
-              className="w-full my-5 rounded-lg py-3 bg-primary hover:bg-primary-hover text-white text-sm tracking-wide transition-colors"
+              className="w-full my-5 rounded-lg py-3 bg-accent hover:bg-accent-hover text-white text-sm font-medium tracking-wide transition-all shadow-md active:scale-[0.98]"
             >
-              See Available decorators
+              See Available Decorators
             </button>
           </div>
 
           {/* Right: Product Details */}
           <div className="lg:col-span-5 space-y-6">
-            {/* Category & Title */}
             <div>
-              <p className="text-xs uppercase tracking-wide text-text-muted mb-2">
+              <p className="text-xs uppercase tracking-[0.2em] font-bold text-primary-light mb-2">
                 {service.category}
               </p>
-              <h1 className="text-3xl font-normal text-text-primary mb-3">
+              <h1 className="text-3xl font-bold text-text-primary mb-3">
                 {service.serviceName}
               </h1>
               <p className="text-sm text-text-secondary leading-relaxed">
@@ -88,12 +83,12 @@ const ServiceDetails = () => {
             {/* Pricing */}
             <div className="border-t border-neutral pt-4">
               <div className="flex items-baseline gap-2 mb-1">
-                <span className="text-2xl font-light text-text-primary">
+                <span className="text-3xl font-bold text-primary">
                   ৳{service.cost}
                 </span>
                 <span className="text-sm text-text-muted">{service.unit}</span>
               </div>
-              <p className="text-xs text-text-muted">
+              <p className="text-xs text-text-muted font-medium">
                 {service.rateType === "flat-rate"
                   ? "Flat rate pricing"
                   : "Rate per unit"}
@@ -102,29 +97,24 @@ const ServiceDetails = () => {
 
             {/* Book Button */}
             <button
-              // disabled={userData?.role !== "user"}
               type="button"
               onClick={() => {
-                if (!userData) {
-                  return navigate("/login");
-                }
-                // setSelectedService(service);
+                if (!userData) return navigate("/login");
                 setIsModalOpen(true);
               }}
-              className="w-full py-3 rounded-lg bg-primary hover:bg-primary-hover text-white text-sm tracking-wide transition-colors"
+              className="w-full py-4 rounded-lg bg-primary hover:bg-primary-hover text-white text-base font-semibold tracking-wide transition-all shadow-lg active:scale-[0.98]"
             >
-              Book this service
+              Book This Service
             </button>
 
             {/* Description Section */}
             <div className="border-t border-neutral pt-6">
-              <button className="w-full flex items-center justify-between text-left py-3 border-b border-neutral">
-                <span className="text-sm uppercase tracking-wide text-text-primary">
+              <div className="flex items-center justify-between text-left py-2">
+                <span className="text-xs font-bold uppercase tracking-widest text-text-primary">
                   Description
                 </span>
-                <span className="text-text-muted">+</span>
-              </button>
-              <div className="py-4">
+              </div>
+              <div className="py-2">
                 <p className="text-sm text-text-secondary leading-relaxed">
                   {service.description}
                 </p>
@@ -133,68 +123,49 @@ const ServiceDetails = () => {
 
             {/* What's Included */}
             <div className="border-t border-neutral pt-3">
-              <button className="w-full flex items-center justify-between text-left py-3 border-b border-neutral">
-                <span className="text-sm uppercase tracking-wide text-text-primary">
+              <div className="py-2">
+                <span className="text-xs font-bold uppercase tracking-widest text-text-primary">
                   What's included
                 </span>
-                <span className="text-text-muted">+</span>
-              </button>
-              <div className="py-4 space-y-2">
-                <div className="flex items-start gap-2 text-sm text-text-secondary">
-                  <span className="text-primary mt-0.5">✓</span>
-                  <span>Professional consultation and planning</span>
-                </div>
-                <div className="flex items-start gap-2 text-sm text-text-secondary">
-                  <span className="text-primary mt-0.5">✓</span>
-                  <span>Premium quality materials and decorations</span>
-                </div>
-                <div className="flex items-start gap-2 text-sm text-text-secondary">
-                  <span className="text-primary mt-0.5">✓</span>
-                  <span>On-site setup and coordination</span>
-                </div>
-                <div className="flex items-start gap-2 text-sm text-text-secondary">
-                  <span className="text-primary mt-0.5">✓</span>
-                  <span>Post-event cleanup and removal</span>
-                </div>
+              </div>
+              <div className="py-2 space-y-3">
+                {[
+                  "Professional consultation",
+                  "Premium quality materials",
+                  "On-site setup",
+                  "Post-event cleanup",
+                ].map((item, i) => (
+                  <div
+                    key={i}
+                    className="flex items-start gap-3 text-sm text-text-secondary"
+                  >
+                    <span className="text-accent font-bold">✓</span>
+                    <span>{item}</span>
+                  </div>
+                ))}
               </div>
             </div>
 
-            {/* Service Details */}
+            {/* Service Details Table */}
             <div className="border-t border-neutral pt-3">
-              <button className="w-full flex items-center justify-between text-left py-3 border-b border-neutral">
-                <span className="text-sm uppercase tracking-wide text-text-primary">
-                  Service details
-                </span>
-                <span className="text-text-muted">+</span>
-              </button>
-              <div className="py-4 space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-text-muted">Added by</span>
-                  <span className="text-text-secondary">
+              <div className="py-3 space-y-3 text-sm">
+                <div className="flex justify-between items-center py-1">
+                  <span className="text-text-muted font-medium">Added by</span>
+                  <span className="text-text-primary font-semibold">
                     {service.createdByName}
                   </span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-text-muted">Created</span>
-                  <span className="text-text-secondary">
-                    {new Date(service.createdAt).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                      year: "numeric",
-                    })}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-text-muted">Category</span>
-                  <span className="text-text-secondary capitalize">
-                    {service.category}
+                <div className="flex justify-between items-center py-1">
+                  <span className="text-text-muted font-medium">Created</span>
+                  <span className="text-text-primary font-semibold">
+                    {new Date(service.createdAt).toLocaleDateString()}
                   </span>
                 </div>
               </div>
             </div>
 
             {/* Notes */}
-            <div className="bg-secondary p-4 text-xs text-text-muted leading-relaxed">
+            <div className="bg-bg-alt border-l-4 border-accent p-4 text-xs text-text-secondary italic rounded-r-lg">
               Prices may vary for large events. For custom requests, contact the
               service center directly.
             </div>
@@ -202,61 +173,44 @@ const ServiceDetails = () => {
         </div>
       </div>
 
-      {/* Modal */}
+      {/* Book Service Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4">
-          {/* Backdrop */}
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div
-            className="absolute inset-0 bg-black/50"
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
             onClick={() => setIsModalOpen(false)}
           />
-
-          {/* Modal */}
-          <div
-            className="relative bg-white sm:max-w-5xl 
-                 h-[90vh] sm:h-auto sm:max-h-[90vh]
-                 rounded-t-xl sm:rounded-lg 
-                 shadow-xl flex flex-col"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Header */}
-            {/* <div className="flex items-center bg-secondary justify-between">
+          <div className="relative bg-bg-main w-full sm:max-w-5xl h-[90vh] sm:h-auto sm:max-h-[90vh] rounded-xl shadow-2xl flex flex-col overflow-hidden border border-neutral">
+            <div className="flex-1 overflow-y-auto">
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="text-text-muted m-5 hover:text-text-primary"
+                className="absolute top-4 right-4 z-20 p-2 hover:bg-neutral rounded-full transition-colors duration-200 group"
+                aria-label="Close modal"
               >
-                <HiX />
+                <HiX className="w-6 h-6 text-text-muted group-hover:text-text-primary transition-colors" />
               </button>
-            </div> */}
-
-            {/* Scrollable content */}
-            <div className="flex-1 rounded-lg min-w-[80dvw] lg:min-w-[60dvw] max-w-[90dvw]  lg:max-w-[80dvw] overflow-y-auto ">
               <BookService serviceId={service._id} />
             </div>
           </div>
         </div>
       )}
-      {isDecoratorsModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4">
-          {/* backdrop */}
-          <div
-            className="absolute inset-0 bg-black/90"
-            onClick={() => setIsDecoratorsModalOpen(false)}
-          ></div>
 
-          {/* modal */}
+      {/* Decorators Modal */}
+      {isDecoratorsModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div
-            className="relative bg-white sm:max-w-5xl 
-                 h-auto py-10 px-5 sm:h-auto sm:max-h-[90vh]
-                 rounded-t-xl sm:rounded-lg 
-                 shadow-xl flex flex-col"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex-1 rounded-lg min-w-[80dvw] lg:min-w-[60dvw] max-w-[90dvw]  lg:max-w-[80dvw] overflow-y-auto ">
-              <AvailableDecoratorsModal
-                service={service}
-              ></AvailableDecoratorsModal>
-            </div>
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            onClick={() => setIsDecoratorsModalOpen(false)}
+          />
+          <div className="relative bg-bg-main w-full sm:max-w-4xl rounded-xl shadow-2xl overflow-hidden border border-neutral">
+            <button
+              onClick={() => setIsDecoratorsModalOpen(false)}
+              className="absolute top-4 right-4 z-20 p-2 hover:bg-neutral rounded-full transition-colors duration-200 group"
+              aria-label="Close modal"
+            >
+              <HiX className="w-6 h-6 text-text-muted group-hover:text-text-primary transition-colors" />
+            </button>
+            <AvailableDecoratorsModal service={service} />
           </div>
         </div>
       )}

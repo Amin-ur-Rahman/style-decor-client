@@ -26,6 +26,7 @@ import Logo from "../../components/Logo";
 import { LoadingBubbles } from "../../LoadingAnimations";
 import useUserInfo from "../../hooks and contexts/role/useUserInfo";
 import { ImHistory } from "react-icons/im";
+import ThemeToggle from "../../ThemeToggle";
 
 export default function DashboardLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -33,7 +34,6 @@ export default function DashboardLayout() {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const { userData, infoLoading } = useUserInfo();
   const { logout } = useAuth();
-
   const { user, authLoading } = useAuth();
 
   const toggleFullscreen = () => {
@@ -46,12 +46,10 @@ export default function DashboardLayout() {
     }
   };
 
-  // All menu items (will be filtered by role later)
   const menuItems = {
     user: [
       { icon: HiHome, label: "Dashboard", path: "/dashboard/user" },
       { icon: HiUser, label: "My Profile", path: "/dashboard/my-profile" },
-
       {
         icon: HiCreditCard,
         label: "Payment History",
@@ -75,7 +73,6 @@ export default function DashboardLayout() {
         label: "Manage Bookings",
         path: "/dashboard/manage-bookings",
       },
-
       {
         icon: FaHistory,
         label: "Booking History",
@@ -86,10 +83,9 @@ export default function DashboardLayout() {
       { icon: HiHome, label: "Dashboard", path: "/dashboard/decorator-home" },
       {
         icon: HiClipboardList,
-        label: " Assigned Projects",
+        label: "Assigned Projects",
         path: "/dashboard/decorator/assigned-projects",
       },
-
       {
         icon: HiCash,
         label: "Earnings",
@@ -101,93 +97,72 @@ export default function DashboardLayout() {
         path: "/dashboard/decorator/profile",
       },
     ],
-    // common: [{ icon: HiCog, label: "Settings", path: "/dashboard/settings" }],
   };
 
-  const allMenuItems = [
-    { category: "User Menu", items: menuItems.user },
-    { category: "Admin Menu", items: menuItems.admin },
-    { category: "Decorator Menu", items: menuItems.decorator },
-    // { category: "Settings", items: menuItems.common },
-  ];
-
-  if (authLoading || infoLoading) return <LoadingBubbles></LoadingBubbles>;
+  if (authLoading || infoLoading) return <LoadingBubbles />;
 
   const role = userData?.role;
   const activeMenu = menuItems[role] || [];
 
-  console.log(`userInfo from dashboard:`, userData);
   return (
-    <div className="min-h-screen bg-secondary">
+    <div className="min-h-screen bg-bg-main">
       {/* Top Navbar */}
-      <nav className="bg-white border-b border-neutral sticky top-0 z-40 shadow-sm">
+      <nav className="bg-bg-alt border-b border-neutral sticky top-0 z-40 shadow-sm">
         <div className="px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Left: Menu Button & Logo */}
             <div className="flex items-center gap-4">
               <button
                 onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                className="p-2 rounded-lg hover:bg-secondary transition-colors lg:hidden"
+                className="p-2 rounded-lg hover:bg-bg-main transition-colors lg:hidden"
               >
                 <HiMenu className="w-6 h-6 text-primary" />
               </button>
 
-              {/* Desktop Sidebar Toggle */}
               <button
                 onClick={() => setIsDesktopSidebarOpen(!isDesktopSidebarOpen)}
-                className="hidden lg:block p-2 rounded-lg hover:bg-secondary transition-colors"
+                className="hidden lg:block p-2 rounded-lg hover:bg-bg-main transition-colors"
                 title="Toggle Sidebar"
               >
                 <HiViewBoards className="w-6 h-6 text-primary" />
               </button>
 
-              <div className="mx-10 my-5">
+              <div className="mx-4 lg:mx-10 my-5">
                 <Link to="/">
-                  <Logo></Logo>
+                  <Logo />
                 </Link>
               </div>
             </div>
 
-            {/* Center: Search Bar */}
-            {/* <div className="hidden md:flex flex-1 max-w-md mx-8">
-              <div className="relative w-full">
-                <HiSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  className="w-full pl-10 pr-4 py-2 bg-secondary border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all text-sm"
-                />
-              </div>
-            </div> */}
-
             {/* Right: Notifications & Profile */}
             <div className="flex items-center gap-4">
-              {/* Fullscreen Toggle */}
+              <ThemeToggle></ThemeToggle>
               <button
                 onClick={toggleFullscreen}
-                className="p-2 rounded-lg hover:bg-secondary transition-colors"
+                className="p-2 rounded-lg hover:bg-bg-main transition-colors"
                 title="Toggle Fullscreen"
               >
-                <HiArrowsExpand className="w-6 h-6 text-gray-600" />
+                <HiArrowsExpand className="w-6 h-6 text-text-secondary" />
               </button>
 
-              {/* Notifications */}
-              <button className="relative p-2 rounded-lg hover:bg-secondary transition-colors">
-                <HiBell className="w-6 h-6 text-gray-600" />
+              <button className="relative p-2 rounded-lg hover:bg-bg-main transition-colors">
+                <HiBell className="w-6 h-6 text-text-secondary" />
                 <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
               </button>
 
               {/* User Profile */}
               <div className="flex items-center gap-3 pl-4 border-l border-neutral">
                 <div className="hidden md:block text-right">
-                  <p className="text-sm font-semibold text-gray-800">
-                    {user.displayName}
+                  <p className="text-sm font-semibold text-text-primary">
+                    {user?.displayName}
                   </p>
-                  <p className="text-xs text-gray-500">{userData?.role}</p>
+                  <p className="text-xs text-text-muted capitalize">
+                    {userData?.role}
+                  </p>
                 </div>
                 <img
-                  src={user.photoURL}
-                  alt={user.displayName}
+                  src={user?.photoURL}
+                  alt={user?.displayName}
                   className="w-10 h-10 rounded-full object-cover ring-2 ring-accent"
                 />
               </div>
@@ -199,12 +174,12 @@ export default function DashboardLayout() {
       <div className="flex">
         {/* Sidebar - Desktop */}
         <aside
-          className={`hidden lg:block bg-white border-r border-neutral min-h-[calc(100vh-4rem)] sticky top-16 transition-all duration-300  ${
-            isDesktopSidebarOpen ? "w-64 mr-5" : "w-0 overflow-hidden"
+          className={`hidden lg:block bg-bg-alt border-r border-neutral min-h-[calc(100vh-4rem)] sticky top-16 transition-all duration-300 ${
+            isDesktopSidebarOpen ? "w-64" : "w-0 overflow-hidden"
           }`}
         >
           <div className="p-4 w-64">
-            <nav className="space-y-6">
+            <nav className="space-y-2">
               {activeMenu.map((item, index) => (
                 <NavLink
                   key={index}
@@ -212,34 +187,32 @@ export default function DashboardLayout() {
                   className={({ isActive }) =>
                     `flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-all group ${
                       isActive
-                        ? "bg-secondary text-primary"
-                        : "text-gray-700 hover:bg-secondary hover:text-primary"
+                        ? "bg-bg-main text-primary shadow-sm"
+                        : "text-text-secondary hover:bg-bg-main hover:text-primary"
                     }`
                   }
                 >
-                  <item.icon className="w-5 h-5 text-gray-500 group-hover:text-primary" />
+                  <item.icon className="w-5 h-5 group-hover:text-primary transition-colors" />
                   {item.label}
                 </NavLink>
               ))}
 
               {role !== "user" && (
                 <NavLink
-                  key="a1231"
                   to="/dashboard/payment/history/admin/decorator"
                   className={({ isActive }) =>
                     `flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-all group ${
                       isActive
-                        ? "bg-secondary text-primary"
-                        : "text-gray-700 hover:bg-secondary hover:text-primary"
+                        ? "bg-bg-main text-primary"
+                        : "text-text-secondary hover:bg-bg-main hover:text-primary"
                     }`
                   }
                 >
-                  <ImHistory size={24} color="gray"></ImHistory>
+                  <ImHistory className="w-5 h-5 text-text-muted group-hover:text-primary" />
                   Payment History
                 </NavLink>
               )}
 
-              {/* Logout Button */}
               <div className="pt-4 border-t border-neutral">
                 <button
                   onClick={logout}
@@ -263,104 +236,71 @@ export default function DashboardLayout() {
 
         {/* Mobile Sidebar */}
         <aside
-          className={`fixed top-0 left-0 z-50 w-72 h-full bg-white transform transition-transform duration-300 lg:hidden ${
+          className={`fixed top-0 left-0 z-50 w-72 h-full bg-bg-alt transform transition-transform duration-300 lg:hidden ${
             isSidebarOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
           <div className="p-4">
-            {/* Mobile Sidebar Header */}
             <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-2">
-                <div className="w-9 h-9 bg-linear-to-br from-primary to-accent rounded-lg flex items-center justify-center">
-                  <HiSparkles className="w-5 h-5 text-white" />
-                </div>
-                <span className="text-xl font-semibold text-primary">
-                  StyleDecor
-                </span>
-              </div>
+              <Logo />
               <button
                 onClick={() => setIsSidebarOpen(false)}
-                className="p-2 rounded-lg hover:bg-secondary transition-colors"
+                className="p-2 rounded-lg hover:bg-bg-main transition-colors"
               >
-                <HiX className="w-6 h-6 text-gray-600" />
+                <HiX className="w-6 h-6 text-text-secondary" />
               </button>
             </div>
 
-            {/* User Info */}
-            <div className="flex items-center gap-3 p-3 bg-secondary rounded-lg mb-6">
+            {/* Mobile User Info */}
+            <div className="flex items-center gap-3 p-3 bg-bg-main rounded-lg mb-6">
               <img
-                src={user.photo}
-                alt={user.name}
+                src={user?.photoURL}
+                alt={user?.displayName}
                 className="w-12 h-12 rounded-full object-cover ring-2 ring-accent"
               />
               <div>
-                <p className="text-sm font-semibold text-gray-800">
-                  {user.name}
+                <p className="text-sm font-semibold text-text-primary">
+                  {user?.displayName}
                 </p>
-                <p className="text-xs text-gray-500">{user.email}</p>
-                <p className="text-xs text-accent font-medium mt-0.5">
-                  {user.role}
-                </p>
+                <p className="text-xs text-text-muted">{user?.email}</p>
               </div>
             </div>
 
-            {/* Mobile Menu */}
-            <nav className="space-y-6 max-h-[calc(100vh-250px)] overflow-y-auto">
+            <nav className="space-y-2">
               {activeMenu.map((item, index) => (
                 <NavLink
                   key={index}
                   to={item.path}
+                  onClick={() => setIsSidebarOpen(false)}
                   className={({ isActive }) =>
-                    `flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-all group ${
+                    `flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-all ${
                       isActive
-                        ? "bg-secondary text-primary"
-                        : "text-gray-700 hover:bg-secondary hover:text-primary"
+                        ? "bg-bg-main text-primary"
+                        : "text-text-secondary hover:bg-bg-main"
                     }`
                   }
                 >
-                  <item.icon className="w-5 h-5 text-gray-500 group-hover:text-primary" />
+                  <item.icon className="w-5 h-5" />
                   {item.label}
                 </NavLink>
               ))}
-              {role !== "user" && (
-                <NavLink
-                  key="a1231"
-                  to="/dashboard/payment/history/admin/decorator"
-                  className={({ isActive }) =>
-                    `flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-all group ${
-                      isActive
-                        ? "bg-secondary text-primary"
-                        : "text-gray-700 hover:bg-secondary hover:text-primary"
-                    }`
-                  }
-                >
-                  <ImHistory size={24} color="gray"></ImHistory>
-                  Payment History
-                </NavLink>
-              )}
-
-              {/* Logout Button */}
-              <div className="pt-4 border-t border-neutral">
-                <button
-                  onClick={logout}
-                  className="flex items-center gap-3 w-full px-3 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition-all"
-                >
-                  <HiLogout className="w-5 h-5" />
-                  Logout
-                </button>
-              </div>
+              <button
+                onClick={logout}
+                className="flex items-center gap-3 w-full px-3 py-2.5 text-sm font-medium text-red-600 mt-4 border-t border-neutral pt-4"
+              >
+                <HiLogout className="w-5 h-5" />
+                Logout
+              </button>
             </nav>
           </div>
         </aside>
 
-        {/* Main Content   */}
-        <div
-          className={`${
-            isSidebarOpen ? "w-[80%]" : "w-[90dvw]"
-          } mx-auto overflow-hidden`}
-        >
-          <Outlet></Outlet>
-        </div>
+        {/* Main Content */}
+        <main className="flex-1 p-4 lg:p-8 overflow-x-hidden min-h-[calc(100vh-4rem)]">
+          <div className="max-w-7xl mx-auto">
+            <Outlet />
+          </div>
+        </main>
       </div>
     </div>
   );

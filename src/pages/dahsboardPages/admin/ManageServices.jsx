@@ -67,7 +67,7 @@ const ManageServices = () => {
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#ff0000",
-      cancelButtonColor: "#808080",
+      cancelButtonColor: "#e5ddd5",
       confirmButtonText: "Delete",
     });
     try {
@@ -127,7 +127,7 @@ const ManageServices = () => {
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="w-full pl-9 pr-9 py-2.5 bg-white border border-neutral rounded-lg focus:outline-none focus:border-primary transition-colors text-sm"
+              className="w-full pl-9 pr-9 py-2.5 bg-bg-main border border-neutral rounded-lg focus:outline-none focus:border-primary transition-colors text-sm text-text-primary"
             />
             {searchInput && (
               <button
@@ -177,7 +177,7 @@ const ManageServices = () => {
       )}
 
       {/* Table container with proper overflow handling */}
-      <div className="bg-white rounded-lg border border-neutral overflow-hidden">
+      <div className="bg-bg-main rounded-lg border border-neutral overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[800px]">
             <thead className="bg-secondary border-b border-neutral">
@@ -275,7 +275,7 @@ const ManageServices = () => {
 
                         <button
                           onClick={() => handleDelete(service._id)}
-                          className="p-1.5 rounded-md text-text-muted hover:text-red-600 hover:bg-red-50 transition-colors"
+                          className="p-1.5 rounded-md text-text-muted hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
                           title="Delete"
                         >
                           <HiTrash className="w-4 h-4" />

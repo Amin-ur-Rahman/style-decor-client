@@ -73,8 +73,8 @@ const ManageDecorators = () => {
       text: "This decorator will be approved and can start taking orders",
       icon: "question",
       showCancelButton: true,
-      confirmButtonColor: "#10b981",
-      cancelButtonColor: "#6b7280",
+      confirmButtonColor: "#2f5f5d",
+      cancelButtonColor: "#e5ddd5",
       confirmButtonText: "Yes, approve",
     });
 
@@ -113,7 +113,7 @@ const ManageDecorators = () => {
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#ef4444",
-      cancelButtonColor: "#6b7280",
+      cancelButtonColor: "#e5ddd5",
       confirmButtonText: "Yes, reject",
     });
 
@@ -148,7 +148,7 @@ const ManageDecorators = () => {
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#ef4444",
-      cancelButtonColor: "#6b7280",
+      cancelButtonColor: "#e5ddd5",
       confirmButtonText: "Disable",
     });
 
@@ -182,8 +182,8 @@ const ManageDecorators = () => {
       text: "This decorator account will be enabled",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#008000",
-      cancelButtonColor: "#6b7280",
+      confirmButtonColor: "#2f5f5d",
+      cancelButtonColor: "#e5ddd5",
       confirmButtonText: "Enable",
     });
 
@@ -232,9 +232,9 @@ const ManageDecorators = () => {
 
   const getStatusBadge = (status) => {
     const styles = {
-      pending: "  text-yellow-700 border-yellow-200",
-      approved: "  text-green-700 border-green-200",
-      rejected: "  text-red-700 border-red-200",
+      pending: "text-accent border-accent/30",
+      approved: "text-primary border-primary/30",
+      rejected: "text-red-700 border-red-200",
     };
 
     return (
@@ -259,27 +259,27 @@ const ManageDecorators = () => {
   }
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-linear-to-br from-slate-50 via-white to-slate-50 p-6">
+    <div className="min-h-screen overflow-x-hidden bg-bg-main p-6">
       <div className="max-w-max mx-auto">
         {/* ------------------Header------------------ */}
         <div className="mb-8">
-          <h1 className="text-xl md:text-2xl font-semibold md:font-bold  text-slate-900 mb-2">
+          <h1 className="text-xl md:text-2xl font-semibold md:font-bold text-text-primary mb-2">
             Manage Decorators
           </h1>
-          <p className="text-slate-600">
+          <p className="text-text-secondary">
             Review and manage decorator applications
           </p>
         </div>
         {/*--------------------------Sort ----------------- */}
-        <div className="bg-white rounded-lg border max-w-[95%] border-slate-200 p-4 mb-6">
+        <div className="bg-bg-main rounded-lg border max-w-[95%] border-neutral p-4 mb-6">
           <div className="flex flex-wrap gap-4 items-center justify-between">
             <div className="flex items-center gap-2">
-              <HiSortAscending className="w-5 h-5 text-slate-400" />
-              <span className="text-sm text-slate-600">Sort by:</span>
+              <HiSortAscending className="w-5 h-5 text-text-muted" />
+              <span className="text-sm text-text-secondary">Sort by:</span>
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-slate-400"
+                className="px-3 py-2 border border-neutral rounded-lg text-sm focus:outline-none focus:border-primary bg-bg-main text-text-primary"
               >
                 <option value="time">Recent First</option>
                 <option value="availability">Availability</option>
@@ -289,12 +289,12 @@ const ManageDecorators = () => {
 
             {/* ----------------------Filter----------------- */}
             <div className="flex items-center gap-2">
-              <HiFilter className="w-5 h-5 text-slate-400" />
-              <span className="text-sm text-slate-600">Filter:</span>
+              <HiFilter className="w-5 h-5 text-text-muted" />
+              <span className="text-sm text-text-secondary">Filter:</span>
               <select
                 value={filterStatus}
                 onChange={(e) => setFilterStatus(e.target.value)}
-                className="px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-slate-400"
+                className="px-3 py-2 border border-neutral rounded-lg text-sm focus:outline-none focus:border-primary bg-bg-main text-text-primary"
               >
                 <option value="all">All Applications</option>
                 <option value="pending">Pending</option>
@@ -305,15 +305,15 @@ const ManageDecorators = () => {
 
             {/* -------------------------Stats----------------------- */}
             <div className="flex items-center gap-4 text-sm">
-              <span className="text-slate-600">
+              <span className="text-text-secondary">
                 Total:{" "}
-                <span className="font-semibold text-slate-900">
+                <span className="font-semibold text-text-primary">
                   {decorators.length}
                 </span>
               </span>
-              <span className="text-slate-600">
+              <span className="text-text-secondary">
                 Showing:{" "}
-                <span className="font-semibold text-slate-900">
+                <span className="font-semibold text-text-primary">
                   {sortedAndFilteredDecorators.length}
                 </span>
               </span>
@@ -321,59 +321,59 @@ const ManageDecorators = () => {
           </div>
         </div>
         {/*----------------------------- Table---------------------- */}
-        <div className="bg-white rounded-lg max-w-[95%] border border-slate-200 overflow-hidden">
+        <div className="bg-bg-main rounded-lg max-w-[95%] border border-neutral overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-xs sm:text-sm">
               <thead>
-                <tr className="bg-slate-50 border-b border-slate-200">
-                  <th className="px-6 py-4 text-left text-xs font-medium text-slate-700 uppercase tracking-wider">
+                <tr className="bg-secondary border-b border-neutral">
+                  <th className="px-6 py-4 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
                     Decorator
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-medium text-slate-700 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
                     Contact
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-medium text-slate-700 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
                     Account status
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-medium text-slate-700 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
                     Status
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-medium text-slate-700 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
                     Availability
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-medium text-slate-700 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
                     Actions
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-200">
+              <tbody className="divide-y divide-neutral">
                 {sortedAndFilteredDecorators.map((decorator) => (
                   <tr
                     key={decorator._id}
-                    className="hover:bg-slate-50 transition-colors"
+                    className="hover:bg-secondary/20 transition-colors"
                   >
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
                         <img
                           src={decorator.photoUrl}
                           alt={decorator.decoratorName}
-                          className="w-10 h-10 rounded-full object-cover border border-slate-200"
+                          className="w-10 h-10 rounded-full object-cover border border-neutral"
                         />
                         <div>
-                          <div className="font-medium text-slate-900">
+                          <div className="font-medium text-text-primary">
                             {decorator.decoratorName}
                           </div>
-                          <div className="text-[0.7rem] text-slate-500 line-clamp-1">
+                          <div className="text-[0.7rem] text-text-muted line-clamp-1">
                             {decorator.decoratorEmail}
                           </div>
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="text-sm text-slate-900">
+                      <div className="text-sm text-text-primary">
                         {decorator.contactNumber}
                       </div>
-                      <div className="text-xs text-slate-500 line-clamp-1">
+                      <div className="text-xs text-text-secondary line-clamp-1">
                         {decorator.serviceLocation?.city},{" "}
                         {decorator.serviceLocation?.area}
                       </div>
@@ -382,8 +382,8 @@ const ManageDecorators = () => {
                       <span
                         className={`px-2 py-1 rounded-full text-xs font-semibold ${
                           decorator.accountStatus === "active"
-                            ? "bg-green-100 text-green-700"
-                            : "bg-red-100 text-red-700"
+                            ? "bg-primary/10 text-primary"
+                            : "bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400"
                         }`}
                       >
                         {decorator.accountStatus || "N / A"}
@@ -393,7 +393,7 @@ const ManageDecorators = () => {
                       <div className="flex  flex-col gap-2">
                         {getStatusBadge(decorator.applicationStatus)}
                         {decorator.isVerified && (
-                          <span className="flex ml-2 items-center gap-1 text-xs text-green-600">
+                          <span className="flex ml-2 items-center gap-1 text-xs text-primary">
                             <HiCheckCircle className="w-3 h-3" />
                             Verified
                           </span>
@@ -405,8 +405,8 @@ const ManageDecorators = () => {
                         // onClick={() => toggleAvailability(decorator)}
                         className={`flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium transition-colors ${
                           decorator.isAvailable
-                            ? " text-green-700 "
-                            : " text-slate-700 "
+                            ? "text-primary"
+                            : "text-text-muted"
                         }`}
                       >
                         {decorator.isAvailable ? "Available" : "Unavailable"}
@@ -417,7 +417,7 @@ const ManageDecorators = () => {
                         {decorator.applicationStatus === "approved" || (
                           <button
                             onClick={() => handleApprove(decorator)}
-                            className="p-2 text-gray-600 hover:bg-green-50 rounded-lg transition-colors"
+                            className="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors"
                             title="Approve"
                           >
                             <FaUserCheck className="w-5 h-5" />
@@ -425,7 +425,7 @@ const ManageDecorators = () => {
                         )}
                         <button
                           onClick={() => setSelectedDecorator(decorator)}
-                          className="p-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
+                          className="p-2 text-text-secondary hover:bg-secondary rounded-lg transition-colors"
                           title="View Details"
                         >
                           <HiEye className="w-5 h-5" />
@@ -433,7 +433,7 @@ const ManageDecorators = () => {
                         {decorator.applicationStatus === "pending" && (
                           <button
                             onClick={() => handleReject(decorator)}
-                            className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                            className="p-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
                             title="Reject"
                           >
                             <HiX className="w-5 h-5" />
@@ -446,7 +446,7 @@ const ManageDecorators = () => {
                         ) : (
                           <button
                             onClick={() => handleDisable(decorator)}
-                            className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors hover:cursor-pointer"
+                            className="p-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors hover:cursor-pointer"
                             title="Reject"
                           >
                             <small> Disable</small>
@@ -455,7 +455,7 @@ const ManageDecorators = () => {
                         {decorator.accountStatus === "disabled" && (
                           <button
                             onClick={() => handleEnable(decorator)}
-                            className="px-2 py-1 text-sm text-green-600 cursor-pointer hover:bg-green-50 border border-green-200  rounded-lg transition-colors"
+                            className="px-2 py-1 text-sm text-primary cursor-pointer hover:bg-primary/10 border border-primary/30 rounded-lg transition-colors"
                             title="Reject"
                           >
                             <small> Enable</small>
@@ -476,16 +476,16 @@ const ManageDecorators = () => {
             onClick={() => setSelectedDecorator(null)}
           >
             <div
-              className="bg-white rounded-lg max-w-2xl w-full p-6 max-h-[90vh] overflow-y-auto"
+              className="bg-bg-main rounded-lg max-w-2xl w-full p-6 max-h-[90vh] overflow-y-auto border border-neutral"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-start justify-between mb-6">
-                <h2 className="text-2xl font-light text-slate-900">
+                <h2 className="text-2xl font-light text-text-primary">
                   Decorator Details
                 </h2>
                 <button
                   onClick={() => setSelectedDecorator(null)}
-                  className="text-slate-400 hover:text-slate-600"
+                  className="text-text-muted hover:text-text-primary"
                 >
                   <HiX className="w-6 h-6" />
                 </button>
@@ -496,13 +496,13 @@ const ManageDecorators = () => {
                   <img
                     src={selectedDecorator.photoUrl}
                     alt={selectedDecorator.decoratorName}
-                    className="w-20 h-20 rounded-full object-cover border border-slate-200"
+                    className="w-20 h-20 rounded-full object-cover border border-neutral"
                   />
                   <div>
-                    <h3 className="text-xl font-medium text-slate-900">
+                    <h3 className="text-xl font-medium text-text-primary">
                       {selectedDecorator.decoratorName}
                     </h3>
-                    <p className="text-slate-600">
+                    <p className="text-text-secondary">
                       {selectedDecorator.decoratorEmail}
                     </p>
                   </div>
@@ -510,26 +510,30 @@ const ManageDecorators = () => {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <span className="text-sm text-slate-600">Contact</span>
-                    <p className="font-medium text-slate-900">
+                    <span className="text-sm text-text-secondary">Contact</span>
+                    <p className="font-medium text-text-primary">
                       {selectedDecorator.contactNumber}
                     </p>
                   </div>
                   <div>
-                    <span className="text-sm text-slate-600">Experience</span>
-                    <p className="font-medium text-slate-900">
+                    <span className="text-sm text-text-secondary">
+                      Experience
+                    </span>
+                    <p className="font-medium text-text-primary">
                       {selectedDecorator.experienceYears} years
                     </p>
                   </div>
                   <div>
-                    <span className="text-sm text-slate-600">Location</span>
-                    <p className="font-medium text-slate-900">
+                    <span className="text-sm text-text-secondary">
+                      Location
+                    </span>
+                    <p className="font-medium text-text-primary">
                       {selectedDecorator.serviceLocation?.city},{" "}
                       {selectedDecorator.serviceLocation?.area}
                     </p>
                   </div>
                   <div>
-                    <span className="text-sm text-slate-600">Rating</span>
+                    <span className="text-sm text-text-secondary">Rating</span>
                     <p className="flex items-center gap-2 text-accent">
                       {selectedDecorator.ratingAverage.toFixed(1)}{" "}
                       <FiStar></FiStar>
@@ -541,14 +545,14 @@ const ManageDecorators = () => {
                 </div>
 
                 <div>
-                  <span className="text-sm text-slate-600">
+                  <span className="text-sm text-text-secondary">
                     Specializations
                   </span>
                   <div className="flex flex-wrap gap-2 mt-2">
                     {selectedDecorator.specialization?.map((spec, idx) => (
                       <span
                         key={idx}
-                        className="px-3 py-1 bg-slate-100 text-slate-700 text-sm rounded-full"
+                        className="px-3 py-1 bg-secondary text-text-primary text-sm rounded-full"
                       >
                         {spec}
                       </span>

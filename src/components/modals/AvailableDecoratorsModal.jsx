@@ -3,7 +3,13 @@ import useAxiosInstance from "../../hooks and contexts/axios/useAxiosInstance";
 import { useQuery } from "@tanstack/react-query";
 import { LoadingBubbles } from "../../LoadingAnimations";
 import NoData from "../NoData";
-import { HiLocationMarker, HiCheckCircle, HiXCircle } from "react-icons/hi";
+import {
+  HiLocationMarker,
+  HiCheckCircle,
+  HiXCircle,
+  HiStar,
+  HiBriefcase,
+} from "react-icons/hi";
 
 const AvailableDecoratorsModal = ({ service }) => {
   const axiosInstance = useAxiosInstance();
@@ -16,84 +22,124 @@ const AvailableDecoratorsModal = ({ service }) => {
     },
   });
 
-  if (isLoading) return <LoadingBubbles></LoadingBubbles>;
-  if (!decoratorsAvailableData) return <NoData></NoData>;
+  if (isLoading) return <LoadingBubbles />;
+  if (!decoratorsAvailableData) return <NoData />;
 
   const sortedDecorators = decoratorsAvailableData.filter((d) =>
     d.specialization.includes(service.category)
   );
 
   return (
-    <>
-      {sortedDecorators.length === 0 ? (
-        <div className="text-center py-8">
-          <p className="text-gray-500">
-            No specialized decorators available for this service category
+    <div className="bg-bg-main rounded-lg max-h-[85vh] flex flex-col">
+      {/* Header */}
+      <div className="sticky top-0 z-10 bg-bg-main border-b border-neutral px-4 sm:px-6 py-4 rounded-t-lg">
+        <div>
+          <h2 className="text-xl sm:text-2xl font-bold text-text-primary">
+            Available Decorators
+          </h2>
+          <p className="text-sm text-text-muted mt-1">
+            {service.category && (
+              <span className="capitalize font-medium text-primary">
+                {service.category}
+              </span>
+            )}{" "}
+            specialists • {sortedDecorators.length} found
           </p>
         </div>
-      ) : (
-        <div className="space-y-3">
-          {sortedDecorators.map((decorator) => (
-            <div
-              key={decorator._id}
-              className="bg-white border border-neutral rounded-lg p-3 sm:p-4 hover:shadow-md transition-shadow"
-            >
-              <div className="flex items-start justify-between">
-                {/* Decorator Info */}
-                <div className="flex-1">
-                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-2">
-                    <h3 className="text-base sm:text-lg font-semibold text-gray-800 capitalize">
-                      {decorator.decoratorName}
-                    </h3>
-                    {decorator.isAvailable ? (
-                      <span className="flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-full w-fit">
-                        <HiCheckCircle className="w-3.5 h-3.5" />
-                        Available
+      </div>
+
+      {/* Content */}
+      <div className="overflow-y-auto flex-1 px-4 sm:px-6 py-4">
+        {sortedDecorators.length === 0 ? (
+          <div className="text-center py-12 px-4">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-neutral mb-4">
+              <HiBriefcase className="w-8 h-8 text-text-muted" />
+            </div>
+            <h3 className="text-lg font-semibold text-text-primary mb-2">
+              No Decorators Available
+            </h3>
+            <p className="text-text-muted max-w-md mx-auto">
+              No specialized decorators are currently available for{" "}
+              <span className="capitalize font-medium">{service.category}</span>{" "}
+              services. Please check back later.
+            </p>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {sortedDecorators.map((decorator) => (
+              <div
+                key={decorator._id}
+                className="bg-bg-alt border border-neutral rounded-xl p-4 sm:p-5 hover:shadow-lg hover:border-primary/30 transition-all duration-300"
+              >
+                {/* Header Section */}
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex-1">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-2">
+                      <h3 className="text-lg sm:text-xl font-bold text-text-primary capitalize">
+                        {decorator.decoratorName}
+                      </h3>
+                      {decorator.isAvailable ? (
+                        <span className="flex items-center gap-1.5 px-3 py-1.5 bg-green-500/10 text-green-400 text-xs font-semibold rounded-full w-fit border border-green-500/30 shadow-sm">
+                          <HiCheckCircle className="w-4 h-4" />
+                          Available Now
+                        </span>
+                      ) : (
+                        <span className="flex items-center gap-1.5 px-3 py-1.5 bg-red-500/10 text-red-400 text-xs font-semibold rounded-full w-fit border border-red-500/30">
+                          <HiXCircle className="w-4 h-4" />
+                          Currently Busy
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Location */}
+                    <div className="flex items-center gap-2 text-sm text-text-secondary">
+                      <HiLocationMarker className="w-4 h-4 text-accent flex-shrink-0" />
+                      <span className="font-medium">
+                        {decorator.serviceLocation.area},{" "}
+                        {decorator.serviceLocation.city}
                       </span>
-                    ) : (
-                      <span className="flex items-center gap-1 px-2 py-1 bg-red-100 text-red-700 text-xs font-medium rounded-full w-fit">
-                        <HiXCircle className="w-3.5 h-3.5" />
-                        Unavailable
-                      </span>
-                    )}
+                    </div>
                   </div>
 
-                  {/* Location */}
-                  <div className="flex items-center gap-1 text-sm text-gray-600 mb-3">
-                    <HiLocationMarker className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                    <span>
-                      {decorator.serviceLocation.area},{" "}
-                      {decorator.serviceLocation.city}
+                  {/* Rating placeholder - can be connected to actual data */}
+                  <div className="hidden sm:flex items-center gap-1 bg-primary/10 px-3 py-1.5 rounded-full border border-primary/20">
+                    <HiStar className="w-4 h-4 text-primary fill-current" />
+                    <span className="text-sm font-semibold text-primary">
+                      {decorator.rating || "New"}
                     </span>
                   </div>
+                </div>
 
-                  {/* Specializations */}
-                  <div>
-                    <p className="text-xs text-gray-500 mb-2">
-                      Specializations:
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {decorator.specialization.map((spec, idx) => (
-                        <span
-                          key={idx}
-                          className={`px-2 sm:px-3 py-1 text-xs font-medium rounded-full capitalize ${
-                            spec === service.category
-                              ? "bg-primary/20 text-primary border border-primary/30"
-                              : "bg-gray-100 text-gray-700"
-                          }`}
-                        >
-                          {spec}
-                        </span>
-                      ))}
-                    </div>
+                {/* Divider */}
+                <div className="border-t border-neutral my-4"></div>
+
+                {/* Specializations */}
+                <div>
+                  <p className="text-xs uppercase tracking-wide text-text-muted mb-3 font-semibold flex items-center gap-2">
+                    <HiBriefcase className="w-3.5 h-3.5" />
+                    Specializations
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {decorator.specialization.map((spec, idx) => (
+                      <span
+                        key={idx}
+                        className={`px-3 sm:px-4 py-1.5 text-xs font-semibold rounded-full capitalize transition-all duration-200 ${
+                          spec === service.category
+                            ? "bg-primary text-white border-2 border-primary shadow-md scale-105"
+                            : "bg-neutral text-text-secondary border border-neutral-dark hover:bg-neutral-dark hover:border-text-muted"
+                        }`}
+                      >
+                        {spec}
+                      </span>
+                    ))}
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-      )}
-    </>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
   );
 };
 

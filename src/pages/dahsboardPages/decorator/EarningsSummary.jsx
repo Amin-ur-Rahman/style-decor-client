@@ -99,7 +99,7 @@ const EarningsSummary = () => {
       </div>
 
       {/* ---------------summary card---------------- */}
-      <div className="bg-white rounded-lg shadow-sm border border-neutral p-6 mb-8">
+      <div className="bg-bg-main rounded-lg shadow-sm border border-neutral p-6 mb-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="flex items-start gap-4">
             <div className="p-3 bg-primary/10 rounded-lg flex-shrink-0">
@@ -138,7 +138,7 @@ const EarningsSummary = () => {
       </div>
 
       {/* Earnings History */}
-      <div className="bg-white rounded-lg shadow-sm border border-neutral p-6">
+      <div className="bg-bg-main rounded-lg shadow-sm border border-neutral p-6">
         {/* Filter Bar */}
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6">
           <h2 className="text-xl font-semibold text-text-primary">
@@ -152,7 +152,7 @@ const EarningsSummary = () => {
               <select
                 value={filterStatus}
                 onChange={(e) => setFilterStatus(e.target.value)}
-                className="px-4 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-white"
+                className="px-4 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-bg-main text-text-primary"
               >
                 <option value="all">All Status</option>
                 <option value="paid">Paid</option>
@@ -164,7 +164,7 @@ const EarningsSummary = () => {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="px-4 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-white"
+              className="px-4 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-bg-main text-text-primary"
             >
               <option value="recent">Most Recent</option>
               <option value="oldest">Oldest First</option>

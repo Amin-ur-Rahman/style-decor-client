@@ -31,7 +31,7 @@ const PaymentHistoryUni = () => {
   const getPaymentStatusBadge = (status) => {
     const styles = {
       paid: "bg-green-100 text-green-700",
-      pending: "bg-yellow-100 text-yellow-700",
+      pending: "bg-amber-100 text-amber-700",
       failed: "bg-red-100 text-red-700",
       refunded: "bg-blue-100 text-blue-700",
     };
@@ -41,38 +41,40 @@ const PaymentHistoryUni = () => {
   if (infoLoading || isLoading) return <LoadingBubbles></LoadingBubbles>;
 
   return payments && payments.length > 0 ? (
-    <div className="  mx-auto py-8">
+    <div className="mx-auto py-8 bg-bg-main">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-800 mb-2">
+        <h1 className="text-3xl font-bold text-text-primary mb-2">
           Payment History
         </h1>
-        <p className="text-gray-600">View all your payment transactions</p>
+        <p className="text-text-secondary">
+          View all your payment transactions
+        </p>
       </div>
 
-      <div className="bg-white rounded-lg border border-neutral shadow-sm overflow-hidden">
+      <div className="bg-bg-alt rounded-lg border border-neutral shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full  overflow-x-auto">
+          <table className="w-full overflow-x-auto">
             <thead className="bg-secondary">
               <tr>
-                <th className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                <th className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-text-primary uppercase tracking-wider">
                   #
                 </th>
-                <th className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                <th className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-text-primary uppercase tracking-wider">
                   Transaction ID
                 </th>
-                <th className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                <th className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-text-primary uppercase tracking-wider">
                   Amount Paid
                 </th>
-                <th className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                <th className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-text-primary uppercase tracking-wider">
                   Currency
                 </th>
-                <th className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                <th className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-text-primary uppercase tracking-wider">
                   Payment Date
                 </th>
-                <th className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                <th className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-text-primary uppercase tracking-wider">
                   Status
                 </th>
-                <th className="px-4 md:px-6 py-4 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                <th className="px-4 md:px-6 py-4 text-center text-xs font-semibold text-text-primary uppercase tracking-wider">
                   Action
                 </th>
               </tr>
@@ -81,9 +83,9 @@ const PaymentHistoryUni = () => {
               {payments.map((payment, index) => (
                 <tr
                   key={payment._id}
-                  className="hover:bg-secondary/50 transition-colors"
+                  className="hover:bg-secondary/20 transition-colors"
                 >
-                  <td className="px-4 md:px-6 py-4 text-sm font-medium text-gray-700">
+                  <td className="px-4 md:px-6 py-4 text-sm font-medium text-text-secondary">
                     {index + 1}
                   </td>
 
@@ -91,7 +93,7 @@ const PaymentHistoryUni = () => {
                     <div className="flex items-center gap-2">
                       <HiCheckCircle className="w-4 h-4 text-green-600 shrink-0" />
                       <span
-                        className="text-sm font-mono text-gray-700 truncate max-w-[200px]"
+                        className="text-sm font-mono text-text-secondary truncate max-w-[200px]"
                         title={payment.transactionId}
                       >
                         {payment.transactionId}
@@ -109,21 +111,21 @@ const PaymentHistoryUni = () => {
                   </td>
 
                   <td className="px-4 md:px-6 py-4">
-                    <span className="text-sm text-gray-700 uppercase font-semibold">
+                    <span className="text-sm text-text-secondary uppercase font-semibold">
                       {payment.currency}
                     </span>
                   </td>
 
                   <td className="px-4 md:px-6 py-4">
-                    <div className="flex items-center gap-1 text-sm text-gray-700">
-                      <HiCalendar className="w-4 h-4 text-gray-400" />
+                    <div className="flex items-center gap-1 text-sm text-text-secondary">
+                      <HiCalendar className="w-4 h-4 text-text-secondary/50" />
                       {new Date(payment.paid_at).toLocaleDateString("en-US", {
                         month: "short",
                         day: "numeric",
                         year: "numeric",
                       })}
                     </div>
-                    <span className="text-xs text-gray-500">
+                    <span className="text-xs text-text-secondary/60">
                       {new Date(payment.paid_at).toLocaleTimeString("en-US", {
                         hour: "2-digit",
                         minute: "2-digit",
@@ -144,14 +146,14 @@ const PaymentHistoryUni = () => {
                   <td className="px-4 md:px-6 py-4">
                     <div className="flex justify-center">
                       <button
-                        className="group relative p-2 text-gray-600 hover:text-primary hover:bg-primary/10 rounded-lg transition-all"
+                        className="group relative p-2 text-text-secondary hover:text-primary hover:bg-primary/10 rounded-lg transition-all"
                         title="View Details"
                       >
                         <HiEye
                           onClick={() => handleViewDetails(payment)}
                           className="w-5 h-5"
                         />
-                        <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                        <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-text-primary text-bg-main text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
                           View Details
                         </span>
                       </button>
@@ -164,7 +166,7 @@ const PaymentHistoryUni = () => {
         </div>
       </div>
 
-      <div className="mt-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-sm text-gray-600">
+      <div className="mt-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-sm text-text-secondary">
         <p>
           Showing {payments.length} payment{payments.length !== 1 ? "s" : ""}
         </p>
@@ -174,7 +176,7 @@ const PaymentHistoryUni = () => {
             <span className="font-bold text-green-600">
               {payments[0]?.currency.toUpperCase()}{" "}
               {payments
-                .reduce((sum, p) => sum + p.amountPaid, 0)
+                .reduce((sum, p) => sum + p.amountPaid / 100, 0)
                 .toLocaleString()}
             </span>
           </p>
@@ -190,7 +192,7 @@ const PaymentHistoryUni = () => {
         >
           {/* ---------backdrop------- */}
           <div
-            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+            className="absolute inset-0 bg-text-primary/50 backdrop-blur-sm"
             onClick={() => setIsModalOpen(false)}
           />
           {/* --------------------- */}
@@ -199,7 +201,7 @@ const PaymentHistoryUni = () => {
             role="dialog"
             aria-modal="true"
             aria-labelledby="payment-details-title"
-            className="relative z-10 w-full max-w-2xl mx-4 bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden"
+            className="relative z-10 w-full max-w-2xl mx-4 bg-bg-main rounded-xl shadow-2xl border border-neutral overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="p-6 md:p-8 max-h-[85vh] overflow-y-auto">
@@ -207,11 +209,11 @@ const PaymentHistoryUni = () => {
                 <div>
                   <h3
                     id="payment-details-title"
-                    className="text-2xl font-semibold text-gray-900"
+                    className="text-2xl font-semibold text-text-primary"
                   >
                     Payment Details
                   </h3>
-                  <p className="text-sm text-gray-500 mt-1">
+                  <p className="text-sm text-text-secondary mt-1">
                     Transaction information
                   </p>
                 </div>
@@ -219,44 +221,50 @@ const PaymentHistoryUni = () => {
                 <button
                   onClick={() => setIsModalOpen(false)}
                   aria-label="Close payment details"
-                  className="ml-2 p-2 rounded-md text-gray-600 hover:bg-gray-100 transition"
+                  className="ml-2 p-2 rounded-md text-text-secondary hover:bg-bg-alt transition"
                 >
                   <HiX className="w-5 h-5" />
                 </button>
               </div>
 
               <div className="space-y-5">
-                <div className="pb-4 border-b border-gray-100">
-                  <p className="text-sm text-gray-500 mb-1">Service</p>
-                  <p className="text-lg font-medium text-gray-900">
+                <div className="pb-4 border-b border-neutral">
+                  <p className="text-sm text-text-secondary mb-1">Service</p>
+                  <p className="text-lg font-medium text-text-primary">
                     {selectedPayment?.serviceName}
                   </p>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <p className="text-sm text-gray-500 mb-1">Amount Paid</p>
+                    <p className="text-sm text-text-secondary mb-1">
+                      Amount Paid
+                    </p>
                     <p className="text-2xl font-bold text-green-600">
                       {(selectedPayment?.amountPaid / 100).toLocaleString()}
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500 mb-1">Currency</p>
-                    <p className="text-lg font-semibold text-gray-800 uppercase">
+                    <p className="text-sm text-text-secondary mb-1">Currency</p>
+                    <p className="text-lg font-semibold text-text-primary uppercase">
                       {selectedPayment?.currency}
                     </p>
                   </div>
                 </div>
 
                 <div>
-                  <p className="text-sm text-gray-500 mb-1">Transaction ID</p>
-                  <pre className="text-sm font-mono bg-gray-50 p-3 rounded border border-gray-100 wrap-break-wordbreak-words">
+                  <p className="text-sm text-text-secondary mb-1">
+                    Transaction ID
+                  </p>
+                  <pre className="text-sm font-mono bg-bg-alt p-3 rounded border border-neutral wrap-break-wordbreak-words text-text-primary">
                     {selectedPayment?.transactionId}
                   </pre>
                 </div>
 
                 <div>
-                  <p className="text-sm text-gray-500 mb-2">Payment Status</p>
+                  <p className="text-sm text-text-secondary mb-2">
+                    Payment Status
+                  </p>
                   <div className="flex items-center gap-2">
                     <HiCheckCircle className="w-5 h-5 text-green-600" />
                     <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-semibold capitalize">
@@ -266,8 +274,10 @@ const PaymentHistoryUni = () => {
                 </div>
 
                 <div>
-                  <p className="text-sm text-gray-500 mb-1">Payment Date</p>
-                  <p className="text-gray-800">
+                  <p className="text-sm text-text-secondary mb-1">
+                    Payment Date
+                  </p>
+                  <p className="text-text-primary">
                     {new Date(selectedPayment?.paid_at).toLocaleDateString(
                       "en-US",
                       {
@@ -278,7 +288,7 @@ const PaymentHistoryUni = () => {
                       }
                     )}
                   </p>
-                  <p className="text-sm text-gray-500 mt-1">
+                  <p className="text-sm text-text-secondary mt-1">
                     {new Date(selectedPayment?.paid_at).toLocaleTimeString(
                       "en-US",
                       {
@@ -291,8 +301,10 @@ const PaymentHistoryUni = () => {
                 </div>
 
                 <div>
-                  <p className="text-sm text-gray-500 mb-1">Client Email</p>
-                  <p className="text-gray-800">
+                  <p className="text-sm text-text-secondary mb-1">
+                    Client Email
+                  </p>
+                  <p className="text-text-primary">
                     {selectedPayment?.clientEmail}
                   </p>
                 </div>
@@ -301,7 +313,7 @@ const PaymentHistoryUni = () => {
               <div className="mt-6 flex justify-end">
                 <button
                   onClick={() => setIsModalOpen(false)}
-                  className="px-6 py-2 bg-primary hover:bg-gray-800 text-white rounded-lg transition"
+                  className="px-6 py-2 bg-primary hover:bg-primary/90 text-white rounded-lg transition"
                 >
                   Close
                 </button>

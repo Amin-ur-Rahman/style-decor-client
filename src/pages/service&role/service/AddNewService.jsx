@@ -15,6 +15,7 @@ import { useAuth } from "../../../hooks and contexts/auth/useAuth";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
 import { BiLeftArrowCircle } from "react-icons/bi";
+import Logo from "../../../components/Logo";
 
 export default function AddNewService() {
   const { user } = useAuth();
@@ -91,11 +92,7 @@ export default function AddNewService() {
       <div className="relative z-10">
         {/* ---------------logo  ------------------- */}
         <div className="mb-8">
-          <Link to="/" className="inline-block">
-            <h1 className="text-3xl font-bold tracking-tight text-primary">
-              style<span className="text-accent">Decor</span>
-            </h1>
-          </Link>
+          <Logo></Logo>
         </div>
 
         {/* ---------------heading-------------- */}

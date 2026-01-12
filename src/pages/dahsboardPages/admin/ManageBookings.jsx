@@ -3,14 +3,7 @@ import useAxiosInstance from "../../../hooks and contexts/axios/useAxiosInstance
 import { useQuery } from "@tanstack/react-query";
 import { LoadingBubbles } from "../../../LoadingAnimations";
 import NoData from "../../../components/NoData";
-import {
-  HiX,
-  HiUserAdd,
-  HiCalendar,
-  HiClock,
-  HiCheck,
-  HiBan,
-} from "react-icons/hi";
+import { HiX, HiUserAdd, HiCalendar, HiClock } from "react-icons/hi";
 import Swal from "sweetalert2";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 
@@ -24,6 +17,19 @@ const ManageBookings = () => {
     paymentStatus: "",
     status: "",
   });
+
+  // Theme Constants (Updated to match your palette)
+  const colors = {
+    primary:
+      getComputedStyle(document.documentElement)
+        .getPropertyValue("--color-primary")
+        .trim() || "#2f5f5d",
+    cancel: "#ef4444",
+    neutral:
+      getComputedStyle(document.documentElement)
+        .getPropertyValue("--color-neutral")
+        .trim() || "#e5ddd5",
+  };
 
   const {
     data: bookings = [],
@@ -45,26 +51,17 @@ const ManageBookings = () => {
   } = useQuery({
     queryKey: [
       "manage-decorators",
-      selectedBooking,
+      selectedBooking?._id,
       selectedBooking?.serviceCity,
     ],
-    enabled: !!selectedBooking || !!selectedBooking?.serviceCity,
+    enabled: !!selectedBooking,
     queryFn: async () => {
-      try {
-        const res = await axiosInstance.get(
-          `/decorators?serviceCategory=${selectedBooking.serviceCategory}&city=${selectedBooking.serviceCity}`
-        );
-        console.log(selectedBooking);
-
-        console.log(res.data);
-
-        return res.data;
-      } catch (error) {
-        console.log(error.message || error);
-      }
+      const res = await axiosInstance.get(
+        `/decorators?serviceCategory=${selectedBooking.serviceCategory}&city=${selectedBooking.serviceCity}`
+      );
+      return res.data;
     },
   });
-  console.log(decorators);
 
   const handleFindDecorators = (booking) => {
     setSelectedBooking(booking);
@@ -74,12 +71,12 @@ const ManageBookings = () => {
   const handleAssignDecorator = async (decorator) => {
     const result = await Swal.fire({
       title: "Assign Decorator?",
-      text: "This decorator will be assigned to this booking",
+      text: `Assign ${decorator.decoratorName} to this booking?`,
       icon: "question",
       showCancelButton: true,
-      confirmButtonColor: "#10b981",
-      cancelButtonColor: "#6b7280",
-      confirmButtonText: "Yes, approve",
+      confirmButtonColor: colors.primary,
+      cancelButtonColor: colors.neutral,
+      confirmButtonText: "Yes, assign",
     });
 
     if (result.isConfirmed) {
@@ -88,203 +85,103 @@ const ManageBookings = () => {
           `/decorator/${decorator._id}/assignment`,
           { bookingId: selectedBooking._id }
         );
-
-        console.log(res.data);
-
         Swal.fire({
-          title: "Decorator assigned",
-          text: res.data?.decoratorUpdate,
+          title: "Assigned!",
+          text: "Decorator has been assigned successfully.",
           icon: "success",
+          confirmButtonColor: colors.primary,
         });
         decoRefetch();
         bookingsRefetch();
       } catch (error) {
-        Swal.fire({
-          title: "Something went wrong!",
-          text: error?.message,
-          icon: "warning",
-        });
+        Swal.fire("Error", error.message, "error");
       }
     }
   };
 
-  const handleConfirm = async (booking) => {
+  const handleStatusUpdate = async (booking, newStatus, title) => {
     try {
-      const res = await axiosInstance.patch(
-        `/consultation/${booking._id}/update`,
-        { status: "scheduled", bookingType: booking.bookingType }
-      );
-
-      console.log(res.data);
-
-      Swal.fire({
-        title: "Consultation confirmed",
-        text: res.data?.decoratorUpdate,
-        icon: "success",
+      await axiosInstance.patch(`/consultation/${booking._id}/update`, {
+        status: newStatus,
+        bookingType: booking.bookingType,
       });
-
+      Swal.fire({
+        title: title,
+        icon: "success",
+        confirmButtonColor: colors.primary,
+      });
       bookingsRefetch();
     } catch (error) {
-      Swal.fire({
-        title: "Something went wrong!",
-        text: error?.message,
-        icon: "warning",
-      });
+      Swal.fire("Error", error.message, "error");
     }
   };
 
-  const handleComplete = async (booking) => {
-    try {
-      const res = await axiosInstance.patch(
-        `/consultation/${booking._id}/update`,
-        { status: "completed", bookingType: booking.bookingType }
-      );
+  // Filter and sort logic
+  const filteredBookings = bookings
+    .filter((b) => b.status !== "completed")
+    .filter((b) => {
+      if (filters.bookingType && b.bookingType !== filters.bookingType)
+        return false;
+      if (filters.paymentStatus && b.paymentStatus !== filters.paymentStatus)
+        return false;
+      if (filters.status && b.status !== filters.status) return false;
+      return true;
+    })
+    .sort((a, b) => {
+      return sortBy === "recent"
+        ? new Date(b.scheduleDate) - new Date(a.scheduleDate)
+        : new Date(a.scheduleDate) - new Date(b.scheduleDate);
+    });
 
-      console.log(res.data);
-
-      Swal.fire({
-        title: "Consultation marked as completed",
-        text: res.data?.decoratorUpdate,
-        icon: "success",
-      });
-
-      bookingsRefetch();
-    } catch (error) {
-      Swal.fire({
-        title: "Something went wrong!",
-        text: error?.message,
-        icon: "warning",
-      });
-    }
-  };
-
-  const handleCancel = async (booking) => {
-    try {
-      const res = await axiosInstance.patch(
-        `/consultation/${booking._id}/update`,
-        { status: "cancelled", bookingType: booking.bookingType }
-      );
-
-      console.log(res.data);
-
-      Swal.fire({
-        title: "Consultation cancelled",
-        text: res.data?.decoratorUpdate,
-        icon: "success",
-      });
-
-      bookingsRefetch();
-    } catch (error) {
-      Swal.fire({
-        title: "Something went wrong!",
-        text: error?.message,
-        icon: "warning",
-      });
-    }
-  };
-
-  // Filter and sort bookings
-  const actionableBookings = bookings.filter(
-    (booking) => booking.status !== "completed"
-  );
-
-  const filteredBookings = actionableBookings.filter((booking) => {
-    if (filters.bookingType && booking.bookingType !== filters.bookingType)
-      return false;
-    if (
-      filters.paymentStatus &&
-      booking.paymentStatus !== filters.paymentStatus
-    )
-      return false;
-    if (filters.status && booking.status !== filters.status) return false;
-    return true;
-  });
-
-  // Sort the filtered bookings
-  const sortedBookings = [...filteredBookings].sort((a, b) => {
-    if (sortBy === "recent") {
-      return new Date(b.scheduleDate) - new Date(a.scheduleDate);
-    } else if (sortBy === "oldest") {
-      return new Date(a.scheduleDate) - new Date(b.scheduleDate);
-    }
-    return 0;
-  });
-
-  if (bookingsLoading) return <LoadingBubbles></LoadingBubbles>;
-  if (bookings.length === 0 || bookingsError) return <NoData></NoData>;
+  if (bookingsLoading) return <LoadingBubbles />;
+  if (bookingsError || bookings.length === 0) return <NoData />;
 
   return (
-    <div className="w-full overflow-hidden mx-auto py-8">
+    <div className="w-full overflow-hidden mx-auto py-8 px-4">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-800 mb-2">
+        <h1 className="text-3xl font-bold text-text-primary mb-2">
           Manage Bookings
         </h1>
-        <p className="text-gray-600">View and manage all service bookings</p>
+        <p className="text-text-secondary">
+          View and manage all service bookings
+        </p>
       </div>
 
-      {/* ----------------------------Filters------------------------- */}
-      <div className="bg-white rounded-lg border border-neutral p-4 mb-6">
+      {/* Filters Section */}
+      <div className="bg-bg-main rounded-xl border border-neutral/20 p-5 mb-6 shadow-sm">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          {["bookingType", "paymentStatus", "status"].map((filterKey) => (
+            <div key={filterKey}>
+              <label className="block text-xs font-semibold uppercase text-text-muted mb-2">
+                {filterKey.replace(/([A-Z])/g, " $1")}
+              </label>
+              <select
+                value={filters[filterKey]}
+                onChange={(e) =>
+                  setFilters({ ...filters, [filterKey]: e.target.value })
+                }
+                className="w-full px-4 py-2 bg-secondary border border-neutral/20 rounded-lg focus:ring-2 focus:ring-primary outline-none text-sm text-text-primary"
+              >
+                <option value="">All</option>
+                {filterKey === "status" && (
+                  <>
+                    <option value="confirmed">Confirmed</option>
+                    <option value="assigned">Assigned</option>
+                    <option value="pending">Pending</option>
+                  </>
+                )}
+                {/* Add other options as needed */}
+              </select>
+            </div>
+          ))}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Booking Type
-            </label>
-            <select
-              value={filters.bookingType}
-              onChange={(e) =>
-                setFilters({ ...filters, bookingType: e.target.value })
-              }
-              className="w-full px-4 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-            >
-              <option value="">All Types</option>
-              <option value="decoration">Decoration</option>
-              <option value="consultation">Consultation</option>
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Payment Status
-            </label>
-            <select
-              value={filters.paymentStatus}
-              onChange={(e) =>
-                setFilters({ ...filters, paymentStatus: e.target.value })
-              }
-              className="w-full px-4 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-            >
-              <option value="">All Payments</option>
-              <option value="paid">Paid</option>
-              <option value="unpaid">Unpaid</option>
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Booking Status
-            </label>
-            <select
-              value={filters.status}
-              onChange={(e) =>
-                setFilters({ ...filters, status: e.target.value })
-              }
-              className="w-full px-4 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-            >
-              <option value="">All Status</option>
-              <option value="confirmed">Confirmed</option>
-              <option value="assigned">Assigned</option>
-              <option value="pending">Pending</option>
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Sort by Date
+            <label className="block text-xs font-semibold uppercase text-text-muted mb-2">
+              Sort By
             </label>
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="w-full px-4 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full px-4 py-2 bg-secondary border border-neutral/20 rounded-lg focus:ring-2 focus:ring-primary outline-none text-sm text-text-primary"
             >
               <option value="recent">Most Recent</option>
               <option value="oldest">Oldest First</option>
@@ -293,122 +190,91 @@ const ManageBookings = () => {
         </div>
       </div>
 
-      {/*----------------------------- Bookings Table------------------------- */}
-      <div className="bg-white rounded-lg border border-neutral shadow-sm overflow-hidden">
+      {/* Bookings Table */}
+      <div className="bg-bg-main rounded-xl border border-neutral/20 shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[1000px]">
-            <thead className="bg-secondary">
+          <table className="w-full bg-bg-alt min-w-[1000px]">
+            <thead className="bg-secondary/50 border-b border-neutral/10">
               <tr>
-                <th className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                  Booking Info
-                </th>
-                <th className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                  Type
-                </th>
-                <th className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                  Scheduled Date
-                </th>
-                <th className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                  Amount
-                </th>
-                <th className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                  Payment
-                </th>
-                <th className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                  Status
-                </th>
-                <th className="px-4 md:px-6 py-4 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                  Action
-                </th>
+                {[
+                  "Booking Info",
+                  "Type",
+                  "Schedule",
+                  "Amount",
+                  "Payment",
+                  "Status",
+                  "Action",
+                ].map((h) => (
+                  <th
+                    key={h}
+                    className="px-6 py-4 text-left text-xs font-bold text-text-secondary uppercase tracking-wider"
+                  >
+                    {h}
+                  </th>
+                ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-neutral">
-              {sortedBookings.map((booking) => (
+            <tbody className="divide-y divide-neutral/10">
+              {filteredBookings.map((booking) => (
                 <tr
                   key={booking._id}
-                  className="hover:bg-secondary/50 transition-colors"
+                  className="hover:bg-secondary/20 transition-colors"
                 >
-                  {/* -------------------------Booking Info---------------------- */}
-                  <td className="px-4 md:px-6 py-4">
-                    <div>
-                      <p className="text-sm font-semibold text-gray-800">
-                        {booking.bookedByName}
-                      </p>
-                      <p className="text-xs text-gray-500 font-mono mt-1">
-                        ID: {booking._id.slice(-8)}
-                      </p>
-                      <p className="text-xs text-gray-600 mt-1">
-                        {booking.serviceName}
-                      </p>
-                    </div>
+                  <td className="px-6 py-4">
+                    <p className="text-sm font-bold text-text-primary">
+                      {booking.bookedByName}
+                    </p>
+                    <p className="text-[10px] font-mono text-text-muted">
+                      ID: {booking._id.slice(-8)}
+                    </p>
+                    <p className="text-xs text-primary font-medium">
+                      {booking.serviceName}
+                    </p>
                   </td>
-
-                  {/* ------------------------------Type---------------------- */}
-                  <td className="px-4 md:px-6 py-4">
-                    <span className="px-3 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium capitalize">
+                  <td className="px-6 py-4">
+                    <span className="px-3 py-1 bg-accent/10 text-accent rounded-full text-[10px] font-bold uppercase">
                       {booking.bookingType}
                     </span>
                   </td>
-
-                  {/* ------------------------Scheduled Date-------------------- */}
-                  <td className="px-4 md:px-6 py-4">
-                    <div className="flex flex-col gap-1">
-                      <div className="flex items-center gap-1 text-sm text-gray-700">
-                        <HiCalendar className="w-4 h-4 text-gray-400" />
-                        {new Date(booking.scheduleDate).toLocaleDateString(
-                          "en-US",
-                          {
-                            month: "short",
-                            day: "numeric",
-                            year: "numeric",
-                          }
-                        )}
-                      </div>
-                      <div className="flex items-center gap-1 text-sm text-gray-600">
-                        <HiClock className="w-4 h-4 text-gray-400" />
-                        {booking.scheduleTime}
-                      </div>
+                  <td className="px-6 py-4 text-sm text-text-secondary">
+                    <div className="flex items-center gap-2">
+                      <HiCalendar className="text-primary" />{" "}
+                      {new Date(booking.scheduleDate).toLocaleDateString()}
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <HiClock className="text-primary" />{" "}
+                      {booking.scheduleTime}
                     </div>
                   </td>
-
-                  {/* ------------------------Amount -------------------------*/}
-                  <td className="px-4 md:px-6 py-4">
-                    <p className="text-sm font-bold text-primary">
-                      ৳{booking.payableAmount?.toLocaleString() || 0}
-                    </p>
+                  <td className="px-6 py-4 font-bold text-text-primary">
+                    ৳{booking.payableAmount?.toLocaleString()}
                   </td>
-
-                  {/*------------------------ Payment Status---------------------- */}
-                  <td className="px-4 md:px-6 py-4">
+                  <td className="px-6 py-4">
                     <span
-                      className={`px-3 py-1 rounded-full text-xs font-semibold capitalize ${
+                      className={`px-2 py-1 rounded text-[10px] font-bold uppercase ${
                         booking.paymentStatus === "paid"
-                          ? "bg-green-100 text-green-700"
-                          : "bg-red-100 text-red-700"
+                          ? "bg-primary/10 text-primary"
+                          : "bg-red-100 text-red-600 dark:bg-red-900/20 dark:text-red-400"
                       }`}
                     >
                       {booking.paymentStatus}
                     </span>
                   </td>
-
-                  {/* ---------------------Status----------------------------------- */}
-                  <td className="px-4 md:px-6 py-4">
+                  <td className="px-6 py-4">
                     <span
-                      className={`px-3 py-1 rounded-full text-xs   capitalize ${
+                      className={`px-3 py-1 rounded-full text-xs font-medium capitalize ${
                         booking.status === "confirmed"
-                          ? "bg-blue-100 text-primary"
+                          ? "bg-primary/10 text-primary"
                           : booking.status === "assigned"
-                          ? "bg-purple-100 text-purple-700"
-                          : "bg-neutral text-accent"
+                          ? "bg-accent/10 text-accent"
+                          : "bg-neutral/10 text-text-secondary"
                       }`}
                     >
                       {booking.status}
                     </span>
                   </td>
-
-                  {/* ----------------------Action ---------------------*/}
-                  <td className="px-4 md:px-6 py-4">
-                    <div className="flex justify-center gap-2">
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-2">
                       {booking.bookingType === "decoration" && (
                         <button
                           disabled={
@@ -417,62 +283,47 @@ const ManageBookings = () => {
                             )
                           }
                           onClick={() => handleFindDecorators(booking)}
-                          className={`px-4 py-2 ${
-                            ["awaiting-reassignment", "confirmed"].includes(
-                              booking.status
-                            ) &&
-                            "bg-primary/10 border border-primary hover:cursor-pointer hover:bg-primary/80 text-primary"
-                          }   text-xs font-semibold rounded-lg transition-all
-                         `}
+                          className="px-4 py-2 bg-primary text-white text-xs font-bold rounded-lg hover:bg-primary-hover disabled:bg-neutral/20 disabled:text-text-muted transition-all shadow-sm shadow-primary/20"
                         >
-                          {["awaiting-reassignment", "confirmed"].includes(
-                            booking.status
-                          )
-                            ? "Find Decorators"
-                            : booking.status}
+                          Find Decorators
                         </button>
                       )}
+
                       {booking.bookingType === "consultation" &&
                         booking.status === "pending" && (
-                          <div className="flex text-sm gap-2">
+                          <>
                             <button
-                              onClick={() => handleConfirm(booking)}
-                              className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-all"
-                              title="Confirm"
+                              onClick={() =>
+                                handleStatusUpdate(
+                                  booking,
+                                  "scheduled",
+                                  "Confirmed"
+                                )
+                              }
+                              className="text-xs font-bold text-primary hover:underline"
                             >
                               Accept
                             </button>
                             <button
-                              onClick={() => handleCancel(booking)}
-                              className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-all"
-                              title="Cancel"
+                              onClick={() =>
+                                handleStatusUpdate(
+                                  booking,
+                                  "cancelled",
+                                  "Cancelled"
+                                )
+                              }
+                              className="text-xs font-bold text-red-500 hover:underline"
                             >
                               Cancel
                             </button>
-                          </div>
+                          </>
                         )}
-                      {booking.bookingType === "consultation" &&
-                        booking.status === "scheduled" && (
-                          <div className="flex flex-col text-sm gap-2">
-                            <button
-                              onClick={() => handleComplete(booking)}
-                              className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-all"
-                              title="mark as complete"
-                            >
-                              Mark as completed
-                            </button>
-                          </div>
-                        )}
-                      {booking.bookingType === "consultation" &&
-                        booking.status === "completed" && (
-                          <p
-                            title="consultation successfully completed"
-                            className="text-green-700"
-                          >
-                            {" "}
-                            <IoMdCheckmarkCircleOutline size={24} />
-                          </p>
-                        )}
+                      {booking.status === "completed" && (
+                        <IoMdCheckmarkCircleOutline
+                          size={22}
+                          className="text-primary"
+                        />
+                      )}
                     </div>
                   </td>
                 </tr>
@@ -482,171 +333,86 @@ const ManageBookings = () => {
         </div>
       </div>
 
-      <div className="mt-4 text-sm text-gray-600">
-        Showing {sortedBookings.length} of {bookings.length} bookings
-      </div>
-
-      {/*------------------------ Decorators Modal ----------------------------*/}
-      {selectedBooking && isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          {/*================= Backdrop=================== */}
-          <div
-            className="absolute inset-0 bg-gray-400 bg-opacity-50"
-            onClick={() => setIsModalOpen(false)}
-          ></div>
-
-          <div className="relative bg-white rounded-lg w-full max-w-5xl max-h-[90vh] overflow-hidden shadow-xl">
-            {/*---------------------------- Header------------------ */}
-            <div className="flex items-start justify-between p-6 border-b border-neutral">
+      {/* Decorators Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+          <div className="bg-bg-main rounded-2xl w-full max-w-5xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+            <div className="p-6 border-b border-neutral/10 flex justify-between items-center bg-secondary/10">
               <div>
-                <h3 className="text-2xl font-light text-text-primary">
+                <h3 className="text-xl font-bold text-text-primary">
                   Available Decorators
                 </h3>
-                <p className="text-sm text-text-muted mt-1">
-                  City: {selectedBooking.serviceCity} • Service:{" "}
-                  {selectedBooking.serviceName}
+                <p className="text-sm text-text-secondary">
+                  {selectedBooking?.serviceCity} •{" "}
+                  {selectedBooking?.serviceName}
                 </p>
               </div>
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="p-2 hover:bg-secondary rounded-lg transition-colors"
+                className="p-2 hover:bg-red-50 dark:hover:bg-red-900/20 text-text-muted hover:text-red-500 rounded-full transition-colors"
               >
-                <HiX className="w-5 h-5 text-text-muted" />
+                <HiX size={20} />
               </button>
             </div>
 
-            {/*-------------------------- Content------------------------ */}
-            <div className="p-6 overflow-y-auto max-h-[calc(90vh-180px)]">
+            <div className="p-6 max-h-[60vh] overflow-y-auto">
               {decoLoading ? (
-                <div className="flex justify-center py-12">
-                  <LoadingBubbles />
-                </div>
-              ) : decorators.length === 0 ? (
-                <div className="text-center py-12">
-                  <p className="text-text-muted">
-                    No decorators available in this city
-                  </p>
-                </div>
+                <LoadingBubbles />
               ) : (
-                <div className="overflow-x-auto -mx-6 px-6">
-                  <table className="w-full min-w-[800px]">
-                    <thead className="bg-secondary border-b border-neutral">
-                      <tr>
-                        <th className="px-3 py-3 text-left text-[11px] font-semibold text-text-secondary uppercase tracking-wide min-w-[180px]">
-                          Decorator
-                        </th>
-                        <th className="px-3 py-3 text-left text-[11px] font-semibold text-text-secondary uppercase tracking-wide min-w-[120px]">
-                          Location
-                        </th>
-                        <th className="px-3 py-3 text-left text-[11px] font-semibold text-text-secondary uppercase tracking-wide min-w-[140px]">
-                          Specialization
-                        </th>
-                        <th className="px-3 py-3 text-left text-[11px] font-semibold text-text-secondary uppercase tracking-wide min-w-[90px]">
-                          Experience
-                        </th>
-                        <th className="px-3 py-3 text-left text-[11px] font-semibold text-text-secondary uppercase tracking-wide min-w-20">
-                          Rating
-                        </th>
-                        <th className="px-3 py-3 text-center text-[11px] font-semibold text-text-secondary uppercase tracking-wide min-w-[100px]">
-                          Action
-                        </th>
+                <table className="w-full text-left">
+                  <thead className="text-[10px] uppercase font-bold text-text-muted border-b border-neutral">
+                    <tr>
+                      <th className="pb-3">Decorator</th>
+                      <th className="pb-3">Exp</th>
+                      <th className="pb-3">Rating</th>
+                      <th className="pb-3 text-center">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-neutral">
+                    {decorators.map((deco) => (
+                      <tr key={deco._id} className="group">
+                        <td className="py-4">
+                          <div className="flex items-center gap-3">
+                            <img
+                              src={deco.photoUrl}
+                              className="w-10 h-10 rounded-full border-2 border-primary/20"
+                              alt=""
+                            />
+                            <div>
+                              <p className="text-sm font-bold text-text-primary">
+                                {deco.decoratorName}
+                              </p>
+                              <p className="text-xs text-text-secondary">
+                                {deco.contactNumber}
+                              </p>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="py-4 text-sm text-text-secondary">
+                          {deco.experienceYears} Years
+                        </td>
+                        <td className="py-4 text-sm font-bold text-accent">
+                          ★ {deco.ratingAverage || "5.0"}
+                        </td>
+                        <td className="py-4">
+                          <button
+                            onClick={() => handleAssignDecorator(deco)}
+                            className="flex items-center gap-2 mx-auto px-4 py-2 bg-primary text-white text-xs font-bold rounded-lg hover:scale-105 hover:bg-primary-hover transition-transform"
+                          >
+                            <HiUserAdd /> Assign
+                          </button>
+                        </td>
                       </tr>
-                    </thead>
-                    <tbody className="divide-y divide-neutral bg-white">
-                      {decorators.map((decorator) => (
-                        <tr
-                          key={decorator._id}
-                          className="hover:bg-secondary/50 transition-colors"
-                        >
-                          <td className="px-3 py-3">
-                            <div className="flex items-center gap-3">
-                              <img
-                                src={decorator.photoUrl}
-                                alt={decorator.decoratorName}
-                                className="w-10 h-10 rounded-full object-cover border border-neutral"
-                              />
-                              <div>
-                                <p className="text-xs font-medium text-text-primary">
-                                  {decorator.decoratorName}
-                                </p>
-                                <p className="text-[11px] text-text-muted">
-                                  {decorator.contactNumber}
-                                </p>
-                              </div>
-                            </div>
-                          </td>
-
-                          <td className="px-3 py-3">
-                            <p className="text-xs text-text-secondary">
-                              {decorator.serviceLocation.area}
-                            </p>
-                            <p className="text-[11px] text-text-muted">
-                              {decorator.serviceLocation.city}
-                            </p>
-                          </td>
-
-                          <td className="px-3 py-3">
-                            <div className="flex flex-wrap gap-1">
-                              {decorator.specialization
-                                .slice(0, 2)
-                                .map((spec, idx) => (
-                                  <span
-                                    key={idx}
-                                    className="px-2 py-0.5 bg-primary/10 text-primary text-[10px] rounded-full capitalize font-medium"
-                                  >
-                                    {spec}
-                                  </span>
-                                ))}
-                              {decorator.specialization.length > 2 && (
-                                <span className="px-2 py-0.5 bg-neutral text-text-muted text-[10px] rounded-full font-medium">
-                                  +{decorator.specialization.length - 2}
-                                </span>
-                              )}
-                            </div>
-                          </td>
-
-                          <td className="px-3 py-3">
-                            <p className="text-xs text-text-secondary">
-                              {decorator.experienceYears} years
-                            </p>
-                          </td>
-
-                          <td className="px-3 py-3">
-                            <div className="text-xs text-text-secondary">
-                              <span className="font-semibold">
-                                {decorator.ratingAverage?.toFixed(1) || "0.0"}
-                              </span>
-                              <span className="text-text-muted">
-                                {" "}
-                                ({decorator.ratingCount || 0})
-                              </span>
-                            </div>
-                          </td>
-
-                          <td className="px-3 py-3">
-                            <div className="flex justify-center">
-                              <button
-                                onClick={() => handleAssignDecorator(decorator)}
-                                className="flex items-center gap-1.5 px-3 py-1.5 bg-primary hover:bg-primary-hover text-white text-xs font-medium rounded-lg transition-colors"
-                              >
-                                <HiUserAdd className="w-3.5 h-3.5" />
-                                Assign
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                    ))}
+                  </tbody>
+                </table>
               )}
             </div>
 
-            {/*--------------------- Footer------------------- */}
-            <div className="flex justify-end p-6 border-t border-neutral">
+            <div className="p-6 border-t border-neutral bg-secondary flex justify-end">
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="px-6 py-2 bg-text-primary hover:bg-text-secondary text-white text-sm font-medium rounded-lg transition-colors"
+                className="px-6 py-2 bg-primary hover:bg-primary-hover text-white text-sm font-bold rounded-lg"
               >
                 Close
               </button>

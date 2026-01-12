@@ -67,6 +67,14 @@ const router = createBrowserRouter([
         path: "contact",
         element: <ContactPage></ContactPage>,
       },
+      {
+        path: "/become-decorator",
+        element: (
+          <PrivateRoute>
+            <BeADecorator></BeADecorator>
+          </PrivateRoute>
+        ),
+      },
     ],
   },
   {
@@ -200,14 +208,7 @@ const router = createBrowserRouter([
   //   path: "/book-service/:serviceId",
   //   element: <BookService></BookService>,
   // },
-  {
-    path: "/become-decorator",
-    element: (
-      <PrivateRoute>
-        <BeADecorator></BeADecorator>
-      </PrivateRoute>
-    ),
-  },
+
   {
     path: "*",
     element: <ErrorPage></ErrorPage>,

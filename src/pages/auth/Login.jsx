@@ -35,7 +35,7 @@ const Login = () => {
       {/* Left Side - Form */}
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex-1 flex items-center justify-center px-6 py-12 bg-secondary"
+        className="flex-1 flex items-center justify-center px-6 py-12 bg-bg-main"
       >
         <div className="w-full max-w-md">
           {/* Logo & Header */}
@@ -44,17 +44,17 @@ const Login = () => {
               <Logo></Logo>
             </Link>
 
-            <h2 className="text-2xl font-semibold text-gray-800 mb-2">
+            <h2 className="text-2xl font-semibold text-text-primary mb-2">
               Login to your account
             </h2>
-            <p className="text-sm text-gray-600">Welcome back</p>
+            <p className="text-sm text-text-secondary">Welcome back</p>
           </div>
 
           {/* Google Button */}
           <button
             type="button"
             onClick={handleGoogleSignup}
-            className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-white border-2 border-neutral hover:border-primary rounded-lg transition-all text-gray-700 font-medium hover:shadow-md mb-6"
+            className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-bg-main border-2 border-neutral hover:border-primary rounded-lg transition-all text-text-primary font-medium hover:shadow-md mb-6"
           >
             <FcGoogle className="w-5 h-5" />
             Sign in with Google
@@ -66,7 +66,7 @@ const Login = () => {
               <div className="w-full border-t border-neutral"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-secondary text-gray-500">
+              <span className="px-4 bg-bg-main text-text-muted">
                 Or continue with email
               </span>
             </div>
@@ -76,7 +76,7 @@ const Login = () => {
           <div className="mb-4">
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="block text-sm font-medium text-text-secondary mb-1"
             >
               Email Address
             </label>
@@ -84,7 +84,7 @@ const Login = () => {
               id="email"
               type="email"
               {...register("email")}
-              className="w-full px-4 py-2.5 bg-white border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all text-gray-700"
+              className="w-full px-4 py-2.5 bg-bg-alt border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all text-text-primary placeholder-text-muted"
               placeholder="Enter your email"
             />
           </div>
@@ -93,7 +93,7 @@ const Login = () => {
           <div className="mb-4">
             <label
               htmlFor="password"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="block text-sm font-medium text-text-secondary mb-1"
             >
               Password
             </label>
@@ -103,14 +103,14 @@ const Login = () => {
                 id="password"
                 type={showPassword ? "text" : "password"}
                 {...register("password")}
-                className="w-full px-4 py-2.5 bg-white border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all text-gray-700 pr-10"
+                className="w-full px-4 py-2.5 bg-bg-alt border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all text-text-primary pr-10 placeholder-text-muted"
                 placeholder="Enter your password"
               />
 
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-primary transition-colors"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-primary transition-colors"
               >
                 {showPassword ? (
                   <HiEyeOff className="w-5 h-5" />
@@ -130,7 +130,7 @@ const Login = () => {
           </button>
 
           {/* Registration Link */}
-          <p className="text-center text-sm text-gray-600 mt-4">
+          <p className="text-center text-sm text-text-secondary mt-4">
             Don't have an account?{" "}
             <a
               href="/registration"
