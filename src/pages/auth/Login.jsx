@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { HiSparkles, HiEye, HiEyeOff } from "react-icons/hi";
 import { FcGoogle } from "react-icons/fc";
-
-// If you're using react-hook-form, make sure these come from props or import them:
 import { useForm } from "react-hook-form";
 import { useAuth } from "../../hooks and contexts/auth/useAuth";
 import { Link, useNavigate } from "react-router-dom";
@@ -13,10 +11,8 @@ const Login = () => {
   const { signInUser, googleSignIn } = useAuth();
   const navigate = useNavigate();
 
-  console.log("SIGN IN USER FROM CONTEXT:", signInUser);
-
-  // form handlers
-  const { register, handleSubmit } = useForm();
+  // form handlers - Added setValue to handle demo clicks
+  const { register, handleSubmit, setValue } = useForm();
 
   const onSubmit = async (data) => {
     await signInUser(data.email, data.password);
@@ -28,6 +24,12 @@ const Login = () => {
     const res = await googleSignIn();
     console.log("google login successful:", res.user);
     navigate("/");
+  };
+
+  // Helper to fill form automatically
+  const handleDemoLogin = (email, pass) => {
+    setValue("email", email);
+    setValue("password", pass);
   };
 
   return (
@@ -129,15 +131,53 @@ const Login = () => {
             Login
           </button>
 
+          {/* --- DEMO CREDENTIALS SECTION --- */}
+          <div className="mt-8 p-4 border border-dashed border-neutral rounded-xl bg-bg-alt/50">
+            <p className="text-xs font-bold text-text-muted uppercase tracking-wider mb-3 flex items-center gap-2">
+              <HiSparkles className="text-primary" /> Quick Demo Access
+            </p>
+            <div className="grid grid-cols-1 gap-2">
+              <button
+                type="button"
+                onClick={() =>
+                  handleDemoLogin("styledecor@admin.com", "ABcd1234@")
+                }
+                className="text-left px-3 py-2 text-xs bg-bg-main border border-neutral hover:border-primary rounded-md transition-colors text-text-secondary hover:text-primary"
+              >
+                <span className="font-bold">Admin:</span> styledecor@admin.com
+              </button>
+              <button
+                type="button"
+                onClick={() =>
+                  handleDemoLogin("player@cricket.com", "ABcd1234@")
+                }
+                className="text-left px-3 py-2 text-xs bg-bg-main border border-neutral hover:border-primary rounded-md transition-colors text-text-secondary hover:text-primary"
+              >
+                <span className="font-bold">User:</span> player@cricket.com
+              </button>
+              <button
+                type="button"
+                onClick={() =>
+                  handleDemoLogin("kamaboko@gonpachiro.com", "ABcd1234@")
+                }
+                className="text-left px-3 py-2 text-xs bg-bg-main border border-neutral hover:border-primary rounded-md transition-colors text-text-secondary hover:text-primary"
+              >
+                <span className="font-bold">Decorator:</span>{" "}
+                kamaboko@gonpachiro.com
+              </button>
+            </div>
+          </div>
+          {/* ------------------------------- */}
+
           {/* Registration Link */}
-          <p className="text-center text-sm text-text-secondary mt-4">
+          <p className="text-center text-sm text-text-secondary mt-6">
             Don't have an account?{" "}
-            <a
-              href="/registration"
+            <Link
+              to="/registration"
               className="text-primary hover:text-accent font-semibold"
             >
               Register here
-            </a>
+            </Link>
           </p>
         </div>
       </form>
@@ -149,9 +189,7 @@ const Login = () => {
           alt="Elegant decoration"
           className="absolute inset-0 w-full h-full object-cover"
         />
-
         <div className="absolute inset-0 bg-gradient-to-br from-primary/80 to-accent/60"></div>
-
         <div className="absolute inset-0 flex items-center justify-center p-12">
           <div className="text-white text-center max-w-md">
             <h2 className="text-4xl font-bold mb-4">Transform Your Spaces</h2>
